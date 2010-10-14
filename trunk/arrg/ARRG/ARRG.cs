@@ -159,7 +159,7 @@ namespace ARRG_Game
             }
             else
             {
-                captureDevice = new DirectShowCapture();
+                captureDevice = new DirectShowCapture2();
                 captureDevice.InitVideoCapture(0, FrameRate._60Hz, Resolution._640x480,
                     ImageFormat.R8G8B8_24, false);
             }
