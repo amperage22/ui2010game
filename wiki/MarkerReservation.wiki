@@ -1,0 +1,8 @@
+#summary This page specifies the markers that will be reserved for different elements of AR interaction.
+
+= Details =
+
+|| *Marker Number Range (inclusive)* || *Application* ||
+|| 0 - 127 || Game Board ||
+|| 128 - 255 || Dice ||
+|| 256 - 304 || Cards ||
