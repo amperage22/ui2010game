@@ -108,7 +108,7 @@
     </None>
     <None Include="..\..\GoblinXNAv3.4\bin\ALVARWrapper.dll">
       <Link>ALVARWrapper.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\GoblinXNAv3.4\bin\cv100.dll">
       <Link>cv100.dll</Link>
@@ -156,6 +156,9 @@
     </None>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="libguide40.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">

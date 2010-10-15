@@ -2,9 +2,9 @@ Content\DebugFont.xnb
 Content\DebugFont.spritefont
 Content\alvar\ground_markers.txt
 Content\alvar\calib.xml
+libguide40.dll
 alvar130.dll
 alvarplatform130.dll
-ALVARWrapper.dll
 cv100.dll
 cvaux100.dll
 cvcam100.dll
@@ -16,3 +16,4 @@ Lidgren.Network.dll
 Newton.dll
 NewtonWrapper.dll
 Nuclex.Fonts.dll
+ALVARWrapper.dll
