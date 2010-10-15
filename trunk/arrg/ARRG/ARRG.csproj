@@ -60,11 +60,11 @@
   <ItemGroup>
     <Reference Include="DShowNET, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\GoblinXNAv3.4\bin\DShowNET.dll</HintPath>
+      <HintPath>..\..\GoblinXNAv3.4\bin\DShowNET.dll</HintPath>
     </Reference>
     <Reference Include="GoblinXNA, Version=3.3.17.2010, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\GoblinXNAv3.4\bin\GoblinXNA.dll</HintPath>
+      <HintPath>..\..\GoblinXNAv3.4\bin\GoblinXNA.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>
@@ -98,6 +98,62 @@
     <Compile Include="ARRG.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\GoblinXNAv3.4\bin\alvar130.dll">
+      <Link>alvar130.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\alvarplatform130.dll">
+      <Link>alvarplatform130.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\ALVARWrapper.dll">
+      <Link>ALVARWrapper.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\cv100.dll">
+      <Link>cv100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\cvaux100.dll">
+      <Link>cvaux100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\cvcam100.dll">
+      <Link>cvcam100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\cxcore100.dll">
+      <Link>cxcore100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\DShowNET.dll">
+      <Link>DShowNET.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\GoblinXNA.dll">
+      <Link>GoblinXNA.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\highgui100.dll">
+      <Link>highgui100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\Lidgren.Network.dll">
+      <Link>Lidgren.Network.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\Newton.dll">
+      <Link>Newton.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\NewtonWrapper.dll">
+      <Link>NewtonWrapper.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\GoblinXNAv3.4\bin\Nuclex.Fonts.dll">
+      <Link>Nuclex.Fonts.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
