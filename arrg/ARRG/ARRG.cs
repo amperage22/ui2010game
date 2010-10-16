@@ -64,7 +64,8 @@ namespace ARRG_Game
 
         Scene scene;
         MarkerNode groundMarkerNode;
-        MarkerNode[,] dice = new MarkerNode[6,6];
+        Die[] dice;
+        private const int dice_count = 6;
 
         // set this to false if you are going to use a webcam
         bool useStaticImage = false;
@@ -130,11 +131,6 @@ namespace ARRG_Game
             State.ShowFPS = true;
 
             base.Initialize();
-        }
-
-        private void CreateDice()
-        {
-
         }
 
         private void CreateLights()
@@ -227,6 +223,42 @@ namespace ARRG_Game
             groundMarkerNode.AddChild(groundNode);
         }
 
+        private void CreateDice()
+        {
+            //Create mat for blue cylinder
+            Material mat = new Material();
+            mat.Diffuse = new Vector4(0, 1, 0, 1);
+            mat.Specular = Color.White.ToVector4();
+            mat.SpecularPower = 10;
+            mat.Emissive = Color.Blue.ToVector4();
+
+            //Setup the marker numbers
+            int[] side_marker = new int[1];
+            MarkerNode[] side = new MarkerNode[6];
+            dice = new Die[dice_count];
+            for (int i = 0; i < dice_count; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    side_marker[0] = (i * 6) + (j + 128); //6 sides on a die, 128 is the beginning dice id
+                    String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", i, j);
+                    side[j] = new MarkerNode(scene.MarkerTracker, config_file, side_marker);//String.Format("Content/dice_markers/die_{0}_side_{1}.txt", i, j), side_marker);
+                    
+                    //Create the blue cylinder for the die marker
+                    GeometryNode cylinderNode = new GeometryNode("Cylinder");
+                    cylinderNode.Model = new Cylinder(i+j+4, i+j+4, i+j+4, i+j+4);
+                    cylinderNode.Material = mat;
+                    TransformNode cylinderTransNode = new TransformNode();
+                    cylinderTransNode.AddChild(cylinderNode);
+                    cylinderTransNode.Translation = new Vector3(0, 0, 25);
+                    side[j].AddChild(cylinderTransNode);
+                    scene.RootNode.AddChild(side[j]);
+                }
+
+                dice[i] = new Die(side);
+            }
+        }
+
         private void CreateObjects()
         {
 
@@ -252,34 +284,7 @@ namespace ARRG_Game
 
             groundMarkerNode.AddChild(cylinderTransNode);
 
-            int[] side_marker = new int[1];
-            for (int i = 0; i < 6; i++)
-                for (int j = 0; j < 6; j++)
-                {
-                    side_marker[0] = (i * 6) + (j + 128); //6 sides on a die, 128 is the beginning dice id
-                    String config_file = String.Format("die{0}side{1}.txt", i, j);
-                    dice[i,j] = new MarkerNode(scene.MarkerTracker, config_file, side_marker);//String.Format("Content/dice_markers/die_{0}_side_{1}.txt", i, j), side_marker);
-                }
-
-            //Create mat for blue cylinder
-            Material mat2 = new Material();
-            mat2.Diffuse = new Vector4(0, 1, 0, 1);
-            mat2.Specular = Color.White.ToVector4();
-            mat2.SpecularPower = 10;
-            mat2.Emissive = Color.Blue.ToVector4();
-
-            //Create the blue cylinder for the die marker
-            GeometryNode cylinderNode2 = new GeometryNode("Cylinder");
-            cylinderNode2.Model = new Cylinder(10, 10, 20, 20);
-            cylinderNode2.Material = mat2;
-            TransformNode cylinderTransNode2 = new TransformNode();
-            cylinderTransNode2.AddChild(cylinderNode2);
-            cylinderTransNode2.Translation = new Vector3(0, 0, 0);
-            dice[0,0].AddChild(cylinderTransNode2);
-            
-            //groundMarkerNode tracks just fine.  What else is needed to get dice[0,0] to track correctly?
             scene.RootNode.AddChild(groundMarkerNode);
-            scene.RootNode.AddChild(dice[0, 0]);
         }
 
         /// <summary>
