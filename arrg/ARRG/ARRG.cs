@@ -63,7 +63,8 @@ namespace ARRG_Game
         GraphicsDeviceManager graphics;
 
         Scene scene;
-        MarkerNode cylinderMarkerNode;
+        MarkerNode groundMarkerNode;
+        MarkerNode[,] dice = new MarkerNode[6,6];
 
         // set this to false if you are going to use a webcam
         bool useStaticImage = false;
@@ -109,6 +110,9 @@ namespace ARRG_Game
             // Create 3D objects
             CreateObjects();
 
+            //Create the dice AR recognition stuff
+            CreateDice();
+
             // Create the ground that represents the physical ground marker array
             CreateGround();
 
@@ -126,6 +130,11 @@ namespace ARRG_Game
             State.ShowFPS = true;
 
             base.Initialize();
+        }
+
+        private void CreateDice()
+        {
+
         }
 
         private void CreateLights()
@@ -215,32 +224,62 @@ namespace ARRG_Game
 
             groundNode.Material = groundMaterial;
 
-            cylinderMarkerNode.AddChild(groundNode);
+            groundMarkerNode.AddChild(groundNode);
         }
 
         private void CreateObjects()
         {
-            // Create a material to apply to the sphere model
-            Material sphereMaterial = new Material();
-            sphereMaterial.Diffuse = new Vector4(0, 1, 0, 1);
-            sphereMaterial.Specular = Color.White.ToVector4();
-            sphereMaterial.SpecularPower = 10;
 
             //TODO: replace 54 with a constant to show what the ids are of.
             int[] ground_markers = new int[54];
             for (int i = 0; i < ground_markers.Length; i++)
                 ground_markers[i] = i;
+            groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
-            cylinderMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
+            // Create a material to apply to the cylinder model
+            Material mat1 = new Material();
+            mat1.Diffuse = new Vector4(0, 1, 0, 1);
+            mat1.Specular = Color.White.ToVector4();
+            mat1.SpecularPower = 10;
 
+            //Create the cylinder
             GeometryNode cylinderNode = new GeometryNode("Cylinder");
-            cylinderNode.Model = new Cylinder(30, 30, 60, 100);
-            cylinderNode.Material = sphereMaterial;
+            cylinderNode.Model = new Cylinder(10, 10, 20, 20);
+            cylinderNode.Material = mat1;
             TransformNode cylinderTransNode = new TransformNode();
-            cylinderTransNode.Translation = new Vector3(0, 0, 15);
-            cylinderMarkerNode.AddChild(cylinderTransNode);
             cylinderTransNode.AddChild(cylinderNode);
-            scene.RootNode.AddChild(cylinderMarkerNode);
+            cylinderTransNode.Translation = new Vector3(0, 0, 15);
+
+            groundMarkerNode.AddChild(cylinderTransNode);
+
+            int[] side_marker = new int[1];
+            for (int i = 0; i < 6; i++)
+                for (int j = 0; j < 6; j++)
+                {
+                    side_marker[0] = (i * 6) + (j + 128); //6 sides on a die, 128 is the beginning dice id
+                    String config_file = String.Format("die{0}side{1}.txt", i, j);
+                    dice[i,j] = new MarkerNode(scene.MarkerTracker, config_file, side_marker);//String.Format("Content/dice_markers/die_{0}_side_{1}.txt", i, j), side_marker);
+                }
+
+            //Create mat for blue cylinder
+            Material mat2 = new Material();
+            mat2.Diffuse = new Vector4(0, 1, 0, 1);
+            mat2.Specular = Color.White.ToVector4();
+            mat2.SpecularPower = 10;
+            mat2.Emissive = Color.Blue.ToVector4();
+
+            //Create the blue cylinder for the die marker
+            GeometryNode cylinderNode2 = new GeometryNode("Cylinder");
+            cylinderNode2.Model = new Cylinder(10, 10, 20, 20);
+            cylinderNode2.Material = mat2;
+            TransformNode cylinderTransNode2 = new TransformNode();
+            cylinderTransNode2.AddChild(cylinderNode2);
+            cylinderTransNode2.Translation = new Vector3(0, 0, 25);
+            dice[0,0].AddChild(cylinderTransNode2);
+            
+            //groundMarkerNode tracks just fine.  What else is needed to get dice[0,0] to track correctly?
+            scene.RootNode.AddChild(groundMarkerNode);
+            scene.RootNode.AddChild(dice[0, 0]);
         }
 
         /// <summary>
