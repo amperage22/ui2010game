@@ -274,7 +274,7 @@ namespace ARRG_Game
             cylinderNode2.Material = mat2;
             TransformNode cylinderTransNode2 = new TransformNode();
             cylinderTransNode2.AddChild(cylinderNode2);
-            cylinderTransNode2.Translation = new Vector3(0, 0, 25);
+            cylinderTransNode2.Translation = new Vector3(0, 0, 0);
             dice[0,0].AddChild(cylinderTransNode2);
             
             //groundMarkerNode tracks just fine.  What else is needed to get dice[0,0] to track correctly?
