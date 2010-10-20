@@ -5,13 +5,13 @@ using System.Text;
 
 namespace ARRG_Game
 {
-  class monster
+  class Monster
   {
 
     private int health, power;
     private string name;
 
-    public monster(string name, int health, int power)
+    public Monster(string name, int health, int power)
     {
       this.name = name;
       this.health = health;
@@ -42,8 +42,5 @@ namespace ARRG_Game
     {
       health = health + mod;
     }
-  }
-
-
   }
 }
