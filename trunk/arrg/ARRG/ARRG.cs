@@ -58,6 +58,8 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
+    enum States { TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, GAME };
+    enum InGameStates { DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     public class ARRG : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;

@@ -5,42 +5,44 @@ using System.Text;
 
 namespace ARRG_Game
 {
-  class Monster
-  {
 
-    private int health, power;
-    private string name;
-
-    public Monster(string name, int health, int power)
+    class Monster
     {
-      this.name = name;
-      this.health = health;
-      this.power = power;
-    }
 
-    public int getHealth()
-    {
-      return health;
-    }
+        private int health, power;
+        private string name;
 
-    public int getPower()
-    {
-      return power;
-    }
+        public Monster(string name, int health, int power)
+        {
+            this.name = name;
+            this.health = health;
+            this.power = power;
+        }
 
-    public string getName()
-    {
-      return name;
-    }
+        public int getHealth()
+        {
+            return health;
+        }
 
-    public void adjustPower(int mod)
-    {
-      power = power + mod;
-    }
+        public int getPower()
+        {
+            return power;
+        }
 
-    public void adjustHealth(int mod)
-    {
-      health = health + mod;
+        public string getName()
+        {
+            return name;
+        }
+
+        public void adjustPower(int mod)
+        {
+            power = power + mod;
+        }
+
+        public void adjustHealth(int mod)
+        {
+            health = health + mod;
+        }
+
     }
-  }
 }
