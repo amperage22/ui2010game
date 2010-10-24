@@ -384,7 +384,7 @@ namespace ARRG_Game
         /// </summary>
         protected void UpdateInGame()
         {
-            switch (
+
         }
 
 
