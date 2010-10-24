@@ -58,8 +58,8 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    enum States { TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, GAME };
-    enum InGameStates { DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+    enum MenuStates { NONE,TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
+    enum InGameStates { NONE,DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     public class ARRG : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -68,6 +68,7 @@ namespace ARRG_Game
         MarkerNode groundMarkerNode;
         Die[] dice;
         private const int dice_count = 6;
+        MenuStates menuState = MenuStates.TITLE;
 
         // set this to false if you are going to use a webcam
         bool useStaticImage = false;
@@ -131,6 +132,7 @@ namespace ARRG_Game
 
             // Show Frames-Per-Second on the screen for debugging
             State.ShowFPS = true;
+            menuState = MenuStates.TITLE;
 
             base.Initialize();
         }
@@ -305,7 +307,18 @@ namespace ARRG_Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            switch(menuState)
+            {
+                case MenuStates.TITLE:      UpdateTitle(); break;
+                case MenuStates.TALENT:     UpdateTalent(); break;
+                case MenuStates.PRE_GAME:   UpdatePreGame(); break;
+                case MenuStates.MARKET:     UpdateMarket(); break;
+                case MenuStates.INVENTORY:  UpdateInventory(); break;
+                case MenuStates.INGAME:     UpdateInGame(); break;
+                case default(MenuStates):   break;
+            }
             base.Update(gameTime);
+
         }
 
         /// <summary>
@@ -314,9 +327,97 @@ namespace ARRG_Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // TODO: Add your drawing code here
+            switch (menuState)
+            {
+                case MenuStates.TITLE: DrawTitle(); break;
+                case MenuStates.TALENT: DrawTalent(); break;
+                case MenuStates.PRE_GAME: DrawPreGame(); break;
+                case MenuStates.MARKET: DrawMarket(); break;
+                case MenuStates.INVENTORY: DrawInventory(); break;
+                case MenuStates.INGAME: DrawInGame(); break;
+                case default(MenuStates): break;
+            }
 
             base.Draw(gameTime);
+        }
+
+
+        //enum States { TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
+        //enum InGameStates { DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+
+
+        /// <summary>
+        /// Update method for Title state
+        /// </summary>
+        protected void UpdateTitle()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Talent state
+        /// </summary>
+        protected void UpdateTalent()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Pre-game state
+        /// </summary>
+        protected void UpdatePreGame()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Market state
+        /// </summary>
+        protected void UpdateMarket()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Inventory state
+        /// </summary>
+        protected void UpdateInventory()
+        {
+
+        }
+        /// <summary>
+        /// Update method for InGame state
+        /// </summary>
+        protected void UpdateInGame()
+        {
+
+        }
+
+
+
+        protected void DrawTitle()
+        {
+
+        }
+
+        protected void DrawTalent()
+        {
+
+        }
+
+        protected void DrawPreGame()
+        {
+
+        }
+
+        protected void DrawMarket()
+        {
+
+        }
+        protected void DrawInventory()
+        {
+
+        }
+
+        protected void DrawInGame()
+        {
+
         }
     }
 }
