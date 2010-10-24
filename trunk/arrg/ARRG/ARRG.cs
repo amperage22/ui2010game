@@ -58,8 +58,8 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    enum MenuStates { NONE,TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
-    enum InGameStates { NONE,DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+    enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
+    enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     public class ARRG : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -68,7 +68,10 @@ namespace ARRG_Game
         MarkerNode groundMarkerNode;
         Die[] dice;
         private const int dice_count = 6;
+
+        //Set up the states
         MenuStates menuState = MenuStates.TITLE;
+        InGameStates gameState = InGameStates.NONE;
 
         // set this to false if you are going to use a webcam
         bool useStaticImage = false;
@@ -236,7 +239,7 @@ namespace ARRG_Game
             mat.SpecularPower = 10;
             mat.Emissive = Color.Blue.ToVector4();
 
-            //Setup the marker numbers
+            //Set up the markers
             int[] side_marker = new int[1];
             MarkerNode[] side = new MarkerNode[6];
             dice = new Die[dice_count];
@@ -341,11 +344,6 @@ namespace ARRG_Game
             base.Draw(gameTime);
         }
 
-
-        //enum States { TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
-        //enum InGameStates { DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-
-
         /// <summary>
         /// Update method for Title state
         /// </summary>
@@ -386,35 +384,48 @@ namespace ARRG_Game
         /// </summary>
         protected void UpdateInGame()
         {
-
+            switch (
         }
 
 
-
+        /// <summary>
+        /// Draw method for Title state
+        /// </summary>
         protected void DrawTitle()
         {
 
         }
-
+        /// <summary>
+        /// Draw method for Talent state
+        /// </summary>
         protected void DrawTalent()
         {
 
         }
-
+        /// <summary>
+        /// Draw method for Pre-game state
+        /// </summary>
         protected void DrawPreGame()
         {
 
         }
-
+        /// <summary>
+        /// Draw method for Market state
+        /// </summary>
         protected void DrawMarket()
         {
 
         }
+        /// <summary>
+        /// Draw method for Inventory state
+        /// </summary>
         protected void DrawInventory()
         {
 
         }
-
+        /// <summary>
+        /// Draw method for InGame state
+        /// </summary>
         protected void DrawInGame()
         {
 
