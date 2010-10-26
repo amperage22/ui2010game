@@ -225,7 +225,7 @@ namespace ARRG_Game
 #endif
 
       // Set this ground model to act as an occluder so that it appears transparent
-      groundNode.IsOccluder = false;
+      groundNode.IsOccluder = true;
 
       // Make the ground model to receive shadow casted by other objects with
       // CastShadows set to true

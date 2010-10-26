@@ -58,9 +58,12 @@ namespace ARRG_Game
             sides[0].AddChild(t);
         }
 
-        public void killMonster()
+        public void removeMonster()
         {
             currentMonster = null;
+
+            //And clear the transnode for the side markers
+            //TODO!
         }
 
         public bool isOnScreen()
@@ -74,6 +77,11 @@ namespace ARRG_Game
 
         public bool hasMonster() {
             return currentMonster != null;
+        }
+
+        public void Update()
+        {
+            //TODO: Make sure that if the die changes orientation, that the monster remains on the top face
         }
     }
 }

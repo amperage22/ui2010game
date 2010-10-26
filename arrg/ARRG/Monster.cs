@@ -38,7 +38,7 @@ namespace ARRG_Game
         private List<int> dmgPrevented;
         private string name;
 
-        public Monster(string name, int health, int power, Player player, Die die)
+        public Monster(string name, int health, int power)
         {
             this.name = name;
             this.health = health;
@@ -98,8 +98,24 @@ namespace ARRG_Game
             dmgMods.Clear();
             healthMods.Clear();
             dmgPrevented.Clear();
-
         }
-
     }
+
+    class MonsterBuilder
+    {
+        private String name;
+        int health;
+        int power;
+        public MonsterBuilder(String name, int health, int power)
+        {
+            this.name = name;
+            this.health = health; 
+            this.power = power;
+        }
+        public Monster createMonster(String name, int health, int power)
+        {
+            return new Monster(name, health, power);
+        }
+    }
+
 }
