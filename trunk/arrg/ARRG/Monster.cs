@@ -12,26 +12,29 @@ namespace ARRG_Game
         private int health, power;
         private string name;
 
-        public Monster(string name, int health, int power)
+        public Monster(string name, int health, int power, Player player, Die die)
         {
             this.name = name;
             this.health = health;
             this.power = power;
         }
 
-        public int getHealth()
+        public int Health
         {
-            return health;
+          get { return health; }
+          set { health = value; }
         }
 
-        public int getPower()
+        public int Power
         {
-            return power;
+          get { return power; }
+          set { power = value; }
         }
 
-        public string getName()
+        public String Name
         {
-            return name;
+          get { return name; }
+          set { name = value; }
         }
 
         public void adjustPower(int mod)
