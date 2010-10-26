@@ -62,9 +62,11 @@ namespace ARRG_Game
 {
   enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
   enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+
   public class ARRG : Microsoft.Xna.Framework.Game
   {
     GraphicsDeviceManager graphics;
+    Player p;
 
     Scene scene;
     MarkerNode groundMarkerNode;
@@ -280,6 +282,7 @@ namespace ARRG_Game
 
     private void CreateObjects()
     {
+        p = new Player();
 
       //TODO: replace 54 with a constant to show what the ids are of.
       int[] ground_markers = new int[54];

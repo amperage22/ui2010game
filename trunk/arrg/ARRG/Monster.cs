@@ -13,7 +13,7 @@ namespace ARRG_Game
         private List<int> dmgMods;
         private List<int> healthMods;
         private List<int> dmgTaken;
-        private bool noDmgTaken;
+        private List<int> dmgPrevented;
         private string name;
 
         public Monster(string name, int health, int power, Player player, Die die)
@@ -25,7 +25,7 @@ namespace ARRG_Game
             dmgMods = new List<int>();
             healthMods = new List<int>();
             dmgTaken = new List<int>();
-            noDmgTaken = false;
+            dmgPrevented = new List<int>();
         }
 
         public int Health
@@ -67,7 +67,7 @@ namespace ARRG_Game
         }
         public void preventDmg(int health)
         {
-            noDmgTaken = true;
+            dmgPrevented.Add(health);
         }
 
         public void newTurn()
@@ -75,7 +75,7 @@ namespace ARRG_Game
             dmgTaken.Clear();
             dmgMods.Clear();
             healthMods.Clear();
-            noDmgTaken = false;
+            dmgPrevented.Clear();
 
         }
 
