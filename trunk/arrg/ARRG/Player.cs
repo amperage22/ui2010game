@@ -31,7 +31,7 @@ namespace ARRG_Game
     {
         private static int MAX_NUM_DIE = 3;
         private static int MAX_CARDS_IN_DECK = 20;      //SUbject to change
-        private static int MAX_CREATURES_ON_DIE = 8;   //Subject to change
+        private static int MAX_CREATURES_INGAME = 8;
         
         private int health;
         private int mana;
@@ -60,7 +60,7 @@ namespace ARRG_Game
             mana = 10;
             gold = 100;
             die = new Die[MAX_NUM_DIE];
-            selectedMonsters = new Monster[MAX_CREATURES_ON_DIE];
+            selectedMonsters = new Monster[MAX_CREATURES_INGAME];
             monsters = new List<Monster>();
             availableCards = new List<Card>();
 
@@ -110,7 +110,7 @@ namespace ARRG_Game
 
         public bool addMonster(Monster m)
         {
-            if (numMonsters < MAX_CREATURES_ON_DIE)
+            if (numMonsters < MAX_CREATURES_INGAME)
             {
                 selectedMonsters[numMonsters++] = m;
                 return true;
