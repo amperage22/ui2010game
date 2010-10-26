@@ -49,6 +49,8 @@ using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
 using Model = GoblinXNA.Graphics.Model;
 using GoblinXNA.Graphics.Geometry;
+using GoblinXNA.Graphics.ParticleEffects;
+using GoblinXNA.Device.Generic;
 using GoblinXNA.Device.Capture;
 using GoblinXNA.Device.Vision;
 using GoblinXNA.Device.Vision.Marker;
