@@ -9,6 +9,7 @@ namespace ARRG_Game
     class Card
     {
         private int marker;
+
         private int healthMod, dmgMod, dmgDone, dmgPrevent;
         private CardType type;
 

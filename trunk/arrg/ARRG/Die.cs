@@ -2,21 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Net;
+using Microsoft.Xna.Framework.Storage;
+
+using GoblinXNA;
+using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
+using GoblinXNA.Graphics.Geometry;
+using GoblinXNA.Graphics.ParticleEffects;
+using GoblinXNA.Device.Generic;
+using GoblinXNA.Device.Capture;
+using GoblinXNA.Device.Vision;
+using GoblinXNA.Device.Vision.Marker;
+using GoblinXNA.Device.Util;
+using GoblinXNA.Physics;
+using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
     class Die
     {
-        private MarkerNode[] sides;
+        private const int firstDieID = 128;
 
-        public Die(MarkerNode[] sides)
+        private MarkerNode[] sides;
+        private Monster currentMonster;
+
+        public Die(Scene s, int dieNum)
         {
-            if (sides.Length != 6) throw new Exception("A die must have exactly 6 sides.");
-            for (int i = 0; i < sides.Length; i++)
-                if (sides[i] == null)
-                    throw new Exception("One or more of the MarkerNodes are null.");
-            this.sides = sides;
+            //Set up the 6 sides of this die
+            sides = new MarkerNode[6];
+            int[] side_marker = new int[1];
+            for (int i = 0; i < 6; i++)
+            {
+                side_marker[0] = (dieNum * 6) + firstDieID;
+                String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", dieNum, i);
+                sides[i] = new MarkerNode(s.MarkerTracker, config_file, side_marker);
+                s.RootNode.AddChild(sides[i]);
+            }
+
+            currentMonster = null;
+        }
+
+        public void assignMonster(TransformNode t)
+        {
+            //if (m == null)
+              //  throw new Exception("Monster cannot be null");
+            //currentMonster = m;
+            sides[0].AddChild(t);
+        }
+
+        public void killMonster()
+        {
+            currentMonster = null;
+        }
+
+        public bool isOnScreen()
+        {
+            foreach (MarkerNode side in sides)
+            {
+                if (side.MarkerFound) return true;
+            }
+            return false;
+        }
+
+        public bool hasMonster() {
+            return currentMonster != null;
         }
     }
 }

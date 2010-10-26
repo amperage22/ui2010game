@@ -67,7 +67,7 @@ namespace ARRG_Game
   {
     GraphicsDeviceManager graphics;
     Player p;
-
+      
     Scene scene;
     MarkerNode groundMarkerNode;
     Die[] dice;
@@ -124,9 +124,6 @@ namespace ARRG_Game
       // Create 3D objects
       CreateObjects();
 
-      //Create the dice AR recognition stuff
-      CreateDice();
-
       // Create the ground that represents the physical ground marker array
       CreateGround();
 
@@ -144,12 +141,12 @@ namespace ARRG_Game
       State.ShowFPS = true;
       menuState = MenuStates.TITLE;
 
-      brb bigRed = new brb(scene, gameState);
-      Player player = new Player();
-      Player player2 = new Player();
-      hb = new healthBar(scene, player, true);
-      hb2 = new healthBar(scene, player2, false);
-      hb2.adjustHealth(-10);
+      //brb bigRed = new brb(scene, gameState);
+      //Player player = new Player();
+      //Player player2 = new Player();
+      //hb = new healthBar(scene, player, true);
+      //hb2 = new healthBar(scene, player2, false);
+      //hb2.adjustHealth(-10);
 
       base.Initialize();
     }
@@ -244,45 +241,9 @@ namespace ARRG_Game
       groundMarkerNode.AddChild(groundNode);
     }
 
-    private void CreateDice()
-    {
-      //Create mat for blue cylinder
-      Material mat = new Material();
-      mat.Diffuse = new Vector4(0, 1, 0, 1);
-      mat.Specular = Color.White.ToVector4();
-      mat.SpecularPower = 10;
-      mat.Emissive = Color.Blue.ToVector4();
-
-      //Set up the markers
-      int[] side_marker = new int[1];
-      MarkerNode[] side = new MarkerNode[6];
-      dice = new Die[dice_count];
-      for (int i = 0; i < dice_count; i++)
-      {
-        for (int j = 0; j < 6; j++)
-        {
-          side_marker[0] = (i * 6) + (j + 128); //6 sides on a die, 128 is the beginning dice id
-          String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", i, j);
-          side[j] = new MarkerNode(scene.MarkerTracker, config_file, side_marker);//String.Format("Content/dice_markers/die_{0}_side_{1}.txt", i, j), side_marker);
-
-          //Create the blue cylinder for the die marker
-          GeometryNode cylinderNode = new GeometryNode("Cylinder");
-          cylinderNode.Model = new Cylinder(i + j + 4, i + j + 4, i + j + 4, i + j + 4);
-          cylinderNode.Material = mat;
-          TransformNode cylinderTransNode = new TransformNode();
-          cylinderTransNode.AddChild(cylinderNode);
-          cylinderTransNode.Translation = new Vector3(0, 0, 25);
-          side[j].AddChild(cylinderTransNode);
-          scene.RootNode.AddChild(side[j]);
-        }
-
-        dice[i] = new Die(side);
-      }
-    }
-
     private void CreateObjects()
     {
-        p = new Player();
+        p = new Player(scene, 2);
 
       //TODO: replace 54 with a constant to show what the ids are of.
       int[] ground_markers = new int[54];
@@ -335,6 +296,7 @@ namespace ARRG_Game
         case MenuStates.INGAME: UpdateInGame(); break;
         case default(MenuStates): break;
       }
+      p.Update();
       base.Update(gameTime);
 
     }
