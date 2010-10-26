@@ -24,7 +24,7 @@ namespace ARRG_Game
                 case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = health; healthMod = 0; break;
             }
         }
-        public Card(CardType type,int marker,  int mod)
+        public Card(CardType type,int marker, int mod)
         {
             this.type = type;
             this.marker = marker;
