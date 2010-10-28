@@ -37,6 +37,8 @@ namespace ARRG_Game
         private int mana;
         private int gold;
 
+        private MarkerNode ground;
+
         private Die[] die;
 
         private Monster[] selectedMonsters;
@@ -54,12 +56,13 @@ namespace ARRG_Game
          * firstDieNum Which die is being created?  Die1, 2, 3?
          * numDice The amount of dice this player will get
          */
-        public Player(Scene s, int playerNum)
+        public Player(Scene s, int playerNum, MarkerNode ground)
         {
             health = 20;
             mana = 10;
             gold = 100;
             die = new Die[MAX_NUM_DIE];
+            this.ground = ground;
             selectedMonsters = new Monster[MAX_CREATURES_INGAME];
             monsters = new List<Monster>();
             availableCards = new List<Card>();
@@ -122,7 +125,7 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (d.isOnScreen() && !d.hasMonster() && x)
+                if (d.isOnScreen(ground.WorldTransformation.Up) && !d.hasMonster() && x)
                 {
                     //Create mat for blue cylinder
                     Material mat = new Material();

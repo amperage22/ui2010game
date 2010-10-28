@@ -243,12 +243,12 @@ namespace ARRG_Game
       groundNode.Material = groundMaterial;
 
       groundMarkerNode.AddChild(groundNode);
+
+      p = new Player(scene, 2, groundMarkerNode);
     }
 
     private void CreateObjects()
     {
-        p = new Player(scene, 2);
-
       //TODO: replace 54 with a constant to show what the ids are of.
       int[] ground_markers = new int[54];
       for (int i = 0; i < ground_markers.Length; i++)
