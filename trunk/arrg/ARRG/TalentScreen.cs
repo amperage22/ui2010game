@@ -24,16 +24,20 @@ namespace ARRG_Game
     /// <summary>
     /// This tutorial introduce GoblinXNA's 2D GUI facilities.
     /// </summary>
-    public class TalentScreen
+    class TalentScreen
     {
+        enum TalentState { READY, DISPLAYING, FINISHED };
+
         private G2DPanel backgroundFrame, mainFrame, talentFrame;
         private G2DButton[] tab = new G2DButton[3];
         private G2DButton[,] talent = new G2DButton[3, 3];
         private int activeTab;
+        private G2DButton submit = new G2DButton();
 
         Scene scene;
         ContentManager content;
         SpriteFont font;
+        TalentState state;
 
         private const String tree1 = "Beasts";
         private const String tree2 = "Dragonkin";
@@ -53,12 +57,30 @@ namespace ARRG_Game
             font = content.Load<SpriteFont>("UIFont");
             
             CreateFrame();
+            state = TalentState.READY;
 
             /*Set up any specific stuff with the talent screen here,
              * put stuff in the frame,
              * etc...
             blah... blah.. blah.
             */
+        }
+
+        public void Display()
+        {
+            if (state != TalentState.DISPLAYING)
+            {
+                scene.UIRenderer.Add2DComponent(backgroundFrame);
+                state = TalentState.DISPLAYING;
+            }
+        }
+
+        public void Kill()
+        {
+            if (state == TalentState.DISPLAYING || state == TalentState.FINISHED) {
+                scene.UIRenderer.Remove2DComponent(backgroundFrame);
+                state = TalentState.READY;
+            }
         }
 
         private void CreateFrame()
@@ -87,10 +109,18 @@ namespace ARRG_Game
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
                 mainFrame.AddChild(tab[i]);
             }
+
+            submit = new G2DButton("submit");
+            submit.TextFont = font;
+            submit.Bounds = new Rectangle(100 * 4, 0, 100, 48);
+            submit.BackgroundColor = (Color.LightGray);
+            submit.TextColor = (Color.Black);
+            submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
+            mainFrame.AddChild(submit);
+
             ChangeToTree(activeTab);
 
             backgroundFrame.AddChild(mainFrame);
-            scene.UIRenderer.Add2DComponent(backgroundFrame);
         }
 
         //Handles the talentscreen tab logic when a tab is clicked
@@ -114,6 +144,21 @@ namespace ARRG_Game
                 //Get outta here
                 return;
             }
+        }
+
+        private void HandleSubmit(object source)
+        {
+            state = TalentState.FINISHED;
+        }
+
+        public bool wasSubmitted() {
+            return state == TalentState.FINISHED;
+        }
+
+        public void getTalentInfo() {
+            if (state != TalentState.FINISHED)
+                throw new Exception("The selection must be submitted before you can get the info!");
+            //TODO: return TALENT INFO
         }
 
         private void ChangeToTree(int tree)

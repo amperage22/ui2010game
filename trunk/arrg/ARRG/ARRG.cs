@@ -144,7 +144,6 @@ namespace ARRG_Game
 
       // Show Frames-Per-Second on the screen for debugging
       State.ShowFPS = true;
-      menuState = MenuStates.TITLE;
 
       //brb bigRed = new brb(scene, gameState);
       //Player player = new Player();
@@ -338,14 +337,19 @@ namespace ARRG_Game
     /// </summary>
     private void UpdateTalent()
     {
-
+        if (talentScreen.wasSubmitted())
+        {
+            menuState = MenuStates.PRE_GAME;
+            talentScreen.getTalentInfo();
+            talentScreen.Kill();
+        }
     }
     /// <summary>
     /// Update method for Pre-game state
     /// </summary>
     private void UpdatePreGame()
     {
-
+        
     }
     /// <summary>
     /// Update method for Market state
@@ -375,13 +379,15 @@ namespace ARRG_Game
     /// </summary>
     private void DrawTitle()
     {
-
+        talentScreen.Display();
+        menuState = MenuStates.TALENT;
     }
     /// <summary>
     /// Draw method for Talent state
     /// </summary>
     private void DrawTalent()
     {
+        
 
     }
     /// <summary>
