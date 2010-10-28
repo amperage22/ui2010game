@@ -34,9 +34,9 @@ namespace ARRG_Game
         ContentManager content;
         SpriteFont font;
 
-        private const String tree1 = "Type I";
-        private const String tree2 = "Type II";
-        private const String tree3 = "Type III";
+        private const String tree1 = "Beasts";
+        private const String tree2 = "Dragonkin";
+        private const String tree3 = "Robots";
 
         /*
          * Makes the talent screen as per specifications.
@@ -123,8 +123,8 @@ namespace ARRG_Game
             if (talentFrame == null)
                 talentFrame = new G2DPanel();
 
-            for (int i = 0; i < 4; i++) //rows
-                for (int j = 0; j < 3; j++) //cols
+            for (int i = 0; i < 3; i++) //rows of tree
+                for (int j = 0; j < 3; j++) //cols of tree
                 {
 
                 }
