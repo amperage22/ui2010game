@@ -6,7 +6,7 @@ using System.Text;
 namespace ARRG_Game
 {
     
-    public class Card
+    class Card
     {
         private int marker;
 
