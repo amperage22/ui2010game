@@ -73,6 +73,7 @@ namespace ARRG_Game
     Die[] dice;
     private const int dice_count = 6;
     healthBar hb, hb2;
+    TalentScreen talentScreen;
 
     //Set up the states
     MenuStates menuState = MenuStates.TITLE;
@@ -112,6 +113,7 @@ namespace ARRG_Game
       #if !USE_ARTAG
         State.ThreadOption = (ushort)ThreadOptions.MarkerTracking;
       #endif
+        talentScreen = new TalentScreen(scene, Content.Load<SpriteFont>("UIFont"), 0);
 
       // Set up optical marker tracking
       // Note that we don't create our own camera when we use optical marker
