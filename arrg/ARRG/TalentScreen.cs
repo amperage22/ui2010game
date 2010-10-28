@@ -29,7 +29,10 @@ namespace ARRG_Game
         private G2DPanel backgroundFrame, mainFrame, talentFrame;
         private G2DButton[] tab = new G2DButton[3];
         private int activeTab;
+
+        Scene scene;
         ContentManager content;
+        SpriteFont font;
 
         private const String tree1 = "Type I";
         private const String tree2 = "Type II";
@@ -41,10 +44,14 @@ namespace ARRG_Game
          * f The font to be used with within the talent screen being created
          * activeTab The initial tree to display and tab to select
          */
-        public TalentScreen(Scene s, SpriteFont f, int activeTab)
+        public TalentScreen(Scene scene, ContentManager content, int activeTab)
         {
+            this.scene = scene;
+            this.content = content;
             this.activeTab = activeTab;
-            CreateFrame(s, f);
+            font = content.Load<SpriteFont>("UIFont");
+            
+            CreateFrame();
 
             /*Set up any specific stuff with the talent screen here,
              * put stuff in the frame,
@@ -52,21 +59,15 @@ namespace ARRG_Game
             blah... blah.. blah.
             */
         }
-        public TalentScreen(Scene s, SpriteFont f, int activeTab, ContentManager content)
-        {
-            this.activeTab = activeTab;
-            CreateFrame(s, f);
-            this.content = content;
-        }
 
-        private void CreateFrame(Scene s, SpriteFont f)
+        private void CreateFrame()
         {
             backgroundFrame = new G2DPanel();
             backgroundFrame.Bounds = new Rectangle(240, 90, 320, 420);
             backgroundFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             backgroundFrame.Transparency = 1.0f;
             backgroundFrame.BackgroundColor = Color.Black;
-            backgroundFrame.Texture = content.Load<Texture2D>("talentscreen_bg.jpg");
+            backgroundFrame.Texture = content.Load<Texture2D>("Textures\\talentscreen_bg");
 
             // Create the main panel which holds all other GUI components
             mainFrame = new G2DPanel();
@@ -78,7 +79,7 @@ namespace ARRG_Game
             for (int i = 0; i < 3; i++)
             {
                 tab[i] = new G2DButton(i == 0 ? tree1 : i == 1 ? tree2 : tree3);
-                tab[i].TextFont = f;
+                tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
                 tab[i].BackgroundColor = (activeTab == i ? Color.SeaGreen : Color.LightGray);
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
@@ -87,7 +88,7 @@ namespace ARRG_Game
             ChangeToTree(activeTab);
 
             backgroundFrame.AddChild(mainFrame);
-            s.UIRenderer.Add2DComponent(backgroundFrame);
+            scene.UIRenderer.Add2DComponent(backgroundFrame);
         }
 
         //Handles the talentscreen tab logic when a tab is clicked
