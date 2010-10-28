@@ -28,17 +28,18 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    class Monster
+    public class Monster
     {
-        private TransformNode transNode;
-        private int health, power;
-        private List<int> dmgMods;
-        private List<int> healthMods;
-        private List<int> dmgTaken;
-        private List<int> dmgPrevented;
-        private string name;
+        protected TransformNode transNode;
+        protected int health, power;
+        protected double hit, dodge, crit;
+        protected List<int> dmgMods;
+        protected List<int> healthMods;
+        protected List<int> dmgTaken;
+        protected List<int> dmgPrevented;
+        protected string name;
 
-        public Monster(string name, int health, int power)
+        public Monster(string name,String model, int health, int power)
         {
             this.name = name;
             this.health = health;
@@ -49,6 +50,7 @@ namespace ARRG_Game
             dmgTaken = new List<int>();
             dmgPrevented = new List<int>();
         }
+        public Monster() { }
 
         public int Health
         {
@@ -103,18 +105,28 @@ namespace ARRG_Game
 
     class MonsterBuilder
     {
-        private String name;
+        CreatureType type;
+        protected String name;
+        protected String model;
         int health;
         int power;
-        public MonsterBuilder(String name, int health, int power)
+        public MonsterBuilder(CreatureType type,String name,String model, int health, int power)
         {
             this.name = name;
             this.health = health; 
             this.power = power;
+            this.type = type;
+            this.model = model;
         }
-        public Monster createMonster(String name, int health, int power)
+        public Monster createMonster()
         {
-            return new Monster(name, health, power);
+            switch (type)
+            {
+                case CreatureType.BEATS: break;
+                case CreatureType.DRAGONKIN: break;
+                case CreatureType.ROBOT: break;
+            }
+            return new Monster(name,model, health, power);
         }
     }
 

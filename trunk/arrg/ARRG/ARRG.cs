@@ -62,6 +62,8 @@ namespace ARRG_Game
 {
   enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
   enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+  enum CreatureType { NONE, BEATS, DRAGONKIN, ROBOT };
+  enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
 
   public class ARRG : Microsoft.Xna.Framework.Game
   {
@@ -327,42 +329,42 @@ namespace ARRG_Game
     /// <summary>
     /// Update method for Title state
     /// </summary>
-    protected void UpdateTitle()
+    private void UpdateTitle()
     {
 
     }
     /// <summary>
     /// Update method for Talent state
     /// </summary>
-    protected void UpdateTalent()
+    private void UpdateTalent()
     {
 
     }
     /// <summary>
     /// Update method for Pre-game state
     /// </summary>
-    protected void UpdatePreGame()
+    private void UpdatePreGame()
     {
 
     }
     /// <summary>
     /// Update method for Market state
     /// </summary>
-    protected void UpdateMarket()
+    private void UpdateMarket()
     {
 
     }
     /// <summary>
     /// Update method for Inventory state
     /// </summary>
-    protected void UpdateInventory()
+    private void UpdateInventory()
     {
 
     }
     /// <summary>
     /// Update method for InGame state
     /// </summary>
-    protected void UpdateInGame()
+    private void UpdateInGame()
     {
 
     }
@@ -371,42 +373,42 @@ namespace ARRG_Game
     /// <summary>
     /// Draw method for Title state
     /// </summary>
-    protected void DrawTitle()
+    private void DrawTitle()
     {
 
     }
     /// <summary>
     /// Draw method for Talent state
     /// </summary>
-    protected void DrawTalent()
+    private void DrawTalent()
     {
 
     }
     /// <summary>
     /// Draw method for Pre-game state
     /// </summary>
-    protected void DrawPreGame()
+    private void DrawPreGame()
     {
 
     }
     /// <summary>
     /// Draw method for Market state
     /// </summary>
-    protected void DrawMarket()
+    private void DrawMarket()
     {
 
     }
     /// <summary>
     /// Draw method for Inventory state
     /// </summary>
-    protected void DrawInventory()
+    private void DrawInventory()
     {
 
     }
     /// <summary>
     /// Draw method for InGame state
     /// </summary>
-    protected void DrawInGame()
+    private void DrawInGame()
     {
 
     }
