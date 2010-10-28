@@ -28,6 +28,7 @@ namespace ARRG_Game
     {
         private G2DPanel backgroundFrame, mainFrame, talentFrame;
         private G2DButton[] tab = new G2DButton[3];
+        private G2DButton[,] talent = new G2DButton[3, 3];
         private int activeTab;
 
         Scene scene;
@@ -121,13 +122,25 @@ namespace ARRG_Game
                 throw new Exception("Tree must be 0, 1, or 2");
 
             if (talentFrame == null)
+            {
                 talentFrame = new G2DPanel();
+                talentFrame.Bounds = new Rectangle(0, 60, 300, 300);
+                talentFrame.Border = GoblinEnums.BorderFactory.EtchedBorder;
+                talentFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
+                
+                for (int i = 0; i < 3; i++) //rows of tree
+                    for (int j = 0; j < 3; j++) //cols of tree
+                    {
+                        talent[i, j] = new G2DButton(String.Format("{0}, {1}", i, j));
+                        talent[i, j].Bounds = new Rectangle((j * 102) + 16, (i * 102) + 16, 64, 64);
+                        talent[i, j].TextFont = font;
+                        talentFrame.AddChild(talent[i, j]);
+                    }
 
-            for (int i = 0; i < 3; i++) //rows of tree
-                for (int j = 0; j < 3; j++) //cols of tree
-                {
+                mainFrame.AddChild(talentFrame);
+            }
 
-                }
+            //Swap the new talent tree in
         }
     }
 }
