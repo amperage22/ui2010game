@@ -28,7 +28,7 @@ using GoblinXNA.UI.UI2D;
 
 namespace ARRG_Game
 {
-  class brb
+  public class brb
   {
     Scene scene;
     InGameStates curState;

@@ -27,7 +27,7 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    class Player
+    public class Player
     {
         private static int MAX_NUM_DIE = 3;
         private static int MAX_CARDS_IN_DECK = 20;      //SUbject to change

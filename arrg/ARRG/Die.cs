@@ -27,7 +27,7 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    class Die
+    public class Die
     {
         private const int firstDieID = 128;
 

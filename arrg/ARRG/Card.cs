@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ARRG_Game
 {
-    public enum CardType { NONE,STAT_MOD, DMG_DONE, DMG_PREVENT};
-    class Card
+    
+    public class Card
     {
         private int marker;
 
