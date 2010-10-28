@@ -67,12 +67,12 @@ namespace ARRG_Game
             backgroundFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             backgroundFrame.Transparency = 1.0f;
             backgroundFrame.BackgroundColor = Color.Black;
-            backgroundFrame.Texture = content.Load<Texture2D>("Textures\\talentscreen_bg");
+            backgroundFrame.Texture = content.Load<Texture2D>("Textures/talentscreen_bg");
 
             // Create the main panel which holds all other GUI components
             mainFrame = new G2DPanel();
             mainFrame.Bounds = new Rectangle(10, 10, 300, 400);
-            mainFrame.Border = GoblinEnums.BorderFactory.LineBorder;
+            mainFrame.Border = GoblinEnums.BorderFactory.EmptyBorder;
             mainFrame.Transparency = 0.85f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
             
             //Set up the 3 tabs
@@ -81,7 +81,8 @@ namespace ARRG_Game
                 tab[i] = new G2DButton(i == 0 ? tree1 : i == 1 ? tree2 : tree3);
                 tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
-                tab[i].BackgroundColor = (activeTab == i ? Color.SeaGreen : Color.LightGray);
+                tab[i].BackgroundColor = (activeTab == i ? new Color(80, 80, 80) : Color.LightGray);
+                tab[i].TextColor = (activeTab == i ? Color.White : Color.Black);
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
                 mainFrame.AddChild(tab[i]);
             }
@@ -103,7 +104,9 @@ namespace ARRG_Game
 
                 //Keep the tab/screen states consistent for the user
                 tab[activeTab].BackgroundColor = Color.LightGray;
-                tab[i].BackgroundColor = Color.SeaGreen;
+                tab[activeTab].TextColor = Color.Black;
+                tab[i].BackgroundColor = new Color(80, 80, 80);
+                tab[i].TextColor = Color.White;
                 activeTab = i;
                 ChangeToTree(i);
 
@@ -119,6 +122,12 @@ namespace ARRG_Game
 
             if (talentFrame == null)
                 talentFrame = new G2DPanel();
+
+            for (int i = 0; i < 4; i++) //rows
+                for (int j = 0; j < 3; j++) //cols
+                {
+
+                }
         }
     }
 }
