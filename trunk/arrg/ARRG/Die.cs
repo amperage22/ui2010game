@@ -33,10 +33,12 @@ namespace ARRG_Game
 
         private MarkerNode[] sides;
         private Monster currentMonster;
+        private int dieNum;
 
         public Die(Scene s, int dieNum)
         {
             //Set up the 6 sides of this die
+            this.dieNum = dieNum;
             sides = new MarkerNode[6];
             int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
@@ -66,11 +68,16 @@ namespace ARRG_Game
             //TODO!
         }
 
-        public bool isOnScreen()
+        public bool isOnScreen(Vector3 upVector)
         {
             foreach (MarkerNode side in sides)
             {
-                if (side.MarkerFound) return true;
+                if (side.MarkerFound)
+                {
+                    Vector3 result, sideUp = side.WorldTransformation.Up;
+                    Vector3.Cross(ref upVector, ref sideUp, out result);
+                    Console.WriteLine(String.Format("{0} - {1}", dieNum, result.ToString()));
+                }
             }
             return false;
         }
