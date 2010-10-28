@@ -113,7 +113,7 @@ namespace ARRG_Game
       #if !USE_ARTAG
         State.ThreadOption = (ushort)ThreadOptions.MarkerTracking;
       #endif
-        talentScreen = new TalentScreen(scene, Content.Load<SpriteFont>("UIFont"), 0,Content);
+        talentScreen = new TalentScreen(scene, Content, 0);
 
       // Set up optical marker tracking
       // Note that we don't create our own camera when we use optical marker
