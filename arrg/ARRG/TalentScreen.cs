@@ -29,6 +29,7 @@ namespace ARRG_Game
         private G2DPanel backgroundFrame, mainFrame, talentFrame;
         private G2DButton[] tab = new G2DButton[3];
         private int activeTab;
+        ContentManager content;
 
         private const String tree1 = "Type I";
         private const String tree2 = "Type II";
@@ -51,6 +52,12 @@ namespace ARRG_Game
             blah... blah.. blah.
             */
         }
+        public TalentScreen(Scene s, SpriteFont f, int activeTab, ContentManager content)
+        {
+            this.activeTab = activeTab;
+            CreateFrame(s, f);
+            this.content = content;
+        }
 
         private void CreateFrame(Scene s, SpriteFont f)
         {
@@ -58,7 +65,8 @@ namespace ARRG_Game
             backgroundFrame.Bounds = new Rectangle(240, 90, 320, 420);
             backgroundFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             backgroundFrame.Transparency = 1.0f;
-            backgroundFrame.BackgroundColor = Color.Black;            
+            backgroundFrame.BackgroundColor = Color.Black;
+            backgroundFrame.Texture = content.Load<Texture2D>("talentscreen_bg.jpg");
 
             // Create the main panel which holds all other GUI components
             mainFrame = new G2DPanel();
