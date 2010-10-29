@@ -74,9 +74,12 @@ namespace ARRG_Game
             {
                 if (side.MarkerFound)
                 {
-                    Vector3 result, sideUp = side.WorldTransformation.Up;
-                    Vector3.Cross(ref upVector, ref sideUp, out result);
-                    Console.WriteLine(String.Format("{0} - {1}", dieNum, result.ToString()));
+                    Vector3 result, sideUp = side.WorldTransformation.Forward;
+
+                    double d = Math.Acos(Vector3.Dot(sideUp, upVector));
+                    d = MathHelper.ToDegrees((float)d);
+                    if (d <= 92 && d >= 88)
+                        return true;
                 }
             }
             return false;
