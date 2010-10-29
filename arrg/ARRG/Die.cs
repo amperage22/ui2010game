@@ -33,12 +33,12 @@ namespace ARRG_Game
 
         private MarkerNode[] sides;
         private Monster currentMonster;
-        private int dieNum;
+        private MarkerNode ground;
+        private MarkerNode upMarker;
 
-        public Die(Scene s, int dieNum)
+        public Die(ref Scene s, int dieNum,ref MarkerNode ground)
         {
             //Set up the 6 sides of this die
-            this.dieNum = dieNum;
             sides = new MarkerNode[6];
             int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
@@ -49,28 +49,13 @@ namespace ARRG_Game
                 s.RootNode.AddChild(sides[i]);
             }
 
-            currentMonster = null;
+            this.ground = ground;
         }
 
-        public void assignMonster(TransformNode t)
+        public bool isTopMarker()
         {
-            //if (m == null)
-              //  throw new Exception("Monster cannot be null");
-            //currentMonster = m;
-            sides[0].AddChild(t);
-        }
-
-        public void removeMonster()
-        {
-            currentMonster = null;
-
-            //And clear the transnode for the side markers
-            //TODO!
-        }
-
-        public bool isOnScreen(Vector3 upVector)
-        {
-            if (upVector.Equals(Vector3.Zero))
+            Vector3 groundRightVector = ground.WorldTransformation.Right;
+            if (groundRightVector.Equals(Vector3.Zero))
                 return false;
             foreach (MarkerNode side in sides)
             {
@@ -78,15 +63,36 @@ namespace ARRG_Game
                 {
                     Vector3 sideUp = side.WorldTransformation.Forward;
 
-                    double d = Math.Acos(Vector3.Dot(sideUp, upVector));
+                    double d = Math.Acos(Vector3.Dot(sideUp, groundRightVector));
                     d = MathHelper.ToDegrees((float)d);
                     if (d <= 92 && d >= 88)
+                    {
+                        if (upMarker!= null && !upMarker.Equals(side))
+                        {
+                            if(currentMonster!=null)
+                                upMarker.RemoveChild(currentMonster.TransNode);
+                            currentMonster = null;
+                        }
+                        upMarker = side;
                         return true;
+                    }
                 }
+            }
+            if (upMarker != null && currentMonster != null)
+            {
+                upMarker.RemoveChild(currentMonster.TransNode);
+                currentMonster = null;
             }
             return false;
         }
-
+        public void addMonster(Monster m)
+        {
+            if (upMarker != null)
+            {
+                upMarker.AddChild(m.TransNode);
+                currentMonster = m;
+            }
+        }
         public bool hasMonster() {
             return currentMonster != null;
         }
