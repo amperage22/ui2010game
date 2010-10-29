@@ -52,11 +52,20 @@ namespace ARRG_Game
             this.ground = ground;
         }
 
-        public bool isTopMarker()
+        private bool markerSwitch(MarkerNode side)
+        {
+            if (side.Equals(upMarker))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void setTopMarker()
         {
             Vector3 groundRightVector = ground.WorldTransformation.Right;
             if (groundRightVector.Equals(Vector3.Zero))
-                return false;
+                return;
             foreach (MarkerNode side in sides)
             {
                 if (side.MarkerFound)
@@ -67,23 +76,18 @@ namespace ARRG_Game
                     d = MathHelper.ToDegrees((float)d);
                     if (d <= 92 && d >= 88)
                     {
-                        if (upMarker!= null && !upMarker.Equals(side))
+                        if (!markerSwitch(side))
                         {
-                            if(currentMonster!=null)
+                            if(currentMonster != null)
                                 upMarker.RemoveChild(currentMonster.TransNode);
-                            currentMonster = null;
+
+                            upMarker = side;
+                            addMonster(new Monster("Test", "test", 5, 5));
+                            return;
                         }
-                        upMarker = side;
-                        return true;
                     }
                 }
             }
-            if (upMarker != null && currentMonster != null)
-            {
-                upMarker.RemoveChild(currentMonster.TransNode);
-                currentMonster = null;
-            }
-            return false;
         }
         public void addMonster(Monster m)
         {
