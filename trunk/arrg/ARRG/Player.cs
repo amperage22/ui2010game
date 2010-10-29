@@ -125,7 +125,7 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (ground.MarkerFound && d.isOnScreen(ground.WorldTransformation.Right) && !d.hasMonster() && x)
+                if (d.isOnScreen(ground.WorldTransformation.Right) && !d.hasMonster() && x)
                 {
                     //Create mat for blue cylinder
                     Material mat = new Material();
@@ -144,8 +144,9 @@ namespace ARRG_Game
 
                     d.assignMonster(cylinderTransNode);
 
-                    //x = false;
+                    x = false;
                 }
+
             }
         }
 

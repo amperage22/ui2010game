@@ -70,11 +70,13 @@ namespace ARRG_Game
 
         public bool isOnScreen(Vector3 upVector)
         {
+            if (upVector.Equals(Vector3.Zero))
+                return false;
             foreach (MarkerNode side in sides)
             {
                 if (side.MarkerFound)
                 {
-                    Vector3 result, sideUp = side.WorldTransformation.Forward;
+                    Vector3 sideUp = side.WorldTransformation.Forward;
 
                     double d = Math.Acos(Vector3.Dot(sideUp, upVector));
                     d = MathHelper.ToDegrees((float)d);
