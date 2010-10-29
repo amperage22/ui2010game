@@ -49,6 +49,23 @@ namespace ARRG_Game
             healthMods = new List<int>();
             dmgTaken = new List<int>();
             dmgPrevented = new List<int>();
+
+            //********Test code****
+            //Create mat for blue cylinder
+            Material mat = new Material();
+            mat.Diffuse = new Vector4(0, 1, 0, 1);
+            mat.Specular = Color.White.ToVector4();
+            mat.SpecularPower = 10;
+            mat.Emissive = Color.Blue.ToVector4();
+
+            //Create the blue cylinder for the die marker
+            GeometryNode cylinderNode = new GeometryNode("Cylinder");
+            cylinderNode.Model = new Cylinder(10, 10, 10, 10);
+            cylinderNode.Material = mat;
+            transNode = new TransformNode();
+            transNode.AddChild(cylinderNode);
+            transNode.Translation = new Vector3(0, 0, 25);
+            //********End Test code****
         }
         public Monster() { }
 
@@ -100,6 +117,12 @@ namespace ARRG_Game
             dmgMods.Clear();
             healthMods.Clear();
             dmgPrevented.Clear();
+        }
+
+        public TransformNode TransNode
+        {
+            get { return transNode; }
+            set { transNode = value;}
         }
     }
 

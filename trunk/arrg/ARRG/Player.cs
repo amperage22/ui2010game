@@ -70,7 +70,7 @@ namespace ARRG_Game
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
             {
-                die[i] = new Die(s, i + (playerNum - 1) * MAX_NUM_DIE);
+                die[i] = new Die(ref s, i + (playerNum - 1) * MAX_NUM_DIE,ref ground);
             }
         }
 
@@ -125,26 +125,27 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (d.isOnScreen(ground.WorldTransformation.Right) && !d.hasMonster() && x)
+                if (d.isTopMarker())
                 {
-                    //Create mat for blue cylinder
-                    Material mat = new Material();
-                    mat.Diffuse = new Vector4(0, 1, 0, 1);
-                    mat.Specular = Color.White.ToVector4();
-                    mat.SpecularPower = 10;
-                    mat.Emissive = Color.Blue.ToVector4();
+                    ////Create mat for blue cylinder
+                    //Material mat = new Material();
+                    //mat.Diffuse = new Vector4(0, 1, 0, 1);
+                    //mat.Specular = Color.White.ToVector4();
+                    //mat.SpecularPower = 10;
+                    //mat.Emissive = Color.Blue.ToVector4();
 
-                    //Create the blue cylinder for the die marker
-                    GeometryNode cylinderNode = new GeometryNode("Cylinder");
-                    cylinderNode.Model = new Cylinder(10, 10, 10, 10);
-                    cylinderNode.Material = mat;
-                    TransformNode cylinderTransNode = new TransformNode();
-                    cylinderTransNode.AddChild(cylinderNode);
-                    cylinderTransNode.Translation = new Vector3(0, 0, 25);
+                    ////Create the blue cylinder for the die marker
+                    //GeometryNode cylinderNode = new GeometryNode("Cylinder");
+                    //cylinderNode.Model = new Cylinder(10, 10, 10, 10);
+                    //cylinderNode.Material = mat;
+                    //TransformNode cylinderTransNode = new TransformNode();
+                    //cylinderTransNode.AddChild(cylinderNode);
+                    //cylinderTransNode.Translation = new Vector3(0, 0, 25);
 
-                    d.assignMonster(cylinderTransNode);
+                    //d.assignMonster(cylinderTransNode);
 
-                    x = false;
+                    //x = false;
+                    d.addMonster(new Monster("Test", "test", 5, 5));
                 }
 
             }

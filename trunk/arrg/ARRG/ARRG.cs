@@ -255,21 +255,21 @@ namespace ARRG_Game
         ground_markers[i] = i;
       groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
-      // Create a material to apply to the cylinder model
-      Material mat1 = new Material();
-      mat1.Diffuse = new Vector4(0, 1, 0, 1);
-      mat1.Specular = Color.White.ToVector4();
-      mat1.SpecularPower = 10;
+      //// Create a material to apply to the cylinder model
+      //Material mat1 = new Material();
+      //mat1.Diffuse = new Vector4(0, 1, 0, 1);
+      //mat1.Specular = Color.White.ToVector4();
+      //mat1.SpecularPower = 10;
 
-      //Create the cylinder
-      GeometryNode cylinderNode = new GeometryNode("Cylinder");
-      cylinderNode.Model = new Cylinder(10, 10, 20, 20);
-      cylinderNode.Material = mat1;
-      TransformNode cylinderTransNode = new TransformNode();
-      cylinderTransNode.AddChild(cylinderNode);
-      cylinderTransNode.Translation = new Vector3(0, 0, 15);
+      ////Create the cylinder
+      //GeometryNode cylinderNode = new GeometryNode("Cylinder");
+      //cylinderNode.Model = new Cylinder(10, 10, 20, 20);
+      //cylinderNode.Material = mat1;
+      //TransformNode cylinderTransNode = new TransformNode();
+      //cylinderTransNode.AddChild(cylinderNode);
+      //cylinderTransNode.Translation = new Vector3(0, 0, 15);
 
-      groundMarkerNode.AddChild(cylinderTransNode);
+      //groundMarkerNode.AddChild(cylinderTransNode);
 
       scene.RootNode.AddChild(groundMarkerNode);
     }
