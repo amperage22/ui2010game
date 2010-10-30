@@ -30,6 +30,8 @@ namespace ARRG_Game
     public class Die
     {
         private const int firstDieID = 128;
+        private const double RIGHT_ANGLE = 90;
+        private const double FLOOR_TOLERANCE = 10;
 
         private MarkerNode[] sides;
         private Monster currentMonster;
@@ -61,11 +63,11 @@ namespace ARRG_Game
             return false;
         }
 
-        public void setTopMarker()
+        public bool setTopMarker()
         {
             Vector3 groundRightVector = ground.WorldTransformation.Right;
             if (groundRightVector.Equals(Vector3.Zero))
-                return;
+                return false;
             foreach (MarkerNode side in sides)
             {
                 if (side.MarkerFound)
@@ -74,20 +76,25 @@ namespace ARRG_Game
 
                     double d = Math.Acos(Vector3.Dot(sideUp, groundRightVector));
                     d = MathHelper.ToDegrees((float)d);
-                    if (d <= 92 && d >= 88)
+                    if (d <= RIGHT_ANGLE + FLOOR_TOLERANCE && d >= RIGHT_ANGLE - FLOOR_TOLERANCE)
                     {
                         if (!markerSwitch(side))
                         {
-                            if(currentMonster != null)
+                            if (currentMonster != null)
                                 upMarker.RemoveChild(currentMonster.TransNode);
 
                             upMarker = side;
                             addMonster(new Monster("Test", "test", 5, 5));
-                            return;
                         }
+                    }
+                    else
+                    {
+                        if (currentMonster != null)
+                            upMarker.RemoveChild(currentMonster.TransNode);
                     }
                 }
             }
+            return false;
         }
         public void addMonster(Monster m)
         {

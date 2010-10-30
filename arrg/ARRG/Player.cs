@@ -125,7 +125,9 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                d.setTopMarker();
+                if (d.setTopMarker()) { }
+                    //d.addMonster(new Monster("Test", "test", 5, 5));
+
                     ////Create mat for blue cylinder
                     //Material mat = new Material();
                     //mat.Diffuse = new Vector4(0, 1, 0, 1);
