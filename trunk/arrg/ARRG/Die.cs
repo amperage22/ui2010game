@@ -30,7 +30,7 @@ namespace ARRG_Game
     public class Die
     {
         private const int firstDieID = 128;
-        private const double RIGHT_ANGLE = 90;
+        private const double PARALLEL_ANGLE = 0;
         private const double FLOOR_TOLERANCE = 10;
 
         private MarkerNode[] sides;
@@ -65,8 +65,8 @@ namespace ARRG_Game
 
         public bool setTopMarker()
         {
-            Vector3 groundRightVector = ground.WorldTransformation.Right;
-            if (groundRightVector.Equals(Vector3.Zero))
+            Vector3 ForwardRightVector = ground.WorldTransformation.Forward;
+            if (ForwardRightVector.Equals(Vector3.Zero))
                 return false;
             foreach (MarkerNode side in sides)
             {
@@ -74,9 +74,9 @@ namespace ARRG_Game
                 {
                     Vector3 sideUp = side.WorldTransformation.Forward;
 
-                    double d = Math.Acos(Vector3.Dot(sideUp, groundRightVector));
+                    double d = Math.Acos(Vector3.Dot(sideUp, ForwardRightVector));
                     d = MathHelper.ToDegrees((float)d);
-                    if (d <= RIGHT_ANGLE + FLOOR_TOLERANCE && d >= RIGHT_ANGLE - FLOOR_TOLERANCE)
+                    if (d <= PARALLEL_ANGLE + FLOOR_TOLERANCE && d >= PARALLEL_ANGLE - FLOOR_TOLERANCE)
                     {
                         if (!markerSwitch(side))
                         {
@@ -85,12 +85,17 @@ namespace ARRG_Game
 
                             upMarker = side;
                             addMonster(new Monster("Test", "test", 5, 5));
+                            return true;
                         }
                     }
-                    else
+                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE+10) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE+10))
                     {
-                        if (currentMonster != null)
+                        if(side.Equals(upMarker))
+                        {
                             upMarker.RemoveChild(currentMonster.TransNode);
+                            currentMonster = null;
+                            upMarker = null;
+                        }
                     }
                 }
             }
