@@ -50,6 +50,8 @@ namespace ARRG_Game
         private List<Monster> monsters;     //List for inventory purposes
         private List<Card> availableCards;  //List for inventory purposes
 
+        private Talent[] activeTalents;
+
         /**
          * Sets up the player object.
          * s The scene object...

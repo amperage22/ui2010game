@@ -66,6 +66,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GoblinXNAv3.4\bin\GoblinXNA.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>
       <SpecificVersion>True</SpecificVersion>
@@ -80,6 +82,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml">
       <Private>False</Private>
@@ -97,6 +100,7 @@
     <Compile Include="Beasts.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="brb.cs" />
+    <Compile Include="DatabaseSetup.cs" />
     <Compile Include="Die.cs" />
     <Compile Include="Dragonkin.cs" />
     <Compile Include="healthBar.cs" />
@@ -106,7 +110,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="ARRG.cs" />
     <Compile Include="Robots.cs" />
+    <Compile Include="Talent.cs" />
     <Compile Include="TalentScreen.cs" />
+    <Compile Include="TalentTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\GoblinXNAv3.4\bin\alvar130.dll">
@@ -177,6 +183,7 @@
       <Link>libguide40.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="app.config" />
     <None Include="Content\dice_markers\die0side0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

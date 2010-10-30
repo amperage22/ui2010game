@@ -145,7 +145,7 @@ namespace ARRG_Game
         {
             switch (type)
             {
-                case CreatureType.BEATS: break;
+                case CreatureType.BEASTS: break;
                 case CreatureType.DRAGONKIN: break;
                 case CreatureType.ROBOT: break;
             }
