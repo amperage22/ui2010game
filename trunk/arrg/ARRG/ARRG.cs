@@ -62,8 +62,9 @@ namespace ARRG_Game
 {
   enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
   enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-  enum CreatureType { NONE, BEATS, DRAGONKIN, ROBOT };
+  enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOT, ALL };
   enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
+  enum Modifier { NONE, DAMAGE, CRIT, HIT, DODGE, HP, ADDITIONAL_ATTACK };
 
   public class ARRG : Microsoft.Xna.Framework.Game
   {
@@ -244,7 +245,7 @@ namespace ARRG_Game
 
 	  groundMarkerNode.AddChild(groundNode);
 
-	  p = new Player(scene, 2, groundMarkerNode);
+	  p = new Player(scene, 1, groundMarkerNode);
 	}
 
 	private void CreateObjects()
@@ -338,9 +339,8 @@ namespace ARRG_Game
 	{
 		if (talentScreen.wasSubmitted())
 		{
+            talentScreen.getTalentInfo();
 			menuState = MenuStates.PRE_GAME;
-			talentScreen.getTalentInfo();
-			talentScreen.Kill();
 		}
 	}
 	/// <summary>
