@@ -18,30 +18,30 @@ namespace ARRG_Game
             switch (c)
             {
                 case CreatureType.BEASTS:
-                    row1[0] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 3, 2, "0, 0");
-                    row1[1] = new Talent(2, Modifier.HIT, CreatureType.ALL, 3, 1, "0, 1");
-                    row1[2] = new Talent(1, Modifier.HP, CreatureType.ALL, 3, 2, "0, 2");
-                    row2[0] = new Talent(1, Modifier.DODGE, CreatureType.ALL, 3, 2, "1, 0");
-                    row2[1] = new Talent(1, Modifier.HP, CreatureType.DRAGONKIN, 3, 2, "1, 2");
-                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.BEASTS, 1, 1, "3, 1");
+                    row1[0] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 3, "0, 0");
+                    row1[1] = new Talent(2, Modifier.HIT, CreatureType.ALL, 3, "0, 1");
+                    row1[2] = new Talent(1, Modifier.HP, CreatureType.ALL, 3, "0, 2");
+                    row2[0] = new Talent(1, Modifier.DODGE, CreatureType.ALL, 3, "1, 0");
+                    row2[1] = new Talent(1, Modifier.HP, CreatureType.DRAGONKIN, 3, "1, 2");
+                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.BEASTS, 1, "3, 1");
                     break;
                 case CreatureType.DRAGONKIN:
-                    row1[0] = new Talent(1, Modifier.HP, CreatureType.ALL, 3, 2, "0, 0");
+                    row1[0] = new Talent(1, Modifier.HP, CreatureType.ALL, 3, "0, 0");
                     //TODO: When defending?
-                    row1[1] = new Talent(-2, Modifier.DAMAGE, CreatureType.ALL, 3, 1, "0, 1");
-                    row1[2] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 3, 2, "0, 2");
-                    row2[0] = new Talent(2, Modifier.CRIT, CreatureType.ALL, 3, 2, "1, 0");
-                    row2[1] = new Talent(1, Modifier.DAMAGE, CreatureType.ROBOT, 3, 2, "1, 2");
-                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.DRAGONKIN, 1, 1, "3, 1");
+                    row1[1] = new Talent(-2, Modifier.DAMAGE, CreatureType.ALL, 3, "0, 1");
+                    row1[2] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 3, "0, 2");
+                    row2[0] = new Talent(2, Modifier.CRIT, CreatureType.ALL, 3, "1, 0");
+                    row2[1] = new Talent(1, Modifier.DAMAGE, CreatureType.ROBOT, 3, "1, 2");
+                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.DRAGONKIN, 1, "3, 1");
                     break;
                 case CreatureType.ROBOT:
-                    row1[0] = new Talent(2, Modifier.CRIT, CreatureType.ALL, 3, 2, "0, 0");
+                    row1[0] = new Talent(2, Modifier.CRIT, CreatureType.ALL, 3, "0, 0");
                     //TODO: When defending?
-                    row1[1] = new Talent(2, Modifier.HP, CreatureType.ALL, 3, 1, "0, 1");
-                    row1[2] = new Talent(2, Modifier.HP, CreatureType.ALL, 3, 1, "0, 2", -2, Modifier.DAMAGE);
-                    row2[0] = new Talent(2, Modifier.HIT, CreatureType.ALL, 3, 2, "1, 0");
-                    row2[1] = new Talent(1, Modifier.DAMAGE, CreatureType.BEASTS, 3, 2, "1, 2");
-                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.ROBOT, 1, 1, "3, 1");
+                    row1[1] = new Talent(2, Modifier.HP, CreatureType.ALL, 3, "0, 1");
+                    row1[2] = new Talent(2, Modifier.HP, CreatureType.ALL, 3, "0, 2", -2, Modifier.DAMAGE);
+                    row2[0] = new Talent(2, Modifier.HIT, CreatureType.ALL, 2, "1, 0");
+                    row2[1] = new Talent(1, Modifier.DAMAGE, CreatureType.BEASTS, 2, "1, 2");
+                    row3 = new Talent(2, Modifier.ADDITIONAL_ATTACK, CreatureType.ROBOT, 1, "3, 1");
                     break;
                 default:
                     throw new Exception(String.Format("Bad CreatureType passed to TalentTree constructor {0}", c));

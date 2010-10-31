@@ -100,7 +100,6 @@
     <Compile Include="Beasts.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="brb.cs" />
-    <Compile Include="DatabaseSetup.cs" />
     <Compile Include="Die.cs" />
     <Compile Include="Dragonkin.cs" />
     <Compile Include="healthBar.cs" />
@@ -183,7 +182,6 @@
       <Link>libguide40.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
     <None Include="Content\dice_markers\die0side0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

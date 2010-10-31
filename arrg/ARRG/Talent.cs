@@ -19,7 +19,7 @@ namespace ARRG_Game
          * maxPoints The maximum amount of points a player may spend on this talent
          * mult The multiplier on amount per point of this talent
          */
-        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, int mult, String description)
+        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description)
         {
             this.amount = amount;
             modifier = mod;
@@ -34,8 +34,8 @@ namespace ARRG_Game
         /**
          * If a talent has two attributes, use this constructor
          */
-        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, int mult, String description, int amount2, Modifier mod2)
-            : this(amount, mod, opponent, maxPoints, mult, description)
+        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description, int amount2, Modifier mod2)
+            : this(amount, mod, opponent, maxPoints, description)
         {
             this.amount2 = amount2;
             modifier2 = mod2;

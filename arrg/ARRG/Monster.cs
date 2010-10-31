@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
+using Model = GoblinXNA.Graphics.Model;
 using GoblinXNA;
 using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
@@ -51,20 +52,23 @@ namespace ARRG_Game
             dmgPrevented = new List<int>();
 
             //********Test code****
-            //Create mat for blue cylinder
-            Material mat = new Material();
-            mat.Diffuse = new Vector4(0, 1, 0, 1);
-            mat.Specular = Color.White.ToVector4();
-            mat.SpecularPower = 10;
-            mat.Emissive = Color.Blue.ToVector4();
+            Material robotMaterial = new Material();
+            robotMaterial.Diffuse = Color.Orange.ToVector4();
+            robotMaterial.Specular = Color.White.ToVector4();
+            robotMaterial.SpecularPower = 2;
+            robotMaterial.Emissive = Color.Black.ToVector4();
 
-            //Create the blue cylinder for the die marker
-            GeometryNode cylinderNode = new GeometryNode("Cylinder");
-            cylinderNode.Model = new Cylinder(10, 10, 10, 10);
-            cylinderNode.Material = mat;
+            ModelLoader loader = new ModelLoader();
+            Model robotModel = (Model)loader.Load("Models/", model);
+            GeometryNode robotNode = new GeometryNode("Robot");
+            robotNode.Model = robotModel;
+            robotNode.Model.UseInternalMaterials = false;
+            robotNode.Material = robotMaterial;
+            
             transNode = new TransformNode();
-            transNode.AddChild(cylinderNode);
-            transNode.Translation = new Vector3(0, 0, 25);
+            transNode.AddChild(robotNode);
+            transNode.Scale *= 0.03f;
+            transNode.Translation += new Vector3(0, 0, 25);
             //********End Test code****
         }
         public Monster() { }

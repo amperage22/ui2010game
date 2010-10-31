@@ -18,6 +18,7 @@ using GoblinXNA.Graphics.Geometry;
 using GoblinXNA.Device.Util;
 using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
+using GoblinXNA.Device.Generic;
 
 namespace ARRG_Game
 {
@@ -69,8 +70,8 @@ namespace ARRG_Game
             tooltip.TextFont = font;
             tooltip.BackgroundColor = Color.Black;
             tooltip.TextColor = Color.White;
-            tooltip.DrawBackground = true;
-            tooltip.Enabled = false;
+            tooltip.DrawBackground = false;
+            talentFrame.AddChild(tooltip);
 
             state = TalentState.READY;
         }
@@ -217,9 +218,7 @@ namespace ARRG_Game
                         talentButton[i, j] = new G2DButton(String.Format("{0}, {1}", i, j));
                         talentButton[i, j].Bounds = new Rectangle((j * 102) + 16, (i * 102) + 16, 64, 64);
                         talentButton[i, j].TextFont = font;
-                        talentButton[i, j].ActionPerformedEvent += new ActionPerformed(HandleAlloc);
-                        talentButton[i, j].MouseMovedEvent += new MouseMoved(HandleToolTip);
-                        talentButton[i, j].MouseExitedEvent += new MouseExited(clearToolTip);
+                        talentButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
                         talentFrame.AddChild(talentButton[i, j]);
                         
                         //Put a black rectangle above the button but below the label
@@ -254,54 +253,63 @@ namespace ARRG_Game
             talents[(int)Creature.ROBOTS] = new TalentTree(CreatureType.ROBOT);
         }
 
-        private void HandleAlloc(object source)
+        private void HandleAlloc(int button, Point mouse)
         {
             if (pointsRemaining == 0) return;
-            //Find out which button was clicked
-            for (int i = 0; i < 3; i++)
+            //Find the button that got hovered over, if found...
+            bool tipFound = false;
+            for (int i = 0; i < 3 && !tipFound; i++)
                 for (int j = 0; j < 3; j++)
-                    if (talentButton[i, j] == source)
-                        if (talents[activeTab].increment(i, j)) {
-                            pointsRemaining--;
-                            pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
-                            pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                {
+                    if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
+                    if (talentButton[i, j].PaintBounds.Contains(mouse))
+                    {
+                        if (button == MouseInput.LeftButton) {
+                            if (talents[activeTab].increment(i, j)) {
+                                pointsRemaining--;
+                                pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+                                pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                            }
                         }
+                        else if (button == MouseInput.RightButton)
+                        {
+                            if (talents[activeTab].decrement(i, j)) {
+                                pointsRemaining++;
+                                pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+                                pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                            }
+                        }
+                    }
+                }                        
         }
 
         private void HandleToolTip(Point mouse)
         {
-            //Find the button that got hovered over...
-            for (int i = 0; i < 3; i++)
+            //Find the button that got hovered over, if found...
+            bool tipFound = false;
+            for (int i = 0; i < 3 && !tipFound; i++)
                 for (int j = 0; j < 3; j++)
                 {
                     if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
-                    Rectangle r = getGlobalRect(talentButton[i, j]);
-                    if (talentButton[i, j].Bounds.Contains(mouse))
+                    if (talentButton[i, j].PaintBounds.Contains(mouse))
                     {
-                        tooltip.Enabled = true;
                         tooltip.Text = talents[activeTab].getDescription(i, j);
-                        tooltip.Bounds = new Rectangle(mouse.X, mouse.Y, 100, 50);
+                        tooltip.Bounds = new Rectangle(mouse.X - backgroundFrame.Bounds.X, mouse.Y - backgroundFrame.Bounds.Y - 55, 100, 25);
+                        tooltip.DrawBackground = true;
+                        tipFound = true;
+                        break;
                     }
                 }
-        }
-
-        private Rectangle getGlobalRect(G2DComponent c)
-        {
-            if (c == null)
-                throw new Exception("Null component passed");
-            Rectangle r = c.Bounds;
-            c = (G2DComponent)c.Parent;
-            while (c != null)
+            if (!tipFound)
             {
-                r.Offset(c.Bounds.X, c.Bounds.Y);
-                c = (G2DComponent)c.Parent;
+                tooltip.DrawBackground = false;
+                tooltip.Text = "";
             }
-            return r;
         }
 
-        private void clearToolTip()
+        public void update(Point mouse)
         {
-            tooltip.Enabled = false;
+            HandleToolTip(mouse);
         }
     }
 }

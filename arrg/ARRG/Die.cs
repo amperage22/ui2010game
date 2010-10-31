@@ -37,11 +37,13 @@ namespace ARRG_Game
         private Monster currentMonster;
         private MarkerNode ground;
         private MarkerNode upMarker;
+        private int dieNum;
 
-        public Die(ref Scene s, int dieNum,ref MarkerNode ground)
+        public Die(ref Scene s, int dieNum, ref MarkerNode ground)
         {
             //Set up the 6 sides of this die
             sides = new MarkerNode[6];
+            this.dieNum = dieNum;
             int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
             {
@@ -84,7 +86,10 @@ namespace ARRG_Game
                                 upMarker.RemoveChild(currentMonster.TransNode);
 
                             upMarker = side;
-                            addMonster(new Monster("Test", "test", 5, 5));
+                            if (dieNum <= 2)
+                                addMonster(new Monster("Test", "tank", 5, 5));
+                            else
+                                addMonster(new Monster("Test2", "tiger", 5, 5));
                             return true;
                         }
                     }
