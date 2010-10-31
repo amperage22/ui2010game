@@ -68,7 +68,7 @@ namespace ARRG_Game
             transNode = new TransformNode();
             transNode.AddChild(robotNode);
             transNode.Scale *= 0.03f;
-            transNode.Translation += new Vector3(0, 0, 25);
+            //transNode.Translation += new Vector3(0, 0, 25);
             //********End Test code****
         }
         public Monster() { }
