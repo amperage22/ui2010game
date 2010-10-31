@@ -7,6 +7,9 @@ namespace ARRG_Game
 {
     public class Dragonkin : Monster
     {
-        public Dragonkin(String name, int health, int power) { }
+        public Dragonkin(string name, String model, int health, int power)
+            : base(name, model, health, power)
+        {
+        }
     }
 }
