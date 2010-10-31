@@ -62,7 +62,7 @@ namespace ARRG_Game
             Model robotModel = (Model)loader.Load("Models/", model);
             GeometryNode robotNode = new GeometryNode("Robot");
             robotNode.Model = robotModel;
-            robotNode.Model.UseInternalMaterials = false;
+            robotNode.Model.UseInternalMaterials = true;
             robotNode.Material = robotMaterial;
             
             transNode = new TransformNode();

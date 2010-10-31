@@ -7,6 +7,10 @@ namespace ARRG_Game
 {
     public class Robots : Monster
     {
-        public Robots(String name, int health, int power) { }
+        public Robots(string name, String model, int health, int power)
+            : base(name,model,health, power)
+        {
+            
+        }
     }
 }
