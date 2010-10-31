@@ -8,9 +8,10 @@ namespace ARRG_Game
     class Talent
     {
         private int amount, amount2, points, maxPoints;
-        Modifier modifier, modifier2;
-        CreatureType opponent;
-        private String description;
+        private Modifier modifier, modifier2;
+        private CreatureType opponent;
+        private String description, description2;
+        private bool dual_effect = false;
 
         /**
          * amount The numerical modification (+5 of the "+5 hp")
@@ -34,11 +35,13 @@ namespace ARRG_Game
         /**
          * If a talent has two attributes, use this constructor
          */
-        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description, int amount2, Modifier mod2)
+        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description, int amount2, Modifier mod2, String description2)
             : this(amount, mod, opponent, maxPoints, description)
         {
             this.amount2 = amount2;
             modifier2 = mod2;
+            this.description2 = description2;
+            dual_effect = true;
         }
 
         public bool increment()
@@ -57,6 +60,11 @@ namespace ARRG_Game
             return true;
         }
 
+        public bool isMaxed()
+        {
+            return points == maxPoints;
+        }
+
         public void reset()
         {
             points = 0;
@@ -69,7 +77,43 @@ namespace ARRG_Game
 
         public String getDescription()
         {
-            return description;
+            bool maxedOut = points == maxPoints;
+            String result = String.Format(
+                "{0}{1}{2}{3} {4}",
+                maxedOut ? "" : "Next Point: \n\n",
+                amount >= 0 ? "+" : "",
+                maxedOut ? amount * points : amount * (points + 1),
+                isPercentModifier(modifier) ? "%" : "",
+                description
+                );
+            if (dual_effect)
+                return String.Format(
+                    "{0}\n{1}{2}{3} {4}",
+                    result,
+                    amount2 >= 0 ? "+" : "",
+                    maxedOut ? amount2 * points : amount2 * (points + 1),
+                    isPercentModifier(modifier2) ? "%" : "",
+                    description2);
+            return result;
+        }
+
+        private bool isPercentModifier(Modifier m)
+        {
+            switch (m)
+            {
+                case Modifier.ADDITIONAL_ATTACK_CHANCE:
+                case Modifier.CRIT_PERCENT:
+                case Modifier.DAMAGE_PERCENT:
+                case Modifier.DODGE_PERCENT:
+                case Modifier.FIREBREATH_ATTACK_CHANCE:
+                case Modifier.HIT_PERCENT:
+                case Modifier.HP_PERCENT:
+                case Modifier.LIGHTNING_ATTACK_CHANCE:
+                case Modifier.PARRY_PERCENT:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
