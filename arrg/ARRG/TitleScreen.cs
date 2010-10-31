@@ -70,7 +70,6 @@ namespace ARRG_Game
 
         public void Draw(SpriteBatch sb)
         {
-            //Sprite drawing logic
             sb.Begin(SpriteBlendMode.AlphaBlend);
             sb.Draw(titleScreen, point, Color.White);
             sb.End();
