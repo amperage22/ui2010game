@@ -112,6 +112,7 @@
     <Compile Include="Talent.cs" />
     <Compile Include="TalentScreen.cs" />
     <Compile Include="TalentTree.cs" />
+    <Compile Include="TitleScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\GoblinXNAv3.4\bin\alvar130.dll">

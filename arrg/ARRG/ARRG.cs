@@ -78,7 +78,9 @@ namespace ARRG_Game
 	Die[] dice;
 	private const int dice_count = 6;
 	healthBar hb, hb2;
-	TalentScreen talentScreen;
+    TitleScreen titleScreen;
+    TalentScreen talentScreen;
+    SpriteBatch spriteBatch;
 
 	//Set up the states
 	MenuStates menuState = MenuStates.TITLE;
@@ -118,13 +120,11 @@ namespace ARRG_Game
 	  #if !USE_ARTAG
 		State.ThreadOption = (ushort)ThreadOptions.MarkerTracking;
 	  #endif
-	  
-	  talentScreen = new TalentScreen(scene, Content, 0);
 
 	  // Set up optical marker tracking
 	  // Note that we don't create our own camera when we use optical marker
 	  // tracking. It'll be created automatically
-	  SetupMarkerTracking();
+	  SetupMarkerTracking();      
 
 	  // Set up the lights used in the scene
 	  CreateLights();
@@ -154,6 +154,10 @@ namespace ARRG_Game
 	  //hb = new healthBar(scene, player, true);
 	  //hb2 = new healthBar(scene, player2, false);
 	  //hb2.adjustHealth(-10);
+
+      //Set up the stuff needed for the first (title) state
+      titleScreen = new TitleScreen(Content, scene);
+      spriteBatch = new SpriteBatch(GraphicsDevice);
 
 	  base.Initialize();
 	}
@@ -315,9 +319,11 @@ namespace ARRG_Game
 	/// <param name="gameTime">Provides a snapshot of timing values.</param>
 	protected override void Draw(GameTime gameTime)
 	{
-	  switch (menuState)
+      GraphicsDevice.Clear(Color.White);
+      base.Draw(gameTime);
+      switch (menuState)
 	  {
-		case MenuStates.TITLE: DrawTitle(); break;
+		case MenuStates.TITLE: DrawTitle(gameTime); break;
 		case MenuStates.TALENT: DrawTalent(); break;
 		case MenuStates.PRE_GAME: DrawPreGame(); break;
 		case MenuStates.MARKET: DrawMarket(); break;
@@ -325,8 +331,6 @@ namespace ARRG_Game
 		case MenuStates.INGAME: DrawInGame(); break;
 		case default(MenuStates): break;
 	  }
-
-	  base.Draw(gameTime);
 	}
 
 	/// <summary>
@@ -334,7 +338,19 @@ namespace ARRG_Game
 	/// </summary>
 	private void UpdateTitle()
 	{
-
+        if (titleScreen.playerChoice() != CreatureType.NONE && titleScreen.playerChoice() != CreatureType.ALL)
+        {
+            switch (titleScreen.playerChoice())
+            {
+                case CreatureType.BEASTS: talentScreen = new TalentScreen(scene, Content, 0); break;
+                case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(scene, Content, 1); break;
+                case CreatureType.ROBOT: talentScreen = new TalentScreen(scene, Content, 2); break;
+            }
+            titleScreen.Kill(scene);
+            //Should we somehow free up the memory of the title screen?
+            menuState = MenuStates.TALENT;
+            talentScreen.Display();
+        }
 	}
 	/// <summary>
 	/// Update method for Talent state
@@ -381,10 +397,16 @@ namespace ARRG_Game
 	/// <summary>
 	/// Draw method for Title state
 	/// </summary>
-	private void DrawTitle()
+    private void DrawTitle(GameTime gameTime)
 	{
-		talentScreen.Display();
-		menuState = MenuStates.TALENT;
+        titleScreen.Draw(spriteBatch);
+
+        /**
+         * I could not seperate the 3-button UI that was created in TitleScreen
+         * from the scene and so it would either draw the camera image over
+         * the title screen texture OR would draw the buttons behind the title
+         * screen texture.  This should fix that. */
+        scene.UIRenderer.Draw(0.0f, false);
 	}
 	/// <summary>
 	/// Draw method for Talent state
