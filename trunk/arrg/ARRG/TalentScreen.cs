@@ -36,10 +36,11 @@ namespace ARRG_Game
         //The label to show how many points the player has used on a certain talent
         private G2DLabel[,] pointsAlloc = new G2DLabel[3, 3];
         private TalentTree[] talents = new TalentTree[3];
-        private int activeTab, pointsRemaining;
+        private int specialization, activeTab, pointsRemaining;
         private G2DLabel pointCount, tooltip;
         private G2DButton submit, clear;
         private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
+        private Texture2D[] tabTextures = new Texture2D[3];
         private Color disabledColor = new Color(80, 80, 80);
 
         Scene scene;
@@ -47,10 +48,8 @@ namespace ARRG_Game
         SpriteFont font;
         TalentState state;
 
-        private const String tree1 = "Beasts";
-        private const String tree2 = "Dragonkin";
-        private const String tree3 = "Robots";
         private const int INITIAL_TALENT_POINTS = 15;
+        private const int MULTIPLE_TREE_THRESHOLD = INITIAL_TALENT_POINTS * 2 / 3;
 
         /*
          * Makes the talent screen as per specifications.
@@ -58,13 +57,15 @@ namespace ARRG_Game
          * f The font to be used with within the talent screen being created
          * activeTab The initial tree to display and tab to select
          */
-        public TalentScreen(Scene scene, ContentManager content, int activeTab)
+        public TalentScreen(Scene scene, ContentManager content, int specialization)
         {
             this.scene = scene;
             this.content = content;
-            this.activeTab = activeTab;
+            activeTab = (this.specialization = specialization);
             pointsRemaining = INITIAL_TALENT_POINTS;
             font = content.Load<SpriteFont>("UIFont");
+
+            allocateTextures();
 
             CreateFrame();
             
@@ -97,7 +98,7 @@ namespace ARRG_Game
             backgroundFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             backgroundFrame.Transparency = 1.0f;
             backgroundFrame.BackgroundColor = Color.Black;
-            backgroundFrame.Texture = content.Load<Texture2D>("Textures/talentscreen_bg");
+            backgroundFrame.Texture = content.Load<Texture2D>("Textures/talents/talentscreen_bg");
 
             // Create the main panel which holds all other GUI components
             mainFrame = new G2DPanel();
@@ -108,12 +109,13 @@ namespace ARRG_Game
             //Set up the 3 tabs
             for (int i = 0; i < 3; i++)
             {
-                tab[i] = new G2DButton(i == 0 ? tree1 : i == 1 ? tree2 : tree3);
+                tab[i] = new G2DButton();
                 tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
-                tab[i].BackgroundColor = (activeTab == i ? disabledColor : Color.LightGray);
-                tab[i].TextColor = (activeTab == i ? Color.White : Color.Black);
+                tab[i].Texture = tabTextures[i];
+                tab[i].TextureColor = disabledColor;
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
+                tab[i].DrawBorder = false;
                 mainFrame.AddChild(tab[i]);
             }
 
@@ -149,6 +151,8 @@ namespace ARRG_Game
         //Handles the talentscreen tab logic when a tab is clicked
         private void HandleTabButtonPress(object source)
         {
+            if (INITIAL_TALENT_POINTS - pointsRemaining < MULTIPLE_TREE_THRESHOLD)
+                return;
             //Set the new active tabs visual state
             for (int i = 0; i < 3; i++)
             {
@@ -157,11 +161,8 @@ namespace ARRG_Game
                 if (i == activeTab) return;
 
                 //Keep the tab/screen states consistent for the user
-                tab[activeTab].BackgroundColor = Color.LightGray;
-                tab[activeTab].TextColor = Color.Black;
-                tab[i].BackgroundColor = disabledColor;
-                tab[i].TextColor = Color.White;
-                activeTab = i;
+                tab[activeTab].TextureColor = Color.White;
+                tab[i].TextureColor = disabledColor;
                 ChangeToTree(i);
 
                 //Get outta here
@@ -178,8 +179,9 @@ namespace ARRG_Game
 
         private void HandleClear(object source)
         {
-            for (int i = 0; i < 3; i++)
-                talents[i].reset();
+            ChangeToTree(specialization);
+            closeSecondaryTabs();
+            talents[specialization].reset();
             for (int i = 0; i < 3; i++)
             {
                 bool isDisabled = !talents[activeTab].canAllocTier(i);
@@ -199,21 +201,24 @@ namespace ARRG_Game
             return state == TalentState.FINISHED;
         }
 
-        public void getTalentInfo() {
+        public List<Talent> getTalentInfo() {
             if (state != TalentState.FINISHED)
                 throw new Exception("The selection must be submitted before you can get the info!");
-            //TODO: return TALENT INFO
+            List<Talent> toReturn = new List<Talent>();
+            for (int i = 0; i < 3; i++)
+                toReturn.AddRange(talents[i].getTalents());
+            return toReturn;
         }
 
         private void ChangeToTree(int tree)
         {
             if (tree < 0 || tree > 2)
                 throw new Exception("Tree must be 0, 1, or 2");
-
+            
+            activeTab = tree;
             if (talentFrame == null)
             {
                 createTalentTrees();
-                allocateTextures();
                 talentFrame = new G2DPanel();
                 talentFrame.Bounds = new Rectangle(0, 60, 300, 300);
                 talentFrame.Border = GoblinEnums.BorderFactory.EtchedBorder;
@@ -231,6 +236,7 @@ namespace ARRG_Game
                         talentButton[i, j].TextFont = font;
                         talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
                         talentButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
+                        talentButton[i, j].BorderColor = Color.Black;
                         talentButton[i, j].DrawBorder = false;
                         if (i > 0)
                             talentButton[i, j].TextureColor = disabledColor;
@@ -287,8 +293,6 @@ namespace ARRG_Game
 
         private void HandleAlloc(int button, Point mouse)
         {
-            if (pointsRemaining == 0) return;
-
             //Find the button that got clicked
             bool tipFound = false;
             //TODO: Make this large yucky if-chain more compact
@@ -299,7 +303,9 @@ namespace ARRG_Game
                     if (talentButton[i, j].PaintBounds.Contains(mouse))
                     {
                         bool beforeAlloc = talents[activeTab].canAllocTier(i + 1);
-                        if (button == MouseInput.LeftButton) {
+                        if (button == MouseInput.LeftButton)
+                        {
+                            if (pointsRemaining == 0) return;
                             if (talents[activeTab].increment(i, j)) {
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
                                     openTier(i + 1);
@@ -311,11 +317,28 @@ namespace ARRG_Game
                                     talentButton[i, j].TextureColor = disabledColor;
                                     pointsAlloc[i, j].TextColor = Color.Red;
                                 }
+                                int num = INITIAL_TALENT_POINTS - pointsRemaining;
+                                if (num >= MULTIPLE_TREE_THRESHOLD && num - 1 < MULTIPLE_TREE_THRESHOLD)
+                                    openSecondaryTabs();
                             }
                         }
                         else if (button == MouseInput.RightButton)
                         {
                             if (talents[activeTab].decrement(i, j)) {
+                                /* There arises the case where the player will achieve the
+                                 * 2/3 points necessary to open the other two trees.  He will
+                                 * then spend points in them and go attempt to remove the
+                                 * points he spent in his main specialization tree.  Here
+                                 * we check for this behavior and clear the two remaining
+                                 * trees and give him back those points if he goes below
+                                 * the limit. */
+                                if (activeTab == specialization)
+                                {
+                                    int pointsInSpecialization = talents[activeTab].getPointsAllocd();
+                                    if (pointsInSpecialization < MULTIPLE_TREE_THRESHOLD && pointsInSpecialization + 1 >= MULTIPLE_TREE_THRESHOLD)
+                                        closeSecondaryTabs();
+                                }
+
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
                                     closeTier(i + 1);
                                 pointsRemaining++;
@@ -366,7 +389,7 @@ namespace ARRG_Game
         }
 
         private void allocateTextures() {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++)
                     for (int k = 0; k < 3; k++) {
                         if (j == 2 && k != 1) continue;
@@ -377,6 +400,11 @@ namespace ARRG_Game
                                 j+1,
                                 j == 2 ? "" : String.Format("_{0}", k+1)));
                     }
+                tabTextures[i] = content.Load<Texture2D>(
+                    i == 0 ? "Textures/talents/beasts_tab" :    //http://www.geekcoefficient.com/blog/images/beast.jpg
+                    i == 1 ? "Textures/talents/dragonkin_tab" : //http://www.crystalinks.com/dragon.gif
+                             "Textures/talents/robots_tab");    //http://www.techgadgets.in/images/nikko-robot.jpg
+            }
         }
 
         private void openTier(int t)
@@ -404,6 +432,22 @@ namespace ARRG_Game
             pointsAlloc[t, 2].TextColor = Color.White;
             //Make sure to close all tiers above it too!
             closeTier(t + 1);
+        }
+        private void openSecondaryTabs()
+        {
+            for (int k = 0; k < 3; k++)
+                if (k != specialization)
+                   tab[k].TextureColor = Color.White;
+        }
+        private void closeSecondaryTabs()
+        {
+            for (int i = 0; i < 3; i++)
+                if (i != specialization)
+                {
+                    pointsRemaining += talents[i].getPointsAllocd();
+                    talents[i].reset();
+                    tab[i].TextureColor = disabledColor;
+                }
         }
     }
 }

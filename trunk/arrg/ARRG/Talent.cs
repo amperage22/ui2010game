@@ -115,5 +115,9 @@ namespace ARRG_Game
                     return false;
             }
         }
+        
+        public bool hasPoints() {
+            return points != 0;
+        }
     }
 }

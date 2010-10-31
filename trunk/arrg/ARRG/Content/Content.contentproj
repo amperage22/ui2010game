@@ -65,15 +65,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talentscreen_bg.jpg">
-      <Link>Textures\talentscreen_bg.jpg</Link>
-      <Name>talentscreen_bg</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\tank.fbx">
       <Link>Models\tank.fbx</Link>
       <Name>tank</Name>
@@ -235,6 +226,38 @@
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\robot_3.png">
       <Link>Textures\talents\robot_3.png</Link>
       <Name>robot_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\beasts_tab.png">
+      <Link>Textures\talents\beasts_tab.png</Link>
+      <Name>beasts_tab</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\dragonkin_tab.png">
+      <Link>Textures\talents\dragonkin_tab.png</Link>
+      <Name>dragonkin_tab</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\robots_tab.png">
+      <Link>Textures\talents\robots_tab.png</Link>
+      <Name>robots_tab</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\talentscreen_bg.jpg">
+      <Link>Textures\talents\talentscreen_bg.jpg</Link>
+      <Name>talentscreen_bg</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

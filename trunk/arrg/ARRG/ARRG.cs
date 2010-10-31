@@ -344,7 +344,7 @@ namespace ARRG_Game
         talentScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
 		if (talentScreen.wasSubmitted())
 		{
-            talentScreen.getTalentInfo();
+            List<Talent> talents = talentScreen.getTalentInfo();
 			menuState = MenuStates.PRE_GAME;
 		}
 	}

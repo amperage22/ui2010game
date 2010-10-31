@@ -186,5 +186,28 @@ namespace ARRG_Game
                 case 2: tier3.reset(); break;
             }
         }
+
+        public int getPointsAllocd()
+        {
+            int sum = 0;
+            for (int i = 0; i < 3; i++)
+                sum += pointsAllocd[i];
+            return sum;
+        }
+
+        public List<Talent> getTalents()
+        {
+            List<Talent> talents = new List<Talent>();
+            for (int i = 0; i < 3; i++)
+            {
+                if (tier1[i].hasPoints())
+                    talents.Add(tier1[i]);
+                if (tier2[i].hasPoints())
+                    talents.Add(tier2[i]);
+            }
+            if (tier3.hasPoints())
+                talents.Add(tier3);
+            return talents;
+        }
     }
 }
