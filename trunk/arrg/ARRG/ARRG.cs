@@ -69,7 +69,7 @@ namespace ARRG_Game
   public class ARRG : Microsoft.Xna.Framework.Game
   {
 	GraphicsDeviceManager graphics;
-	Player p;
+	Player p, p2;
 	  
 	Scene scene;
 	MarkerNode groundMarkerNode;
@@ -79,7 +79,7 @@ namespace ARRG_Game
 	TalentScreen talentScreen;
 
 	//Set up the states
-	MenuStates menuState = MenuStates.TITLE;
+	MenuStates menuState = MenuStates.PRE_GAME;
 	InGameStates gameState = InGameStates.NONE;
 
 	// set this to false if you are going to use a webcam
@@ -146,7 +146,7 @@ namespace ARRG_Game
 	  // Show Frames-Per-Second on the screen for debugging
 	  State.ShowFPS = true;
 
-	  //brb bigRed = new brb(scene, gameState);
+	  brb bigRed = new brb(scene, gameState);
 	  //Player player = new Player();
 	  //Player player2 = new Player();
 	  //hb = new healthBar(scene, player, true);
@@ -241,11 +241,12 @@ namespace ARRG_Game
 	  groundMaterial.Specular = Color.White.ToVector4();
 	  groundMaterial.SpecularPower = 20;
 
-	  groundNode.Material = groundMaterial;
+	  //groundNode.Material = groundMaterial;
 
 	  groundMarkerNode.AddChild(groundNode);
 
 	  p = new Player(scene, 1, groundMarkerNode);
+      p2 = new Player(scene, 2, groundMarkerNode);
 	}
 
 	private void CreateObjects()
@@ -301,6 +302,7 @@ namespace ARRG_Game
 		case default(MenuStates): break;
 	  }
 	  p.Update();
+      p2.Update();
 	  base.Update(gameTime);
 
 	}
@@ -337,6 +339,7 @@ namespace ARRG_Game
 	/// </summary>
 	private void UpdateTalent()
 	{
+        talentScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
 		if (talentScreen.wasSubmitted())
 		{
             talentScreen.getTalentInfo();
