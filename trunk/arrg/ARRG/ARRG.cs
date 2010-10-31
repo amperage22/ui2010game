@@ -223,29 +223,29 @@ namespace ARRG_Game
 
 	private void CreateGround()
 	{
-	  GeometryNode groundNode = new GeometryNode("Ground");
+	  //GeometryNode groundNode = new GeometryNode("Ground");
 
 #if USE_ARTAG
 			groundNode.Model = new Box(85, 66, 0.1f);
 #else
-	  groundNode.Model = new Box(95, 59, 0.1f);
+	  //groundNode.Model = new Box(95, 59, 0.1f);
 #endif
 
 	  // Set this ground model to act as an occluder so that it appears transparent
-	  groundNode.IsOccluder = true;
+	  //groundNode.IsOccluder = true;
 
 	  // Make the ground model to receive shadow casted by other objects with
 	  // CastShadows set to true
-	  groundNode.Model.ReceiveShadows = true;
+	 // groundNode.Model.ReceiveShadows = true;
 
-	  Material groundMaterial = new Material();
-	  groundMaterial.Diffuse = Color.Black.ToVector4();
-	  groundMaterial.Specular = Color.White.ToVector4();
-	  groundMaterial.SpecularPower = 20;
+	  //Material groundMaterial = new Material();
+	  //groundMaterial.Diffuse = Color.Black.ToVector4();
+	  //groundMaterial.Specular = Color.White.ToVector4();
+	  //groundMaterial.SpecularPower = 20;
 
 	  //groundNode.Material = groundMaterial;
 
-	  groundMarkerNode.AddChild(groundNode);
+	  //groundMarkerNode.AddChild(groundNode);
 
 	  p = new Player(scene, 1, groundMarkerNode);
       p2 = new Player(scene, 2, groundMarkerNode);
