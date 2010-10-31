@@ -48,7 +48,7 @@ namespace ARRG_Game
         SpriteFont font;
         TalentState state;
 
-        private const int INITIAL_TALENT_POINTS = 15;
+        private const int INITIAL_TALENT_POINTS = 10;
         private const int MULTIPLE_TREE_THRESHOLD = INITIAL_TALENT_POINTS * 2 / 3;
 
         /*
