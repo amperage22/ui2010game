@@ -39,6 +39,8 @@ namespace ARRG_Game
         private int activeTab, pointsRemaining;
         private G2DLabel pointCount, tooltip;
         private G2DButton submit, clear;
+        private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
+        private Color disabledColor = new Color(80, 80, 80);
 
         Scene scene;
         ContentManager content;
@@ -68,8 +70,11 @@ namespace ARRG_Game
             
             tooltip = new G2DLabel();
             tooltip.TextFont = font;
-            tooltip.BackgroundColor = Color.Black;
+            tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
             tooltip.TextColor = Color.White;
+            tooltip.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
+            tooltip.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
+            tooltip.DrawBorder = false;
             tooltip.DrawBackground = false;
             talentFrame.AddChild(tooltip);
 
@@ -106,7 +111,7 @@ namespace ARRG_Game
                 tab[i] = new G2DButton(i == 0 ? tree1 : i == 1 ? tree2 : tree3);
                 tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
-                tab[i].BackgroundColor = (activeTab == i ? new Color(80, 80, 80) : Color.LightGray);
+                tab[i].BackgroundColor = (activeTab == i ? disabledColor : Color.LightGray);
                 tab[i].TextColor = (activeTab == i ? Color.White : Color.Black);
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
                 mainFrame.AddChild(tab[i]);
@@ -154,7 +159,7 @@ namespace ARRG_Game
                 //Keep the tab/screen states consistent for the user
                 tab[activeTab].BackgroundColor = Color.LightGray;
                 tab[activeTab].TextColor = Color.Black;
-                tab[i].BackgroundColor = new Color(80, 80, 80);
+                tab[i].BackgroundColor = disabledColor;
                 tab[i].TextColor = Color.White;
                 activeTab = i;
                 ChangeToTree(i);
@@ -176,11 +181,16 @@ namespace ARRG_Game
             for (int i = 0; i < 3; i++)
                 talents[i].reset();
             for (int i = 0; i < 3; i++)
+            {
+                bool isDisabled = !talents[activeTab].canAllocTier(i);
                 for (int j = 0; j < 3; j++)
                 {
-                    if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
+                    if (i == 2 && j != 1) continue;
                     pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                    pointsAlloc[i, j].TextColor = Color.White;
+                    talentButton[i, j].TextureColor = isDisabled ? disabledColor : Color.White;
                 }
+            }
             pointsRemaining = INITIAL_TALENT_POINTS;
             pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
         }
@@ -203,6 +213,7 @@ namespace ARRG_Game
             if (talentFrame == null)
             {
                 createTalentTrees();
+                allocateTextures();
                 talentFrame = new G2DPanel();
                 talentFrame.Bounds = new Rectangle(0, 60, 300, 300);
                 talentFrame.Border = GoblinEnums.BorderFactory.EtchedBorder;
@@ -213,12 +224,16 @@ namespace ARRG_Game
                     {
                         //We are going to have a 3, 2, 1 tree, so only certain things
                         //should be created.
-                        if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
+                        if (i == 2 && j != 1) continue;
 
-                        talentButton[i, j] = new G2DButton(String.Format("{0}, {1}", i, j));
+                        talentButton[i, j] = new G2DButton();
                         talentButton[i, j].Bounds = new Rectangle((j * 102) + 16, (i * 102) + 16, 64, 64);
                         talentButton[i, j].TextFont = font;
+                        talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
                         talentButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
+                        talentButton[i, j].DrawBorder = false;
+                        if (i > 0)
+                            talentButton[i, j].TextureColor = disabledColor;
                         talentFrame.AddChild(talentButton[i, j]);
                         
                         //Put a black rectangle above the button but below the label
@@ -230,19 +245,36 @@ namespace ARRG_Game
                         
                         pointsAlloc[i, j] = new G2DLabel(talents[activeTab].getPointStr(i, j));
                         pointsAlloc[i, j].TextFont = font;
-                        pointsAlloc[i, j].Bounds = new Rectangle((j * 102) + 17, (i * 102) + 17, 10, 5);
+                        Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
+                        pointsAlloc[i, j].Bounds = new Rectangle((j * 102) + 17, (i * 102) + 17, (int)new_dimensions.X + 5, (int)new_dimensions.Y + 5);
+                        pointsAlloc[i, j].BackgroundColor = new Color(100, 100, 100);
+                        pointsAlloc[i, j].BorderColor = Color.White;
+                        pointsAlloc[i, j].TextColor = Color.White;
+                        pointsAlloc[i, j].DrawBackground = true;
+                        pointsAlloc[i, j].DrawBorder = true;
                         talentFrame.AddChild(pointsAlloc[i, j]);
                     }
 
                 mainFrame.AddChild(talentFrame);
             }
 
-            //Swap the new talent tree in
+            else //Swap the new talent tree in
+
             for (int i = 0; i < 3; i++)
-                    for (int j = 0; j < 3; j++) {
-                        if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
-                        pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
-                    }
+            {
+                bool isDisabled = !talents[activeTab].canAllocTier(i);
+                for (int j = 0; j < 3; j++)
+                {
+                    if (i == 2 && j != 1) continue;
+                    talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
+                    bool isMaxed = talents[activeTab].isMaxed(i, j);
+                    talentButton[i, j].TextureColor = isDisabled || isMaxed ? disabledColor : Color.White;
+                    pointsAlloc[i, j].TextColor = isMaxed ? Color.Red : Color.White;
+                    pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                    Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
+                    pointsAlloc[i, j].Bounds = new Rectangle(pointsAlloc[i, j].Bounds.X, pointsAlloc[i, j].Bounds.Y, (int)new_dimensions.X + 5, (int)new_dimensions.Y + 5);
+                }
+            }
             
         }
 
@@ -256,27 +288,41 @@ namespace ARRG_Game
         private void HandleAlloc(int button, Point mouse)
         {
             if (pointsRemaining == 0) return;
-            //Find the button that got hovered over, if found...
+
+            //Find the button that got clicked
             bool tipFound = false;
+            //TODO: Make this large yucky if-chain more compact
             for (int i = 0; i < 3 && !tipFound; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
+                    if (i == 2 && j != 1) continue;
                     if (talentButton[i, j].PaintBounds.Contains(mouse))
                     {
+                        bool beforeAlloc = talents[activeTab].canAllocTier(i + 1);
                         if (button == MouseInput.LeftButton) {
                             if (talents[activeTab].increment(i, j)) {
+                                if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
+                                    openTier(i + 1);
                                 pointsRemaining--;
                                 pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                                if (talents[activeTab].isMaxed(i, j))
+                                {
+                                    talentButton[i, j].TextureColor = disabledColor;
+                                    pointsAlloc[i, j].TextColor = Color.Red;
+                                }
                             }
                         }
                         else if (button == MouseInput.RightButton)
                         {
                             if (talents[activeTab].decrement(i, j)) {
+                                if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
+                                    closeTier(i + 1);
                                 pointsRemaining++;
                                 pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                                talentButton[i, j].TextureColor = Color.White;
+                                pointsAlloc[i, j].TextColor = Color.White;
                             }
                         }
                     }
@@ -290,18 +336,25 @@ namespace ARRG_Game
             for (int i = 0; i < 3 && !tipFound; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    if ((i == 1 && j == 1) || (i == 2 && j != 1)) continue;
+                    if (i == 2 && j != 1) continue;
                     if (talentButton[i, j].PaintBounds.Contains(mouse))
                     {
                         tooltip.Text = talents[activeTab].getDescription(i, j);
-                        tooltip.Bounds = new Rectangle(mouse.X - backgroundFrame.Bounds.X, mouse.Y - backgroundFrame.Bounds.Y - 55, 100, 25);
+                        Vector2 textSize = tooltip.TextFont.MeasureString(tooltip.Text);
+                        int new_width = (int)(textSize.X + 0.5f) + 5;
+                        int new_height = (int)(textSize.Y + 0.5f) + 5;
+
+                        tooltip.Bounds = new Rectangle(mouse.X - backgroundFrame.Bounds.X - (new_width / 2) + 10, mouse.Y - backgroundFrame.Bounds.Y - 40, new_width, new_height);
                         tooltip.DrawBackground = true;
+                        tooltip.DrawBorder = true;
                         tipFound = true;
                         break;
                     }
                 }
+            //If not, hide the tooltip from the user
             if (!tipFound)
             {
+                tooltip.DrawBorder = false;
                 tooltip.DrawBackground = false;
                 tooltip.Text = "";
             }
@@ -310,6 +363,47 @@ namespace ARRG_Game
         public void update(Point mouse)
         {
             HandleToolTip(mouse);
+        }
+
+        private void allocateTextures() {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    for (int k = 0; k < 3; k++) {
+                        if (j == 2 && k != 1) continue;
+                        buttonTextures[i,j,k] = content.Load<Texture2D>(
+                            String.Format(
+                                "Textures/talents/{0}_{1}{2}",
+                                i == (int)Creature.BEASTS ? "beast" : i == (int)Creature.DRAGONKIN ? "dragonkin" : "robot",
+                                j+1,
+                                j == 2 ? "" : String.Format("_{0}", k+1)));
+                    }
+        }
+
+        private void openTier(int t)
+        {
+            talentButton[t, 1].TextureColor = Color.White;
+            if (t == 2) return;
+            talentButton[t, 0].TextureColor = Color.White;
+            talentButton[t, 2].TextureColor = Color.White;
+        }
+        private void closeTier(int t)
+        {
+            //Dont forget to give the player back their points
+            //that could have been in the last tier
+            pointsRemaining += talents[activeTab].getPointsInTier(t);
+            talents[activeTab].resetTier(t);
+            talentButton[t, 1].TextureColor = disabledColor;
+            pointsAlloc[t, 1].Text = talents[activeTab].getPointStr(t, 1);
+            pointsAlloc[t, 1].TextColor = Color.White;
+            if (t == 2) return;
+            talentButton[t, 0].TextureColor = disabledColor;
+            pointsAlloc[t, 0].Text = talents[activeTab].getPointStr(t, 0);
+            pointsAlloc[t, 0].TextColor = Color.White;
+            talentButton[t, 2].TextureColor = disabledColor;
+            pointsAlloc[t, 2].Text = talents[activeTab].getPointStr(t, 2);
+            pointsAlloc[t, 2].TextColor = Color.White;
+            //Make sure to close all tiers above it too!
+            closeTier(t + 1);
         }
     }
 }

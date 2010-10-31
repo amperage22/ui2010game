@@ -60,11 +60,13 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-  enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
+  enum MenuStates   { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
   enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
   enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOT, ALL };
-  enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
-  enum Modifier { NONE, DAMAGE, CRIT, HIT, DODGE, HP, ADDITIONAL_ATTACK };
+  enum CardType     { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
+  enum Modifier     { NONE, DAMAGE, DAMAGE_PERCENT, CRIT, CRIT_PERCENT, HIT, HIT_PERCENT,
+                            DODGE, DODGE_PERCENT, HP, HP_PERCENT, PARRY, PARRY_PERCENT,
+                            ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE};
 
   public class ARRG : Microsoft.Xna.Framework.Game
   {
@@ -79,7 +81,7 @@ namespace ARRG_Game
 	TalentScreen talentScreen;
 
 	//Set up the states
-	MenuStates menuState = MenuStates.PRE_GAME;
+	MenuStates menuState = MenuStates.TITLE;
 	InGameStates gameState = InGameStates.NONE;
 
 	// set this to false if you are going to use a webcam
