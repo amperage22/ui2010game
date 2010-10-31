@@ -127,19 +127,25 @@ namespace ARRG_Game
             pointCount.BorderColor = Color.White;
             mainFrame.AddChild(pointCount);
 
-            submit = new G2DButton("Submit");
+
+            Texture2D stone_button = content.Load<Texture2D>("Textures/stone_button");
+            submit = new G2DButton("Save");
             submit.TextFont = font;
             submit.Bounds = new Rectangle(140, 367, 70, 25);
-            submit.BackgroundColor = (Color.LightGray);
-            submit.TextColor = (Color.Black);
+            submit.Texture = stone_button;
+            submit.TextureColor = disabledColor;
+            submit.TextColor = Color.White;
+            submit.BorderColor = Color.White;
             submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
             mainFrame.AddChild(submit);
 
             clear = new G2DButton("Clear");
             clear.TextFont = font;
             clear.Bounds = new Rectangle(220, 367, 70, 25);
-            clear.BackgroundColor = (Color.LightGray);
-            clear.TextColor = (Color.Black);
+            clear.Texture = stone_button;
+            clear.TextureColor = Color.White;
+            clear.TextColor = Color.Black;
+            clear.BorderColor = Color.White;
             clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
             mainFrame.AddChild(clear);
 
@@ -195,6 +201,8 @@ namespace ARRG_Game
             }
             pointsRemaining = INITIAL_TALENT_POINTS;
             pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+            submit.TextureColor = disabledColor;
+            submit.TextColor = Color.White;
         }
 
         public bool wasSubmitted() {
@@ -310,6 +318,11 @@ namespace ARRG_Game
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
                                     openTier(i + 1);
                                 pointsRemaining--;
+                                if (pointsRemaining == 0)
+                                {
+                                    submit.TextureColor = Color.White;
+                                    submit.TextColor = Color.Black;
+                                }
                                 pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                                 if (talents[activeTab].isMaxed(i, j))
@@ -342,6 +355,8 @@ namespace ARRG_Game
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
                                     closeTier(i + 1);
                                 pointsRemaining++;
+                                submit.TextureColor = disabledColor;
+                                submit.TextColor = Color.White;
                                 pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                                 talentButton[i, j].TextureColor = Color.White;
@@ -352,30 +367,61 @@ namespace ARRG_Game
                 }                        
         }
 
+        private String getTabHelpString()
+        {
+            String tree;
+            switch (specialization)
+            {
+                case 0: tree = "BEAST"; break;
+                case 1: tree = "DRAGONKIN"; break;
+                case 2: tree = "ROBOT"; break;
+                default: throw new Exception("Bad specialization value!");
+            }
+            int pointsNeeded = MULTIPLE_TREE_THRESHOLD - (INITIAL_TALENT_POINTS - pointsRemaining);
+            return String.Format("You must first place {0} more point{1} in the\n{2} tree before you can access this one!", pointsNeeded, pointsNeeded == 1 ? "" : "s", tree);
+        }
+
         private void HandleToolTip(Point mouse)
         {
             //Find the button that got hovered over, if found...
             bool tipFound = false;
+            if (submit.PaintBounds.Contains(mouse) && pointsRemaining != 0)
+            {
+                tooltip.Text = "You must spend ALL your talent points first!";
+                tipFound = true;
+            }
             for (int i = 0; i < 3 && !tipFound; i++)
-                for (int j = 0; j < 3; j++)
+            {
+                if (tab[i].PaintBounds.Contains(mouse))
+                {
+                    if (i == activeTab || talents[specialization].getPointsAllocd() >= MULTIPLE_TREE_THRESHOLD) break;
+                    tooltip.Text = getTabHelpString();
+                    tipFound = true;
+                    break;
+                }
+                for (int j = 0; j < 3 && !tipFound; j++)
                 {
                     if (i == 2 && j != 1) continue;
                     if (talentButton[i, j].PaintBounds.Contains(mouse))
                     {
                         tooltip.Text = talents[activeTab].getDescription(i, j);
-                        Vector2 textSize = tooltip.TextFont.MeasureString(tooltip.Text);
-                        int new_width = (int)(textSize.X + 0.5f) + 5;
-                        int new_height = (int)(textSize.Y + 0.5f) + 5;
-
-                        tooltip.Bounds = new Rectangle(mouse.X - backgroundFrame.Bounds.X - (new_width / 2) + 10, mouse.Y - backgroundFrame.Bounds.Y - 40, new_width, new_height);
-                        tooltip.DrawBackground = true;
-                        tooltip.DrawBorder = true;
                         tipFound = true;
                         break;
                     }
                 }
-            //If not, hide the tooltip from the user
-            if (!tipFound)
+            }
+
+            if (tipFound)
+            {
+                Vector2 textSize = tooltip.TextFont.MeasureString(tooltip.Text);
+                int new_width = (int)(textSize.X + 0.5f) + 5;
+                int new_height = (int)(textSize.Y + 0.5f) + 5;
+
+                tooltip.Bounds = new Rectangle(mouse.X - backgroundFrame.Bounds.X - (new_width / 2) + 10, mouse.Y - backgroundFrame.Bounds.Y - 40, new_width, new_height);
+                tooltip.DrawBackground = true;
+                tooltip.DrawBorder = true;
+            }
+            else  //hide the tooltip from the user
             {
                 tooltip.DrawBorder = false;
                 tooltip.DrawBackground = false;
