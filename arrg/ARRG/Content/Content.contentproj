@@ -298,6 +298,39 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\dalek.fbx">
+      <Link>Models\dalek.fbx</Link>
+      <Name>dalek</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\rhino.fbx">
+      <Link>Models\rhino.fbx</Link>
+      <Name>rhino</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\dragon2.fbx">
+      <Link>Models\dragon2.fbx</Link>
+      <Name>dragon2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\penguin.fbx">
+      <Link>Models\penguin.fbx</Link>
+      <Name>penguin</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
