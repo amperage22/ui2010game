@@ -57,7 +57,7 @@ namespace ARRG_Game
             if (!useInternal)
             {
                 Material robotMaterial = new Material();
-                robotMaterial.Diffuse = Color.Orange.ToVector4();
+                robotMaterial.Diffuse = Color.Green.ToVector4();
                 robotMaterial.Specular = Color.White.ToVector4();
                 robotMaterial.SpecularPower = 2;
                 robotMaterial.Emissive = Color.Black.ToVector4();
@@ -69,8 +69,8 @@ namespace ARRG_Game
 
             transNode = new TransformNode();
             transNode.AddChild(robotNode);
-            transNode.Scale *= 0.03f;
-            transNode.Translation += new Vector3(10, 0, 0);
+            transNode.Scale *= 0.04f;
+            transNode.Translation += new Vector3(10, 10, 3);
         }
 
 
@@ -123,7 +123,7 @@ namespace ARRG_Game
             dmgPrevented.Add(health);
         }
 
-        public void newTurn()
+        public void damageResolution()
         {
             dmgTaken.Clear();
             dmgMods.Clear();

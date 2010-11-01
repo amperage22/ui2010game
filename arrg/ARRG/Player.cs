@@ -100,11 +100,6 @@ namespace ARRG_Game
             get { return selectedMonsters; }
             set { selectedMonsters = value; }
         }
-        internal Die[] Die
-        {
-            get { return die; }
-            set { die = value; }
-        }
 
         public bool addMonster(Monster m)
         {
@@ -116,13 +111,18 @@ namespace ARRG_Game
             return false;
         }
 
-        public void Update()
+        public void updateDraw()
         {
+            foreach (Die d in die)
+                d.reset();
+        }
 
+        public void updateSummon()
+        {
             foreach (Die d in die)
             {
                 Random r = new Random();
-                d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Test code
+                d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Randomly attach monster to die
             }
         }
         public void updateAtack(Die d2)
@@ -132,7 +132,5 @@ namespace ARRG_Game
                 d.CurrentMonster.attack(d2.CurrentMonster);
             }
         }
-
-
     }
 }
