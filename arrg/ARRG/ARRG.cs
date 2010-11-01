@@ -60,150 +60,152 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-  enum MenuStates   { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
-  enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-  enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOT, ALL };
-  enum CardType     { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
-  enum Modifier     { NONE, DAMAGE, DAMAGE_PERCENT, CRIT, CRIT_PERCENT, HIT, HIT_PERCENT,
-                            DODGE, DODGE_PERCENT, HP, HP_PERCENT, PARRY, PARRY_PERCENT,
-                            ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE};
+    enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
+    enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
+    enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOT, ALL };
+    enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
+    enum Modifier
+    {
+        NONE, DAMAGE, DAMAGE_PERCENT, CRIT, CRIT_PERCENT, HIT, HIT_PERCENT,
+        DODGE, DODGE_PERCENT, HP, HP_PERCENT, PARRY, PARRY_PERCENT,
+        ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
+    };
 
-  public class ARRG : Microsoft.Xna.Framework.Game
-  {
-	GraphicsDeviceManager graphics;
-	Player p, p2;
-	  
-	Scene scene;
-	MarkerNode groundMarkerNode;
-	Die[] dice;
-	private const int dice_count = 6;
-	healthBar hb, hb2;
-    TitleScreen titleScreen;
-    TalentScreen talentScreen;
-    SpriteBatch spriteBatch;
-    brb bigRed;
+    public class ARRG : Microsoft.Xna.Framework.Game
+    {
+        GraphicsDeviceManager graphics;
+        Player p, p2;
 
-	//Set up the states
-	MenuStates menuState = MenuStates.TITLE;
-	InGameStates gameState = InGameStates.NONE;
+        Scene scene;
+        MarkerNode groundMarkerNode;
+        private const int dice_count = 6;
+        healthBar hb, hb2;
+        TitleScreen titleScreen;
+        TalentScreen talentScreen;
+        SpriteBatch spriteBatch;
+        brb bigRed;
 
-	// set this to false if you are going to use a webcam
-	bool useStaticImage = false;
+        //Set up the states
+        MenuStates menuState = MenuStates.INGAME;
+        InGameStates gameState = InGameStates.DRAW;
 
-	public ARRG()
-	{
-	  graphics = new GraphicsDeviceManager(this);
-	  Content.RootDirectory = "Content";
-	}
+        // set this to false if you are going to use a webcam
+        bool useStaticImage = false;
 
-	/// <summary>
-	/// Allows the game to perform any initialization it needs to before starting to run.
-	/// This is where it can query for any required services and load any non-graphic
-	/// related content.  Calling base.Initialize will enumerate through any components
-	/// and initialize them as well.
-	/// </summary>
-	protected override void Initialize()
-	{
-	  // Initialize the GoblinXNA framework
-	  State.InitGoblin(graphics, Content, "");
+        public ARRG()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+        }
 
-	  // Initialize the scene graph
-	  scene = new Scene(this);
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
+        protected override void Initialize()
+        {
+            // Initialize the GoblinXNA framework
+            State.InitGoblin(graphics, Content, "");
 
-	  // Use the newton physics engine to perform collision detection
-	  scene.PhysicsEngine = new NewtonPhysics();
+            // Initialize the scene graph
+            scene = new Scene(this);
 
-	  this.IsMouseVisible = true;
+            // Use the newton physics engine to perform collision detection
+            scene.PhysicsEngine = new NewtonPhysics();
 
-	  // For some reason, it causes memory conflict when it attempts to update the
-	  // marker transformation in the multi-threaded code, so if you're using ARTag
-	  // then you should not enable the marker tracking thread
-	  #if !USE_ARTAG
-		State.ThreadOption = (ushort)ThreadOptions.MarkerTracking;
-	  #endif
+            this.IsMouseVisible = true;
 
-	  // Set up optical marker tracking
-	  // Note that we don't create our own camera when we use optical marker
-	  // tracking. It'll be created automatically
-	  SetupMarkerTracking();      
+            // For some reason, it causes memory conflict when it attempts to update the
+            // marker transformation in the multi-threaded code, so if you're using ARTag
+            // then you should not enable the marker tracking thread
+#if !USE_ARTAG
+            State.ThreadOption = (ushort)ThreadOptions.MarkerTracking;
+#endif
 
-	  // Set up the lights used in the scene
-	  CreateLights();
+            // Set up optical marker tracking
+            // Note that we don't create our own camera when we use optical marker
+            // tracking. It'll be created automatically
+            SetupMarkerTracking();
 
-	  // Create 3D objects
-	  CreateObjects();
+            // Set up the lights used in the scene
+            CreateLights();
 
-	  // Create the ground that represents the physical ground marker array
-	  CreateGround();
+            // Create 3D objects
+            CreateObjects();
 
-	  // Use per pixel lighting for better quality (If you using non NVidia graphics card,
-	  // setting this to true may reduce the performance significantly)
-	  scene.PreferPerPixelLighting = true;
+            // Create the ground that represents the physical ground marker array
+            CreateGround();
 
-	  // Enable shadow mapping
-	  // NOTE: In order to use shadow mapping, you will need to add 'PostScreenShadowBlur.fx'
-	  // and 'ShadowMap.fx' shader files as well as 'ShadowDistanceFadeoutMap.dds' texture file
-	  // to your 'Content' directory
-	  scene.EnableShadowMapping = false;
+            // Use per pixel lighting for better quality (If you using non NVidia graphics card,
+            // setting this to true may reduce the performance significantly)
+            scene.PreferPerPixelLighting = true;
 
-	  // Show Frames-Per-Second on the screen for debugging
-	  State.ShowFPS = true;
+            // Enable shadow mapping
+            // NOTE: In order to use shadow mapping, you will need to add 'PostScreenShadowBlur.fx'
+            // and 'ShadowMap.fx' shader files as well as 'ShadowDistanceFadeoutMap.dds' texture file
+            // to your 'Content' directory
+            scene.EnableShadowMapping = false;
 
-	  bigRed = new brb(scene, menuState, Content, gameState);
-	  //Player player = new Player();
-	  //Player player2 = new Player();
-	  //hb = new healthBar(scene, player, true);
-	  //hb2 = new healthBar(scene, player2, false);
-	  //hb2.adjustHealth(-10);
+            // Show Frames-Per-Second on the screen for debugging
+            State.ShowFPS = true;
 
-      //Set up the stuff needed for the first (title) state
-      titleScreen = new TitleScreen(Content, scene);
-      spriteBatch = new SpriteBatch(GraphicsDevice);
+            bigRed = new brb(ref scene, ref menuState, ref gameState);
+            //Player player = new Player();
+            //Player player2 = new Player();
+            //hb = new healthBar(scene, player, true);
+            //hb2 = new healthBar(scene, player2, false);
+            //hb2.adjustHealth(-10);
 
-	  base.Initialize();
-	}
+            //Set up the stuff needed for the first (title) state
+            titleScreen = new TitleScreen(Content, scene);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-	private void CreateLights()
-	{
-	  // Create a directional light source
-	  LightSource lightSource = new LightSource();
-	  lightSource.Direction = new Vector3(1, -1, -1);
-	  lightSource.Diffuse = Color.White.ToVector4();
-	  lightSource.Specular = new Vector4(0.6f, 0.6f, 0.6f, 1);
+            base.Initialize();
+        }
 
-	  // Create a light node to hold the light source
-	  LightNode lightNode = new LightNode();
-	  lightNode.LightSources.Add(lightSource);
+        private void CreateLights()
+        {
+            // Create a directional light source
+            LightSource lightSource = new LightSource();
+            lightSource.Direction = new Vector3(1, -1, -1);
+            lightSource.Diffuse = Color.White.ToVector4();
+            lightSource.Specular = new Vector4(0.6f, 0.6f, 0.6f, 1);
 
-	  scene.RootNode.AddChild(lightNode);
-	}
+            // Create a light node to hold the light source
+            LightNode lightNode = new LightNode();
+            lightNode.LightSources.Add(lightSource);
 
-	private void SetupMarkerTracking()
-	{
-	  // Create our video capture device that uses DirectShow library. Note that 
-	  // the combinations of resolution and frame rate that are allowed depend on 
-	  // the particular video capture device. Thus, setting incorrect resolution 
-	  // and frame rate values may cause exceptions or simply be ignored, depending 
-	  // on the device driver.  The values set here will work for a Microsoft VX 6000, 
-	  // and many other webcams.
-	  IVideoCapture captureDevice = null;
+            scene.RootNode.AddChild(lightNode);
+        }
 
-	  if (useStaticImage)
-	  {
-		//do nothing
-	  }
-	  else
-	  {
-		captureDevice = new DirectShowCapture();
-		captureDevice.InitVideoCapture(0, FrameRate._60Hz, Resolution._640x480,
-			ImageFormat.R8G8B8_24, false);
-	  }
+        private void SetupMarkerTracking()
+        {
+            // Create our video capture device that uses DirectShow library. Note that 
+            // the combinations of resolution and frame rate that are allowed depend on 
+            // the particular video capture device. Thus, setting incorrect resolution 
+            // and frame rate values may cause exceptions or simply be ignored, depending 
+            // on the device driver.  The values set here will work for a Microsoft VX 6000, 
+            // and many other webcams.
+            IVideoCapture captureDevice = null;
 
-	  // Add this video capture device to the scene so that it can be used for
-	  // the marker tracker
-	  scene.AddVideoCaptureDevice(captureDevice);
+            if (useStaticImage)
+            {
+                //do nothing
+            }
+            else
+            {
+                captureDevice = new DirectShowCapture();
+                captureDevice.InitVideoCapture(0, FrameRate._60Hz, Resolution._640x480,
+                    ImageFormat.R8G8B8_24, false);
+            }
 
-	  IMarkerTracker tracker = null;
+            // Add this video capture device to the scene so that it can be used for
+            // the marker tracker
+            scene.AddVideoCaptureDevice(captureDevice);
+
+            IMarkerTracker tracker = null;
 
 #if USE_ARTAG
 			// Create an optical marker tracker that uses ARTag library
@@ -212,240 +214,240 @@ namespace ARRG_Game
 			tracker.InitTracker(638.052f, 633.673f, captureDevice.Width,
 				captureDevice.Height, false, "ARTag.cf");
 #else
-	  // Create an optical marker tracker that uses ALVAR library
-	  tracker = new ALVARMarkerTracker();
-	  ((ALVARMarkerTracker)tracker).MaxMarkerError = 0.02f;
-	  tracker.InitTracker(captureDevice.Width, captureDevice.Height, "calib.xml", 9.0);
+            // Create an optical marker tracker that uses ALVAR library
+            tracker = new ALVARMarkerTracker();
+            ((ALVARMarkerTracker)tracker).MaxMarkerError = 0.02f;
+            tracker.InitTracker(captureDevice.Width, captureDevice.Height, "calib.xml", 9.0);
 #endif
 
-	  // Set the marker tracker to use for our scene
-	  scene.MarkerTracker = tracker;
+            // Set the marker tracker to use for our scene
+            scene.MarkerTracker = tracker;
 
-	  // Display the camera image in the background. Note that this parameter should
-	  // be set after adding at least one video capture device to the Scene class.
-	  scene.ShowCameraImage = true;
-	}
+            // Display the camera image in the background. Note that this parameter should
+            // be set after adding at least one video capture device to the Scene class.
+            scene.ShowCameraImage = true;
+        }
 
-	private void CreateGround()
-	{
-	  //GeometryNode groundNode = new GeometryNode("Ground");
+        private void CreateGround()
+        {
+            //GeometryNode groundNode = new GeometryNode("Ground");
 
 #if USE_ARTAG
 			groundNode.Model = new Box(85, 66, 0.1f);
 #else
-	  //groundNode.Model = new Box(95, 59, 0.1f);
+            //groundNode.Model = new Box(95, 59, 0.1f);
 #endif
 
-	  // Set this ground model to act as an occluder so that it appears transparent
-	  //groundNode.IsOccluder = true;
+            // Set this ground model to act as an occluder so that it appears transparent
+            //groundNode.IsOccluder = true;
 
-	  // Make the ground model to receive shadow casted by other objects with
-	  // CastShadows set to true
-	 // groundNode.Model.ReceiveShadows = true;
+            // Make the ground model to receive shadow casted by other objects with
+            // CastShadows set to true
+            // groundNode.Model.ReceiveShadows = true;
 
-	  //Material groundMaterial = new Material();
-	  //groundMaterial.Diffuse = Color.Black.ToVector4();
-	  //groundMaterial.Specular = Color.White.ToVector4();
-	  //groundMaterial.SpecularPower = 20;
+            //Material groundMaterial = new Material();
+            //groundMaterial.Diffuse = Color.Black.ToVector4();
+            //groundMaterial.Specular = Color.White.ToVector4();
+            //groundMaterial.SpecularPower = 20;
 
-	  //groundNode.Material = groundMaterial;
+            //groundNode.Material = groundMaterial;
 
-	  //groundMarkerNode.AddChild(groundNode);
+            //groundMarkerNode.AddChild(groundNode);
 
-	  p = new Player(scene, 1, groundMarkerNode);
-      p2 = new Player(scene, 2, groundMarkerNode);
-	}
-
-	private void CreateObjects()
-	{
-		//TODO: replace 54 with a constant to show what the ids are of.
-		int[] ground_markers = new int[54];
-		for (int i = 0; i < ground_markers.Length; i++)
-		ground_markers[i] = i;
-		groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
-
-		//// Create a material to apply to the cylinder model
-		//Material mat1 = new Material();
-		//mat1.Diffuse = new Vector4(0, 1, 0, 1);
-		//mat1.Specular = Color.White.ToVector4();
-		//mat1.SpecularPower = 10;
-
-		////Create the cylinder
-		//GeometryNode cylinderNode = new GeometryNode("Cylinder");
-		//cylinderNode.Model = new Cylinder(10, 10, 20, 20);
-		//cylinderNode.Material = mat1;
-		//TransformNode cylinderTransNode = new TransformNode();
-		//cylinderTransNode.AddChild(cylinderNode);
-		//cylinderTransNode.Translation = new Vector3(0, 0, 15);
-
-		//groundMarkerNode.AddChild(cylinderTransNode);
-		scene.RootNode.AddChild(groundMarkerNode);
-	}
-
-	/// <summary>
-	/// UnloadContent will be called once per game and is the place to unload
-	/// all content.
-	/// </summary>
-	protected override void UnloadContent()
-	{
-	  Content.Unload();
-	}
-
-	/// <summary>
-	/// Allows the game to run logic such as updating the world,
-	/// checking for collisions, gathering input, and playing audio.
-	/// </summary>
-	/// <param name="gameTime">Provides a snapshot of timing values.</param>
-	protected override void Update(GameTime gameTime)
-	{
-	  switch (menuState)
-	  {
-		case MenuStates.TITLE: UpdateTitle(); break;
-		case MenuStates.TALENT: UpdateTalent(); break;
-		case MenuStates.PRE_GAME: UpdatePreGame(); break;
-		case MenuStates.MARKET: UpdateMarket(); break;
-		case MenuStates.INVENTORY: UpdateInventory(); break;
-		case MenuStates.INGAME: UpdateInGame(); break;
-		case default(MenuStates): break;
-	  }
-	  p.Update();
-      p2.Update();
-      bigRed.updateMenuBrb(menuState,gameState);
-	  base.Update(gameTime);
-
-	}
-
-	/// <summary>
-	/// This is called when the game should draw itself.
-	/// </summary>
-	/// <param name="gameTime">Provides a snapshot of timing values.</param>
-	protected override void Draw(GameTime gameTime)
-	{
-      GraphicsDevice.Clear(Color.White);
-      base.Draw(gameTime);
-      switch (menuState)
-	  {
-		case MenuStates.TITLE: DrawTitle(gameTime); break;
-		case MenuStates.TALENT: DrawTalent(); break;
-		case MenuStates.PRE_GAME: DrawPreGame(); break;
-		case MenuStates.MARKET: DrawMarket(); break;
-		case MenuStates.INVENTORY: DrawInventory(); break;
-		case MenuStates.INGAME: DrawInGame(); break;
-		case default(MenuStates): break;
-	  }
-	}
-
-	/// <summary>
-	/// Update method for Title state
-	/// </summary>
-	private void UpdateTitle()
-	{
-        if (titleScreen.playerChoice() != CreatureType.NONE && titleScreen.playerChoice() != CreatureType.ALL)
-        {
-            switch (titleScreen.playerChoice())
-            {
-                case CreatureType.BEASTS: talentScreen = new TalentScreen(scene, Content, 0); break;
-                case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(scene, Content, 1); break;
-                case CreatureType.ROBOT: talentScreen = new TalentScreen(scene, Content, 2); break;
-            }
-            titleScreen.Kill(scene);
-            //Should we somehow free up the memory of the title screen?
-            menuState = MenuStates.TALENT;
-            bigRed.updateMenuBrb(menuState,gameState);
-            talentScreen.Display();
+            p = new Player(scene, 1, groundMarkerNode);
+            p2 = new Player(scene, 2, groundMarkerNode);
         }
-	}
-	/// <summary>
-	/// Update method for Talent state
-	/// </summary>
-	private void UpdateTalent()
-	{
-        talentScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
-		if (talentScreen.wasSubmitted())
-		{
-            List<Talent> talents = talentScreen.getTalentInfo();
-			menuState = MenuStates.PRE_GAME;
-		}
-	}
-	/// <summary>
-	/// Update method for Pre-game state
-	/// </summary>
-	private void UpdatePreGame()
-	{
-		
-	}
-	/// <summary>
-	/// Update method for Market state
-	/// </summary>
-	private void UpdateMarket()
-	{
 
-	}
-	/// <summary>
-	/// Update method for Inventory state
-	/// </summary>
-	private void UpdateInventory()
-	{
+        private void CreateObjects()
+        {
+            //TODO: replace 54 with a constant to show what the ids are of.
+            int[] ground_markers = new int[54];
+            for (int i = 0; i < ground_markers.Length; i++)
+                ground_markers[i] = i;
+            groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
-	}
-	/// <summary>
-	/// Update method for InGame state
-	/// </summary>
-	private void UpdateInGame()
-	{
+            //// Create a material to apply to the cylinder model
+            //Material mat1 = new Material();
+            //mat1.Diffuse = new Vector4(0, 1, 0, 1);
+            //mat1.Specular = Color.White.ToVector4();
+            //mat1.SpecularPower = 10;
 
-	}
+            ////Create the cylinder
+            //GeometryNode cylinderNode = new GeometryNode("Cylinder");
+            //cylinderNode.Model = new Cylinder(10, 10, 20, 20);
+            //cylinderNode.Material = mat1;
+            //TransformNode cylinderTransNode = new TransformNode();
+            //cylinderTransNode.AddChild(cylinderNode);
+            //cylinderTransNode.Translation = new Vector3(0, 0, 15);
+
+            //groundMarkerNode.AddChild(cylinderTransNode);
+            scene.RootNode.AddChild(groundMarkerNode);
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// all content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            Content.Unload();
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            switch (menuState)
+            {
+                case MenuStates.TITLE: UpdateTitle(); break;
+                case MenuStates.TALENT: UpdateTalent(); break;
+                case MenuStates.PRE_GAME: UpdatePreGame(); break;
+                case MenuStates.MARKET: UpdateMarket(); break;
+                case MenuStates.INVENTORY: UpdateInventory(); break;
+                case MenuStates.INGAME: UpdateInGame(); break;
+                case default(MenuStates): break;
+            }
+            p.Update();
+            p2.Update();
+            //bigRed.updateMenuBrb(menuState,gameState);
+            base.Update(gameTime);
+
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.White);
+            base.Draw(gameTime);
+            switch (menuState)
+            {
+                case MenuStates.TITLE: DrawTitle(gameTime); break;
+                case MenuStates.TALENT: DrawTalent(); break;
+                case MenuStates.PRE_GAME: DrawPreGame(); break;
+                case MenuStates.MARKET: DrawMarket(); break;
+                case MenuStates.INVENTORY: DrawInventory(); break;
+                case MenuStates.INGAME: DrawInGame(); break;
+                case default(MenuStates): break;
+            }
+        }
+
+        /// <summary>
+        /// Update method for Title state
+        /// </summary>
+        private void UpdateTitle()
+        {
+            if (titleScreen.playerChoice() != CreatureType.NONE && titleScreen.playerChoice() != CreatureType.ALL)
+            {
+                switch (titleScreen.playerChoice())
+                {
+                    case CreatureType.BEASTS: talentScreen = new TalentScreen(scene, Content, 0); break;
+                    case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(scene, Content, 1); break;
+                    case CreatureType.ROBOT: talentScreen = new TalentScreen(scene, Content, 2); break;
+                }
+                titleScreen.Kill(scene);
+                //Should we somehow free up the memory of the title screen?
+                menuState = MenuStates.TALENT;
+                //bigRed.updateMenuBrb(menuState,gameState);
+                talentScreen.Display();
+            }
+        }
+        /// <summary>
+        /// Update method for Talent state
+        /// </summary>
+        private void UpdateTalent()
+        {
+            talentScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
+            if (talentScreen.wasSubmitted())
+            {
+                List<Talent> talents = talentScreen.getTalentInfo();
+                menuState = MenuStates.PRE_GAME;
+            }
+        }
+        /// <summary>
+        /// Update method for Pre-game state
+        /// </summary>
+        private void UpdatePreGame()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Market state
+        /// </summary>
+        private void UpdateMarket()
+        {
+
+        }
+        /// <summary>
+        /// Update method for Inventory state
+        /// </summary>
+        private void UpdateInventory()
+        {
+
+        }
+        /// <summary>
+        /// Update method for InGame state
+        /// </summary>
+        private void UpdateInGame()
+        {
+
+        }
 
 
-	/// <summary>
-	/// Draw method for Title state
-	/// </summary>
-    private void DrawTitle(GameTime gameTime)
-	{
-        titleScreen.Draw(spriteBatch);
+        /// <summary>
+        /// Draw method for Title state
+        /// </summary>
+        private void DrawTitle(GameTime gameTime)
+        {
+            titleScreen.Draw(spriteBatch);
 
-        /**
-         * I could not seperate the 3-button UI that was created in TitleScreen
-         * from the scene and so it would either draw the camera image over
-         * the title screen texture OR would draw the buttons behind the title
-         * screen texture.  This should fix that. */
-        scene.UIRenderer.Draw(0.0f, false);
-	}
-	/// <summary>
-	/// Draw method for Talent state
-	/// </summary>
-	private void DrawTalent()
-	{
-		
+            /**
+             * I could not seperate the 3-button UI that was created in TitleScreen
+             * from the scene and so it would either draw the camera image over
+             * the title screen texture OR would draw the buttons behind the title
+             * screen texture.  This should fix that. */
+            scene.UIRenderer.Draw(0.0f, false);
+        }
+        /// <summary>
+        /// Draw method for Talent state
+        /// </summary>
+        private void DrawTalent()
+        {
 
-	}
-	/// <summary>
-	/// Draw method for Pre-game state
-	/// </summary>
-	private void DrawPreGame()
-	{
 
-	}
-	/// <summary>
-	/// Draw method for Market state
-	/// </summary>
-	private void DrawMarket()
-	{
+        }
+        /// <summary>
+        /// Draw method for Pre-game state
+        /// </summary>
+        private void DrawPreGame()
+        {
 
-	}
-	/// <summary>
-	/// Draw method for Inventory state
-	/// </summary>
-	private void DrawInventory()
-	{
+        }
+        /// <summary>
+        /// Draw method for Market state
+        /// </summary>
+        private void DrawMarket()
+        {
 
-	}
-	/// <summary>
-	/// Draw method for InGame state
-	/// </summary>
-	private void DrawInGame()
-	{
+        }
+        /// <summary>
+        /// Draw method for Inventory state
+        /// </summary>
+        private void DrawInventory()
+        {
 
-	}
-  }
+        }
+        /// <summary>
+        /// Draw method for InGame state
+        /// </summary>
+        private void DrawInGame()
+        {
+
+        }
+    }
 }
