@@ -244,6 +244,7 @@ namespace ARRG_Game
 
             monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Whelp", "dragon1", 3, 1, true));
             monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Drake", "dragon2", 5, 3, false));
+            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "WTF", "alexmodel", 2, 3, false));
             p.PurchasedMonsters = monsters;  //For testing purposes
             p2.PurchasedMonsters = monsters; //For testing purposes
         }
