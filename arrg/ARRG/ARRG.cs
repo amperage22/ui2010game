@@ -62,7 +62,7 @@ namespace ARRG_Game
 {
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-    enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOT, ALL };
+    enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum Modifier
     {
@@ -75,7 +75,7 @@ namespace ARRG_Game
     {
         GraphicsDeviceManager graphics;
         Player p, p2;
-
+        List<MonsterBuilder> monsters;
         Scene scene;
         MarkerNode groundMarkerNode;
         private const int dice_count = 6;
@@ -86,7 +86,7 @@ namespace ARRG_Game
         brb bigRed;
 
         //Set up the states
-        MenuStates menuState = MenuStates.INGAME;
+        MenuStates menuState = MenuStates.TITLE;
         InGameStates gameState = InGameStates.DRAW;
 
         // set this to false if you are going to use a webcam
@@ -136,7 +136,7 @@ namespace ARRG_Game
             CreateObjects();
 
             // Create the ground that represents the physical ground marker array
-            CreateGround();
+            CreateMonsterList();
 
             // Use per pixel lighting for better quality (If you using non NVidia graphics card,
             // setting this to true may reduce the performance significantly)
@@ -228,34 +228,24 @@ namespace ARRG_Game
             scene.ShowCameraImage = true;
         }
 
-        private void CreateGround()
+        private void CreateMonsterList()
         {
-            //GeometryNode groundNode = new GeometryNode("Ground");
+            monsters = new List<MonsterBuilder>();
 
-#if USE_ARTAG
-			groundNode.Model = new Box(85, 66, 0.1f);
-#else
-            //groundNode.Model = new Box(95, 59, 0.1f);
-#endif
+            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Bearrorist", "bear", 4, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Penguinist", "penguin", 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Rhymenoceros", "rhino", 5, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Tigeriffic", "tiger", 3, 5, true));
 
-            // Set this ground model to act as an occluder so that it appears transparent
-            //groundNode.IsOccluder = true;
+            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Dalek", "dalek", 4, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Gundam", "gundam", 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Samus", "samus", 5, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Tank", "tank", 3, 5, false));
 
-            // Make the ground model to receive shadow casted by other objects with
-            // CastShadows set to true
-            // groundNode.Model.ReceiveShadows = true;
-
-            //Material groundMaterial = new Material();
-            //groundMaterial.Diffuse = Color.Black.ToVector4();
-            //groundMaterial.Specular = Color.White.ToVector4();
-            //groundMaterial.SpecularPower = 20;
-
-            //groundNode.Material = groundMaterial;
-
-            //groundMarkerNode.AddChild(groundNode);
-
-            p = new Player(scene, 1, groundMarkerNode);
-            p2 = new Player(scene, 2, groundMarkerNode);
+            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Whelp", "dragon1", 3, 1, false));
+            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Drake", "dragon2", 5, 3, true));
+            p.Monsters = monsters;  //For testing purposes
+            p2.Monsters = monsters; //For testing purposes
         }
 
         private void CreateObjects()
@@ -282,6 +272,10 @@ namespace ARRG_Game
 
             //groundMarkerNode.AddChild(cylinderTransNode);
             scene.RootNode.AddChild(groundMarkerNode);
+            p = new Player(ref scene, 1, ref groundMarkerNode);
+
+            p2 = new Player(ref scene, 2, ref groundMarkerNode);
+
         }
 
         /// <summary>
@@ -348,7 +342,7 @@ namespace ARRG_Game
                 {
                     case CreatureType.BEASTS: talentScreen = new TalentScreen(scene, Content, 0); break;
                     case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(scene, Content, 1); break;
-                    case CreatureType.ROBOT: talentScreen = new TalentScreen(scene, Content, 2); break;
+                    case CreatureType.ROBOTS: talentScreen = new TalentScreen(scene, Content, 2); break;
                 }
                 titleScreen.Kill(scene);
                 //Should we somehow free up the memory of the title screen?
@@ -366,7 +360,7 @@ namespace ARRG_Game
             if (talentScreen.wasSubmitted())
             {
                 List<Talent> talents = talentScreen.getTalentInfo();
-                menuState = MenuStates.PRE_GAME;
+                menuState = MenuStates.INGAME;
             }
         }
         /// <summary>

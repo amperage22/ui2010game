@@ -27,7 +27,7 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    public class Die
+    class Die
     {
         private const int firstDieID = 128;
         private const double PARALLEL_ANGLE = 0;
@@ -65,7 +65,7 @@ namespace ARRG_Game
             return false;
         }
 
-        public bool setTopMarker()
+        public bool setTopMarker(MonsterBuilder m)
         {
             Vector3 ForwardRightVector = ground.WorldTransformation.Forward;
             if (ForwardRightVector.Equals(Vector3.Zero))
@@ -86,10 +86,7 @@ namespace ARRG_Game
                                 upMarker.RemoveChild(currentMonster.TransNode);
 
                             upMarker = side;
-                            if (dieNum <= 2)
-                                addMonster(new Monster("Test", "samus", 5, 5, true));
-                            else
-                                addMonster(new Monster("Test2", "gundam", 5, 5, true));
+                            addMonster(m.createMonster());
                             return true;
                         }
                     }

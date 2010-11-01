@@ -31,8 +31,8 @@ namespace ARRG_Game
     {
         private static int MAX_NUM_DIE = 3;
         private static int MAX_CARDS_IN_DECK = 20;      //SUbject to change
-        private static int MAX_CREATURES_INGAME = 8;
-        
+        private static int MAX_CREATURES_INGAME = 6;
+
         private int health;
         private int mana;
         private int gold;
@@ -44,10 +44,14 @@ namespace ARRG_Game
         private Monster[] selectedMonsters;
         private int numMonsters;
 
-        private int numCards;   //May not be necessary
 
-        bool x = true;
         private List<MonsterBuilder> monsters;     //List for inventory purposes
+
+        internal List<MonsterBuilder> Monsters
+        {
+            get { return monsters; }
+            set { monsters = value; }
+        }
         private List<Talent> talents;  //List for inventory purposes
 
         private Talent[] activeTalents;
@@ -58,7 +62,7 @@ namespace ARRG_Game
          * firstDieNum Which die is being created?  Die1, 2, 3?
          * numDice The amount of dice this player will get
          */
-        public Player(Scene s, int playerNum, MarkerNode ground)
+        public Player(ref Scene s, int playerNum, ref MarkerNode ground)
         {
             health = 20;
             mana = 10;
@@ -69,9 +73,8 @@ namespace ARRG_Game
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
-            {
-                die[i] = new Die(ref s, i + (playerNum - 1) * MAX_NUM_DIE,ref ground);
-            }
+                die[i] = new Die(ref s, i + (playerNum - 1) * MAX_NUM_DIE, ref ground);
+
         }
 
 
@@ -86,17 +89,20 @@ namespace ARRG_Game
             get { return mana; }
             set { mana = value; }
         }
-
-        internal Die[] Die
-        {
-            get { return die; }
-            set { die = value; }
-        }
-
         public int Gold
         {
             get { return gold; }
             set { gold = value; }
+        }
+        public Monster[] SelectedMonsters
+        {
+            get { return selectedMonsters; }
+            set { selectedMonsters = value; }
+        }
+        internal Die[] Die
+        {
+            get { return die; }
+            set { die = value; }
         }
 
         public bool addMonster(Monster m)
@@ -111,31 +117,11 @@ namespace ARRG_Game
 
         public void Update()
         {
+
             foreach (Die d in die)
             {
-                if (d.setTopMarker()) { }
-                    //d.addMonster(new Monster("Test", "test", 5, 5));
-
-                    ////Create mat for blue cylinder
-                    //Material mat = new Material();
-                    //mat.Diffuse = new Vector4(0, 1, 0, 1);
-                    //mat.Specular = Color.White.ToVector4();
-                    //mat.SpecularPower = 10;
-                    //mat.Emissive = Color.Blue.ToVector4();
-
-                    ////Create the blue cylinder for the die marker
-                    //GeometryNode cylinderNode = new GeometryNode("Cylinder");
-                    //cylinderNode.Model = new Cylinder(10, 10, 10, 10);
-                    //cylinderNode.Material = mat;
-                    //TransformNode cylinderTransNode = new TransformNode();
-                    //cylinderTransNode.AddChild(cylinderNode);
-                    //cylinderTransNode.Translation = new Vector3(0, 0, 25);
-
-                    //d.assignMonster(cylinderTransNode);
-
-                    //x = false;
-                    
-
+                Random r = new Random();
+                d.setTopMarker(monsters[r.Next(monsters.Count)]);  //Test code
             }
         }
 

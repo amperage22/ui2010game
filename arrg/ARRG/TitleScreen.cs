@@ -82,7 +82,7 @@ namespace ARRG_Game
             else if (source == creature[1])
                 specialization = CreatureType.DRAGONKIN;
             else if (source == creature[2])
-                specialization = CreatureType.ROBOT;
+                specialization = CreatureType.ROBOTS;
         }
 
         public CreatureType playerChoice()
