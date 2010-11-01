@@ -32,13 +32,15 @@ namespace ARRG_Game
   {
     Scene scene;
     MenuStates curState;
+    InGameStates gameState;
     ContentManager content;
     G2DPanel brbFrame;
-    public brb(Scene scene, MenuStates curState, ContentManager content)
+    public brb(Scene scene, MenuStates menuState, ContentManager content, InGameStates gameState)
     {
       this.scene = scene;
-      this.curState = curState;
+      this.curState = menuState;
       this.content = content;
+      this.gameState = gameState;
 
       createObject();
     }
@@ -75,16 +77,36 @@ namespace ARRG_Game
       brbFrame.BackgroundColor = Color.Black;
 
       Console.WriteLine(curState);
-      updateBrb(curState);
+      updateMenuBrb(curState,gameState);
       scene.UIRenderer.Add2DComponent(brbFrame);
     }
 
-    public void updateBrb(MenuStates state)
+    public void updateMenuBrb(MenuStates state, InGameStates gameState)
     {
-      Console.WriteLine(state);
+      //Console.WriteLine(state);
       switch (state)
       {
         case MenuStates.INGAME:
+          switch(gameState)
+          {
+            case InGameStates.ATTACK:
+              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
+              break;
+            case InGameStates.DAMAGE:
+              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
+              break;
+            case InGameStates.DISCARD:
+              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
+              break;
+            case InGameStates.DRAW:
+              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
+              break;
+            case InGameStates.SUMMON:
+              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbSummon");
+              break;
+            case default(InGameStates):
+              break;
+          }
           break;
         case MenuStates.INVENTORY:
           brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbInventory");
