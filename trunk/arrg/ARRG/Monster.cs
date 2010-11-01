@@ -31,14 +31,14 @@ namespace ARRG_Game
 {
     public class Monster
     {
-        protected TransformNode transNode;
-        protected int health, power;
-        protected double hit, dodge, crit;
-        protected List<int> dmgMods;
-        protected List<int> healthMods;
-        protected List<int> dmgTaken;
-        protected List<int> dmgPrevented;
-        protected string name;
+        protected TransformNode transNode;  //Instantiated through Monster
+        protected int health, power;        //Instantiated through Monster
+        protected double hit, dodge, crit;  //Instantiated through Child classes
+        protected List<int> dmgMods;        //Instantiated through Monster
+        protected List<int> healthMods;     //Instantiated through Monster
+        protected List<int> dmgTaken;       //Instantiated through Monster
+        protected List<int> dmgPrevented;   //Instantiated through Monster
+        protected string name;              //Instantiated through Monster
 
         public Monster(string name, String model, int health, int power, bool useInternal)
         {
@@ -56,7 +56,6 @@ namespace ARRG_Game
             robotNode.Model = robotModel;
             if (!useInternal)
             {
-                //********Test code****
                 Material robotMaterial = new Material();
                 robotMaterial.Diffuse = Color.Orange.ToVector4();
                 robotMaterial.Specular = Color.White.ToVector4();
@@ -72,10 +71,10 @@ namespace ARRG_Game
             transNode.AddChild(robotNode);
             transNode.Scale *= 0.03f;
             transNode.Translation += new Vector3(10, 0, 0);
-            //********End Test code****
         }
-        public Monster() { }
 
+
+        //********* Selectors and Mutators****************
         public int Health
         {
             get { return health; }
@@ -93,6 +92,12 @@ namespace ARRG_Game
             get { return name; }
             set { name = value; }
         }
+        public TransformNode TransNode
+        {
+            get { return transNode; }
+            set { transNode = value; }
+        }
+        //*********End Selectors and Mutators*************
 
         public void adjustPower(int mod)
         {
@@ -126,11 +131,15 @@ namespace ARRG_Game
             dmgPrevented.Clear();
         }
 
-        public TransformNode TransNode
+        public void attack(ref Monster oppMonster)
         {
-            get { return transNode; }
-            set { transNode = value; }
+            TransformNode oppMonsNode = oppMonster.TransNode;
+            float d;
+            d = Vector3.Distance(transNode.Translation, oppMonsNode.Translation);
+
         }
+
+ 
     }
 
     class MonsterBuilder
@@ -140,23 +149,25 @@ namespace ARRG_Game
         protected String model;
         int health;
         int power;
-        public MonsterBuilder(CreatureType type, String name, String model, int health, int power)
+        bool useInternal;
+        public MonsterBuilder(CreatureType type, String name, String model, int health, int power, bool useInternal)
         {
             this.name = name;
             this.health = health;
             this.power = power;
             this.type = type;
             this.model = model;
+            this.useInternal = useInternal;
         }
         public Monster createMonster()
         {
             switch (type)
             {
-                case CreatureType.BEASTS: break;
-                case CreatureType.DRAGONKIN: break;
-                case CreatureType.ROBOT: break;
+                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal); break;
+                case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);break;
+                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal);
             }
-            return new Monster(name, model, health, power, true);
+            return new Monster(name, model, health, power, useInternal);
         }
     }
 

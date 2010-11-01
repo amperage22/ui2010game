@@ -299,7 +299,7 @@ namespace ARRG_Game
             /* Beasts Tree */
             talents[(int)Creature.BEASTS] = new TalentTree(CreatureType.BEASTS);
             talents[(int)Creature.DRAGONKIN] = new TalentTree(CreatureType.DRAGONKIN);
-            talents[(int)Creature.ROBOTS] = new TalentTree(CreatureType.ROBOT);
+            talents[(int)Creature.ROBOTS] = new TalentTree(CreatureType.ROBOTS);
         }
 
         private void HandleAlloc(int button, Point mouse)

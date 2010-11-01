@@ -35,14 +35,14 @@ namespace ARRG_Game
                     tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack.");
                     tier3 = new Talent(30, Modifier.FIREBREATH_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to cast a\nFIRE BREATH attack!");
                     break;
-                case CreatureType.ROBOT:
+                case CreatureType.ROBOTS:
                     tier1[0] = new Talent(2, Modifier.CRIT_PERCENT, CreatureType.ALL, 2, "chance to CRITICALLY hit the enemy.");
                     tier1[1] = new Talent(4, Modifier.DODGE_PERCENT, CreatureType.ALL, 1, "chance to DODGE an enemy attack.");
                     tier1[2] = new Talent(2, Modifier.HP, CreatureType.ALL, 2, "HP per monster.", -2, Modifier.DAMAGE, "DAMAGE dealt.");
-                    tier2[0] = new Talent(2, Modifier.HIT_PERCENT, CreatureType.ROBOT, 2, "chance for ROBOTS to\nHIT the enemy.");
-                    tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOT, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.ROBOT, 2, "chance for your ROBOTS to\nPARRY an attack.");
-                    tier3 = new Talent(30, Modifier.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOT, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
+                    tier2[0] = new Talent(2, Modifier.HIT_PERCENT, CreatureType.ROBOTS, 2, "chance for ROBOTS to\nHIT the enemy.");
+                    tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
+                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.ROBOTS, 2, "chance for your ROBOTS to\nPARRY an attack.");
+                    tier3 = new Talent(30, Modifier.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
                     break;
                 default:
                     throw new Exception(String.Format("Bad CreatureType passed to TalentTree constructor {0}", c));

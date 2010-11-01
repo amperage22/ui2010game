@@ -10,6 +10,9 @@ namespace ARRG_Game
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
         {
+            hit = 80;
+            dodge = 20;
+            crit = 40;
         }
     }
 }
