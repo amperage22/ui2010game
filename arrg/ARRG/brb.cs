@@ -59,6 +59,23 @@ namespace ARRG_Game
             scene.UIRenderer.Add2DComponent(brbButton);
         }
 
+        public void updateMenuState(MenuStates s)
+        {
+            curState = s;
+        }
+        public void updateGameState(InGameStates s)
+        {
+            gameState = s;
+        }
+        public MenuStates getMenuState()
+        {
+            return curState;
+        }
+        public InGameStates getInGameState()
+        {
+            return gameState;
+        }
+
         private void updateMenuBrb(int mouseButton, Point mouse)
         {
             switch (curState)

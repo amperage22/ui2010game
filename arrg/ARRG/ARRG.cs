@@ -290,6 +290,7 @@ namespace ARRG_Game
                 case MenuStates.INGAME: UpdateInGame(); break;
                 case default(MenuStates): break;
             }
+            bigRed.updateMenuState(menuState);
 
             base.Update(gameTime);
 
