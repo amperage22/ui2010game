@@ -7,8 +7,8 @@ namespace ARRG_Game
 {
     public class Beasts: Monster
     {
-        public Beasts(string name, String model, int health, int power)
-            : base(name, model, health, power)
+        public Beasts(string name, String model, int health, int power, bool useInternal)
+            : base(name, model, health, power, useInternal)
         {
         }
     }
