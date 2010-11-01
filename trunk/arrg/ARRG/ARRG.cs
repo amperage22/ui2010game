@@ -83,7 +83,7 @@ namespace ARRG_Game
         TitleScreen titleScreen;
         TalentScreen talentScreen;
         SpriteBatch spriteBatch;
-        brb bigRed;
+        Brb bigRed;
 
         //Set up the states
         MenuStates menuState = MenuStates.TITLE;
@@ -151,7 +151,7 @@ namespace ARRG_Game
             // Show Frames-Per-Second on the screen for debugging
             State.ShowFPS = true;
 
-            bigRed = new brb(ref scene, ref menuState, ref gameState);
+            bigRed = new Brb(ref scene, menuState, gameState);
             //Player player = new Player();
             //Player player2 = new Player();
             //hb = new healthBar(scene, player, true);
@@ -242,10 +242,10 @@ namespace ARRG_Game
             monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Samus", "samus", 5, 3, true));
             monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Tank", "tank", 3, 5, false));
 
-            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Whelp", "dragon1", 3, 1, false));
-            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Drake", "dragon2", 5, 3, true));
-            p.Monsters = monsters;  //For testing purposes
-            p2.Monsters = monsters; //For testing purposes
+            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Whelp", "dragon1", 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Drake", "dragon2", 5, 3, false));
+            p.PurchasedMonsters = monsters;  //For testing purposes
+            p2.PurchasedMonsters = monsters; //For testing purposes
         }
 
         private void CreateObjects()
@@ -256,24 +256,10 @@ namespace ARRG_Game
                 ground_markers[i] = i;
             groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
-            //// Create a material to apply to the cylinder model
-            //Material mat1 = new Material();
-            //mat1.Diffuse = new Vector4(0, 1, 0, 1);
-            //mat1.Specular = Color.White.ToVector4();
-            //mat1.SpecularPower = 10;
-
-            ////Create the cylinder
-            //GeometryNode cylinderNode = new GeometryNode("Cylinder");
-            //cylinderNode.Model = new Cylinder(10, 10, 20, 20);
-            //cylinderNode.Material = mat1;
-            //TransformNode cylinderTransNode = new TransformNode();
-            //cylinderTransNode.AddChild(cylinderNode);
-            //cylinderTransNode.Translation = new Vector3(0, 0, 15);
-
-            //groundMarkerNode.AddChild(cylinderTransNode);
+           
             scene.RootNode.AddChild(groundMarkerNode);
-            p = new Player(ref scene, 1, ref groundMarkerNode);
 
+            p = new Player(ref scene, 1, ref groundMarkerNode);
             p2 = new Player(ref scene, 2, ref groundMarkerNode);
 
         }
@@ -304,9 +290,7 @@ namespace ARRG_Game
                 case MenuStates.INGAME: UpdateInGame(); break;
                 case default(MenuStates): break;
             }
-            p.Update();
-            p2.Update();
-            //bigRed.updateMenuBrb(menuState,gameState);
+
             base.Update(gameTime);
 
         }
@@ -389,7 +373,9 @@ namespace ARRG_Game
         /// </summary>
         private void UpdateInGame()
         {
-
+            bigRed.updateMenuBrb(
+            p.Update();
+            p2.Update();
         }
 
 

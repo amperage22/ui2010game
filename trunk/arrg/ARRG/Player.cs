@@ -27,15 +27,16 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    public class Player
+    class Player
     {
         private static int MAX_NUM_DIE = 3;
-        private static int MAX_CARDS_IN_DECK = 20;      //SUbject to change
         private static int MAX_CREATURES_INGAME = 6;
 
+        //*****Player stats****
         private int health;
         private int mana;
         private int gold;
+        //***End player stats***
 
         private MarkerNode ground;
 
@@ -45,12 +46,12 @@ namespace ARRG_Game
         private int numMonsters;
 
 
-        private List<MonsterBuilder> monsters;     //List for inventory purposes
+        private List<MonsterBuilder> purchasedMonsters;     //List for inventory purposes
 
-        internal List<MonsterBuilder> Monsters
+        internal List<MonsterBuilder> PurchasedMonsters
         {
-            get { return monsters; }
-            set { monsters = value; }
+            get { return purchasedMonsters; }
+            set { purchasedMonsters = value; }
         }
         private List<Talent> talents;  //List for inventory purposes
 
@@ -121,7 +122,14 @@ namespace ARRG_Game
             foreach (Die d in die)
             {
                 Random r = new Random();
-                d.setTopMarker(monsters[r.Next(monsters.Count)]);  //Test code
+                d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Test code
+            }
+        }
+        public void updateAtack(Die d2)
+        {
+            foreach (Die d in die)
+            {
+                d.CurrentMonster.attack(d2.CurrentMonster);
             }
         }
 
