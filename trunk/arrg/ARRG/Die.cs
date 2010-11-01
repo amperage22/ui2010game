@@ -87,15 +87,15 @@ namespace ARRG_Game
 
                             upMarker = side;
                             if (dieNum <= 2)
-                                addMonster(new Monster("Test", "samus", 5, 5,true));
+                                addMonster(new Monster("Test", "samus", 5, 5, true));
                             else
-                                addMonster(new Monster("Test2", "bear", 5, 5,true));
+                                addMonster(new Monster("Test2", "bear", 5, 5, true));
                             return true;
                         }
                     }
-                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE+10) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE+10))
+                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE + 10) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE + 10))
                     {
-                        if(side.Equals(upMarker))
+                        if (side.Equals(upMarker))
                         {
                             upMarker.RemoveChild(currentMonster.TransNode);
                             currentMonster = null;
@@ -114,7 +114,8 @@ namespace ARRG_Game
                 currentMonster = m;
             }
         }
-        public bool hasMonster() {
+        public bool hasMonster()
+        {
             return currentMonster != null;
         }
 

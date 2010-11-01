@@ -40,7 +40,7 @@ namespace ARRG_Game
         protected List<int> dmgPrevented;
         protected string name;
 
-        public Monster(string name,String model, int health, int power,bool useInternal)
+        public Monster(string name, String model, int health, int power, bool useInternal)
         {
             this.name = name;
             this.health = health;
@@ -67,31 +67,31 @@ namespace ARRG_Game
             }
             else
                 robotNode.Model.UseInternalMaterials = true;
-            
+
             transNode = new TransformNode();
             transNode.AddChild(robotNode);
             transNode.Scale *= 0.03f;
-            transNode.Translation += new Vector3(10, 0,0);
+            transNode.Translation += new Vector3(10, 0, 0);
             //********End Test code****
         }
         public Monster() { }
 
         public int Health
         {
-          get { return health; }
-          set { health = value; }
+            get { return health; }
+            set { health = value; }
         }
 
         public int Power
         {
-          get { return power; }
-          set { power = value; }
+            get { return power; }
+            set { power = value; }
         }
 
         public String Name
         {
-          get { return name; }
-          set { name = value; }
+            get { return name; }
+            set { name = value; }
         }
 
         public void adjustPower(int mod)
@@ -129,7 +129,7 @@ namespace ARRG_Game
         public TransformNode TransNode
         {
             get { return transNode; }
-            set { transNode = value;}
+            set { transNode = value; }
         }
     }
 
@@ -140,10 +140,10 @@ namespace ARRG_Game
         protected String model;
         int health;
         int power;
-        public MonsterBuilder(CreatureType type,String name,String model, int health, int power)
+        public MonsterBuilder(CreatureType type, String name, String model, int health, int power)
         {
             this.name = name;
-            this.health = health; 
+            this.health = health;
             this.power = power;
             this.type = type;
             this.model = model;
@@ -156,7 +156,7 @@ namespace ARRG_Game
                 case CreatureType.DRAGONKIN: break;
                 case CreatureType.ROBOT: break;
             }
-            return new Monster(name,model, health, power,true);
+            return new Monster(name, model, health, power, true);
         }
     }
 
