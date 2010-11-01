@@ -163,8 +163,8 @@ namespace ARRG_Game
         {
             switch (type)
             {
-                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal); break;
-                case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);break;
+                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal); 
+                case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);
                 case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal);
             }
             return new Monster(name, model, health, power, useInternal);

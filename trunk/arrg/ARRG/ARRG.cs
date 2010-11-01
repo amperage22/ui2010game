@@ -151,7 +151,7 @@ namespace ARRG_Game
             // Show Frames-Per-Second on the screen for debugging
             State.ShowFPS = true;
 
-            bigRed = new Brb(ref scene, menuState, gameState);
+            
             //Player player = new Player();
             //Player player2 = new Player();
             //hb = new healthBar(scene, player, true);
@@ -290,8 +290,6 @@ namespace ARRG_Game
                 case MenuStates.INGAME: UpdateInGame(); break;
                 case default(MenuStates): break;
             }
-            bigRed.updateMenuState(menuState);
-
             base.Update(gameTime);
 
         }
@@ -345,7 +343,11 @@ namespace ARRG_Game
             if (talentScreen.wasSubmitted())
             {
                 List<Talent> talents = talentScreen.getTalentInfo();
-                menuState = MenuStates.INGAME;
+
+                //TEST
+                menuState = MenuStates.INGAME;  //Should be moved to PRE_GAME and called upon stage transition
+                bigRed = new Brb(ref scene, menuState, gameState);  //Should be moved to PRE_GAME and called upon stage transition
+                //END TEST
             }
         }
         /// <summary>
@@ -376,6 +378,15 @@ namespace ARRG_Game
         {
             p.Update();
             p2.Update();
+            gameState = bigRed.getInGameState();
+            switch (gameState)
+            {
+                case InGameStates.DRAW: break;
+                case InGameStates.SUMMON: Console.WriteLine("In Summon phase"); break;
+                case InGameStates.ATTACK: Console.WriteLine("In Attack phase"); break;
+                case InGameStates.DAMAGE: break;
+                case InGameStates.DISCARD: break;
+            }
         }
 
 
