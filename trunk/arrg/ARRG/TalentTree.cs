@@ -32,7 +32,7 @@ namespace ARRG_Game
                     tier1[2] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
                     tier2[0] = new Talent(2, Modifier.CRIT_PERCENT, CreatureType.DRAGONKIN, 2, "chance for DRAGONKIN to\nCRITICALLY hit the enemy.");
                     tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack per point.");
+                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack.");
                     tier3 = new Talent(30, Modifier.FIREBREATH_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to cast a\nFIRE BREATH attack!");
                     break;
                 case CreatureType.ROBOT:
@@ -41,7 +41,7 @@ namespace ARRG_Game
                     tier1[2] = new Talent(2, Modifier.HP, CreatureType.ALL, 2, "HP per monster.", -2, Modifier.DAMAGE, "DAMAGE dealt.");
                     tier2[0] = new Talent(2, Modifier.HIT_PERCENT, CreatureType.ROBOT, 2, "chance for ROBOTS to\nHIT the enemy.");
                     tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOT, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.ROBOT, 2, "chance for your ROBOTS to\nPARRY an attack per point.");
+                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.ROBOT, 2, "chance for your ROBOTS to\nPARRY an attack.");
                     tier3 = new Talent(30, Modifier.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOT, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
                     break;
                 default:
