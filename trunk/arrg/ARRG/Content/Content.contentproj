@@ -348,7 +348,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Textures\brb\" />
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbArrg.png">
+      <Link>Textures\brb\brbArrg.png</Link>
+      <Name>brbArrg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbAttack.png">
+      <Link>Textures\brb\brbAttack.png</Link>
+      <Name>brbAttack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbDamage.png">
+      <Link>Textures\brb\brbDamage.png</Link>
+      <Name>brbDamage</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbInventory.png">
+      <Link>Textures\brb\brbInventory.png</Link>
+      <Name>brbInventory</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbMarket.png">
+      <Link>Textures\brb\brbMarket.png</Link>
+      <Name>brbMarket</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbSummon.png">
+      <Link>Textures\brb\brbSummon.png</Link>
+      <Name>brbSummon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbTalent.png">
+      <Link>Textures\brb\brbTalent.png</Link>
+      <Name>brbTalent</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
