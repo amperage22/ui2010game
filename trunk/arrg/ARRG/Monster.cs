@@ -53,22 +53,22 @@ namespace ARRG_Game
 
             //********Test code****
             Material robotMaterial = new Material();
-            robotMaterial.Diffuse = Color.Orange.ToVector4();
+            robotMaterial.Diffuse = Color.White.ToVector4();
             robotMaterial.Specular = Color.White.ToVector4();
             robotMaterial.SpecularPower = 2;
-            robotMaterial.Emissive = Color.Black.ToVector4();
+            robotMaterial.Emissive = Color.White.ToVector4();
 
             ModelLoader loader = new ModelLoader();
             Model robotModel = (Model)loader.Load("Models/", model);
             GeometryNode robotNode = new GeometryNode("Robot");
             robotNode.Model = robotModel;
             robotNode.Model.UseInternalMaterials = true;
-            //robotNode.Material = robotMaterial;
+            robotNode.Material = robotMaterial;
             
             transNode = new TransformNode();
             transNode.AddChild(robotNode);
             transNode.Scale *= 0.03f;
-            //transNode.Translation += new Vector3(0, 0, 25);
+            //transNode.Translation += new Vector3(0, 25,0);
             //********End Test code****
         }
         public Monster() { }
