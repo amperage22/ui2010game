@@ -28,103 +28,99 @@ using GoblinXNA.UI.UI2D;
 
 namespace ARRG_Game
 {
-  class brb
-  {
-    Scene scene;
-    MenuStates curState;
-    InGameStates gameState;
-    ContentManager content;
-    G2DPanel brbFrame;
-    public brb(Scene scene, MenuStates menuState, ContentManager content, InGameStates gameState)
+    class brb
     {
-      this.scene = scene;
-      this.curState = menuState;
-      this.content = content;
-      this.gameState = gameState;
+        Scene scene;
+        MenuStates curState;
+        InGameStates gameState;
+        ContentManager content;
+        G2DLabel brbButton;
+        public brb(ref Scene scene, ref MenuStates menuState, ref InGameStates gameState)
+        {
+            this.scene = scene;
+            this.curState = menuState;
+            this.content = State.Content;
+            this.gameState = gameState;
 
-      createObject();
+            createObject();
+        }
+
+        private void createObject()
+        {
+            brbButton = new G2DLabel();
+            brbButton.Bounds = new Rectangle(350, 0, 115, 115);
+            //brbButton.Border = GoblinEnums.BorderFactory.LineBorder;
+            brbButton.Transparency = 1.0f;
+            brbButton.BackgroundColor = Color.Black;
+            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+            brbButton.MouseReleasedEvent += new MouseReleased(updateMenuBrb);
+            brbButton.TextFont = content.Load<SpriteFont>("UIFont");
+
+            //Console.WriteLine(curState);
+            //updateMenuBrb(curState,gameState);
+            scene.UIRenderer.Add2DComponent(brbButton);
+        }
+
+        public void updateMenuBrb(int mouseButton, Point mouse)
+        {
+            switch (curState)
+            {
+                case MenuStates.INGAME: gameState = (gameState == InGameStates.DISCARD ? InGameStates.DRAW : ++gameState); brbButton.Text = "";
+                    switch (gameState)
+                    {
+                        case InGameStates.ATTACK:
+                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
+                            brbButton.Texture = null;
+                            brbButton.BackgroundColor = Color.Red;
+                            brbButton.TextColor = Color.White;
+                            brbButton.Text = gameState.ToString();
+                            
+                            break;
+                        case InGameStates.DAMAGE:
+                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
+                            brbButton.Texture = null;
+                            brbButton.BackgroundColor = Color.Red;
+                            brbButton.TextColor = Color.White;
+                            brbButton.Text = gameState.ToString();
+                            break;
+                        case InGameStates.DISCARD:
+                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
+                            brbButton.Texture = null;
+                            brbButton.BackgroundColor = Color.Red;
+                            brbButton.TextColor = Color.White;
+                            brbButton.Text = gameState.ToString();
+                            break;
+                        case InGameStates.DRAW:
+                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
+                            brbButton.Texture = null;
+                            brbButton.BackgroundColor = Color.Red;
+                            brbButton.TextColor = Color.White;
+                            brbButton.Text = gameState.ToString();
+                            break;
+                        case InGameStates.SUMMON:
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbSummon");
+                            break;
+                        case default(InGameStates):
+                            break;
+                    }
+                    break;
+                case MenuStates.INVENTORY:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbInventory");
+                    break;
+                case MenuStates.MARKET:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbMarket");
+                    break;
+                case MenuStates.TITLE:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+                    break;
+                case MenuStates.TALENT:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbTalent");
+                    break;
+                case default(MenuStates):
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+                    break;
+            }
+        }
+
     }
-
-    private void createObject()
-    {
-
-      /*
-      GeometryNode sphereNode = new GeometryNode("Sphere");
-      sphereNode.Model = new Sphere(3, 60, 60);
-=======
-        G2DButton brb;
-      //GeometryNode sphereNode = new GeometryNode("Sphere");
-      //sphereNode.Model = new Sphere(3, 60, 60);
->>>>>>> .r71
-
-      //TransformNode sphereTransNode = new TransformNode();
-      //sphereTransNode.Scale = new Vector3(0.15f, 0.15f, 0.15f);
-      //sphereTransNode.Translation = new Vector3(0, 1.7f, -5);
-      //Material sphereMaterial = new Material();
-      //sphereMaterial.Diffuse = new Vector4(0.5f, 0, 0, 1);
-      //sphereMaterial.Specular = Color.White.ToVector4();
-      //sphereMaterial.SpecularPower = 10;
-
-      //sphereNode.Material = sphereMaterial;
-      //scene.RootNode.AddChild(sphereTransNode);
-      //sphereTransNode.AddChild(sphereNode);
-      */
-
-      brbFrame = new G2DPanel();
-      brbFrame.Bounds = new Rectangle(350, 0, 115, 115);
-      brbFrame.Border = GoblinEnums.BorderFactory.LineBorder;
-      brbFrame.Transparency = 1.0f;
-      brbFrame.BackgroundColor = Color.Black;
-
-      Console.WriteLine(curState);
-      updateMenuBrb(curState,gameState);
-      scene.UIRenderer.Add2DComponent(brbFrame);
-    }
-
-    public void updateMenuBrb(MenuStates state, InGameStates gameState)
-    {
-      //Console.WriteLine(state);
-      switch (state)
-      {
-        case MenuStates.INGAME:
-          switch(gameState)
-          {
-            case InGameStates.ATTACK:
-              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
-              break;
-            case InGameStates.DAMAGE:
-              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
-              break;
-            case InGameStates.DISCARD:
-              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
-              break;
-            case InGameStates.DRAW:
-              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
-              break;
-            case InGameStates.SUMMON:
-              brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbSummon");
-              break;
-            case default(InGameStates):
-              break;
-          }
-          break;
-        case MenuStates.INVENTORY:
-          brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbInventory");
-          break;
-        case MenuStates.MARKET:
-          brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbMarket");
-          break;
-        case MenuStates.TITLE:
-          brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
-          break;
-        case MenuStates.TALENT:
-          brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbTalent");
-          break;
-        case default(MenuStates):
-          brbFrame.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
-          break;
-      }
-    }
-
-  }
 }
