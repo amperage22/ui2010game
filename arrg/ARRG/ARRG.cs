@@ -373,7 +373,6 @@ namespace ARRG_Game
         /// </summary>
         private void UpdateInGame()
         {
-            bigRed.updateMenuBrb(
             p.Update();
             p2.Update();
         }
