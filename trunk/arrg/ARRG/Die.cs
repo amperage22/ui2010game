@@ -126,5 +126,12 @@ namespace ARRG_Game
             get { return currentMonster; }
             set { currentMonster = value; }
         }
+        public void reset()
+        {
+            if (currentMonster != null)
+                upMarker.RemoveChild(currentMonster.TransNode);
+            currentMonster = null;
+            upMarker = null;
+        }
     }
 }

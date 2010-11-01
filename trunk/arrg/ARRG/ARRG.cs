@@ -376,17 +376,34 @@ namespace ARRG_Game
         /// </summary>
         private void UpdateInGame()
         {
-            p.Update();
-            p2.Update();
             gameState = bigRed.getInGameState();
             switch (gameState)
             {
-                case InGameStates.DRAW: break;
-                case InGameStates.SUMMON: Console.WriteLine("In Summon phase"); break;
-                case InGameStates.ATTACK: Console.WriteLine("In Attack phase"); break;
-                case InGameStates.DAMAGE: break;
-                case InGameStates.DISCARD: break;
+                case InGameStates.DRAW: UpdateDraw(); break;
+                case InGameStates.SUMMON: UpdateSummon(); break;
+                case InGameStates.ATTACK: UpdateAttack(); break;
+                case InGameStates.DAMAGE: UpdateDamage(); break;
+                case InGameStates.DISCARD: UpdateDiscard(); break;
             }
+        }
+        private void UpdateDraw()
+        {
+            p.updateDraw();
+            p2.updateDraw();
+        }
+        private void UpdateSummon()
+        {
+            p.updateSummon();
+            p2.updateSummon();
+        }
+        private void UpdateAttack()
+        {
+        }
+        private void UpdateDamage()
+        {
+        }
+        private void UpdateDiscard()
+        {
         }
 
 
