@@ -131,7 +131,7 @@ namespace ARRG_Game
             dmgPrevented.Clear();
         }
 
-        public void attack(ref Monster oppMonster)
+        public void attack(Monster oppMonster)
         {
             TransformNode oppMonsNode = oppMonster.TransNode;
             float d;

@@ -28,17 +28,18 @@ using GoblinXNA.UI.UI2D;
 
 namespace ARRG_Game
 {
-    class brb
+    class Brb
     {
         Scene scene;
         MenuStates curState;
         InGameStates gameState;
         ContentManager content;
         G2DLabel brbButton;
-        public brb(ref Scene scene, ref MenuStates menuState, ref InGameStates gameState)
+        public Brb(ref Scene scene, MenuStates menuState, InGameStates gameState)
         {
             this.scene = scene;
             this.curState = menuState;
+            
             this.content = State.Content;
             this.gameState = gameState;
 
@@ -49,19 +50,16 @@ namespace ARRG_Game
         {
             brbButton = new G2DLabel();
             brbButton.Bounds = new Rectangle(350, 0, 115, 115);
-            //brbButton.Border = GoblinEnums.BorderFactory.LineBorder;
             brbButton.Transparency = 1.0f;
             brbButton.BackgroundColor = Color.Black;
             brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
             brbButton.MouseReleasedEvent += new MouseReleased(updateMenuBrb);
             brbButton.TextFont = content.Load<SpriteFont>("UIFont");
 
-            //Console.WriteLine(curState);
-            //updateMenuBrb(curState,gameState);
             scene.UIRenderer.Add2DComponent(brbButton);
         }
 
-        public void updateMenuBrb(int mouseButton, Point mouse)
+        private void updateMenuBrb(int mouseButton, Point mouse)
         {
             switch (curState)
             {

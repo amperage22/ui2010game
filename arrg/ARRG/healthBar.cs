@@ -26,7 +26,7 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-  public class healthBar
+  class healthBar
   {
 
     Player player;

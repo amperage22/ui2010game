@@ -120,5 +120,11 @@ namespace ARRG_Game
         {
             //TODO: Make sure that if the die changes orientation, that the monster remains on the top face
         }
+
+        public Monster CurrentMonster
+        {
+            get { return currentMonster; }
+            set { currentMonster = value; }
+        }
     }
 }
