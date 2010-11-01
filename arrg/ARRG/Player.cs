@@ -47,8 +47,8 @@ namespace ARRG_Game
         private int numCards;   //May not be necessary
 
         bool x = true;
-        private List<Monster> monsters;     //List for inventory purposes
-        private List<Card> availableCards;  //List for inventory purposes
+        private List<MonsterBuilder> monsters;     //List for inventory purposes
+        private List<Talent> talents;  //List for inventory purposes
 
         private Talent[] activeTalents;
 
@@ -66,8 +66,6 @@ namespace ARRG_Game
             die = new Die[MAX_NUM_DIE];
             this.ground = ground;
             selectedMonsters = new Monster[MAX_CREATURES_INGAME];
-            monsters = new List<Monster>();
-            availableCards = new List<Card>();
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
@@ -93,18 +91,6 @@ namespace ARRG_Game
         {
             get { return die; }
             set { die = value; }
-        }
-
-        internal List<Monster> Monsters
-        {
-            get { return monsters; }
-            set { monsters = value; }
-        }
-
-        internal List<Card> AvailableCards
-        {
-            get { return availableCards; }
-            set { availableCards = value; }
         }
 
         public int Gold
