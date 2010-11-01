@@ -68,7 +68,7 @@ namespace ARRG_Game
             allocateTextures();
 
             CreateFrame();
-            
+
             tooltip = new G2DLabel();
             tooltip.TextFont = font;
             tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
@@ -105,7 +105,7 @@ namespace ARRG_Game
             mainFrame.Bounds = new Rectangle(10, 10, 300, 400);
             mainFrame.Border = GoblinEnums.BorderFactory.EmptyBorder;
             mainFrame.Transparency = 0.85f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
-            
+
             //Set up the 3 tabs
             for (int i = 0; i < 3; i++)
             {
@@ -205,11 +205,13 @@ namespace ARRG_Game
             submit.TextColor = Color.White;
         }
 
-        public bool wasSubmitted() {
+        public bool wasSubmitted()
+        {
             return state == TalentState.FINISHED;
         }
 
-        public List<Talent> getTalentInfo() {
+        public List<Talent> getTalentInfo()
+        {
             if (state != TalentState.FINISHED)
                 throw new Exception("The selection must be submitted before you can get the info!");
             List<Talent> toReturn = new List<Talent>();
@@ -222,7 +224,7 @@ namespace ARRG_Game
         {
             if (tree < 0 || tree > 2)
                 throw new Exception("Tree must be 0, 1, or 2");
-            
+
             activeTab = tree;
             if (talentFrame == null)
             {
@@ -231,7 +233,7 @@ namespace ARRG_Game
                 talentFrame.Bounds = new Rectangle(0, 60, 300, 300);
                 talentFrame.Border = GoblinEnums.BorderFactory.EtchedBorder;
                 talentFrame.Transparency = 1.0f;
-                
+
                 for (int i = 0; i < 3; i++) //rows of tree
                     for (int j = 0; j < 3; j++) //cols of tree
                     {
@@ -249,14 +251,14 @@ namespace ARRG_Game
                         if (i > 0)
                             talentButton[i, j].TextureColor = disabledColor;
                         talentFrame.AddChild(talentButton[i, j]);
-                        
+
                         //Put a black rectangle above the button but below the label
                         G2DPanel p = new G2DPanel();
                         p.Bounds = new Rectangle((j * 102) + 16, (i * 102) + 16, 10, 5);
                         p.BackgroundColor = Color.Black;
                         p.Transparency = 1.0f;
                         talentFrame.AddChild(p);
-                        
+
                         pointsAlloc[i, j] = new G2DLabel(talents[activeTab].getPointStr(i, j));
                         pointsAlloc[i, j].TextFont = font;
                         Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
@@ -274,25 +276,26 @@ namespace ARRG_Game
 
             else //Swap the new talent tree in
 
-            for (int i = 0; i < 3; i++)
-            {
-                bool isDisabled = !talents[activeTab].canAllocTier(i);
-                for (int j = 0; j < 3; j++)
+                for (int i = 0; i < 3; i++)
                 {
-                    if (i == 2 && j != 1) continue;
-                    talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
-                    bool isMaxed = talents[activeTab].isMaxed(i, j);
-                    talentButton[i, j].TextureColor = isDisabled || isMaxed ? disabledColor : Color.White;
-                    pointsAlloc[i, j].TextColor = isMaxed ? Color.Red : Color.White;
-                    pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
-                    Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
-                    pointsAlloc[i, j].Bounds = new Rectangle(pointsAlloc[i, j].Bounds.X, pointsAlloc[i, j].Bounds.Y, (int)new_dimensions.X + 5, (int)new_dimensions.Y + 5);
+                    bool isDisabled = !talents[activeTab].canAllocTier(i);
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (i == 2 && j != 1) continue;
+                        talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
+                        bool isMaxed = talents[activeTab].isMaxed(i, j);
+                        talentButton[i, j].TextureColor = isDisabled || isMaxed ? disabledColor : Color.White;
+                        pointsAlloc[i, j].TextColor = isMaxed ? Color.Red : Color.White;
+                        pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
+                        Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
+                        pointsAlloc[i, j].Bounds = new Rectangle(pointsAlloc[i, j].Bounds.X, pointsAlloc[i, j].Bounds.Y, (int)new_dimensions.X + 5, (int)new_dimensions.Y + 5);
+                    }
                 }
-            }
-            
+
         }
 
-        private void createTalentTrees() {
+        private void createTalentTrees()
+        {
             /* Beasts Tree */
             talents[(int)Creature.BEASTS] = new TalentTree(CreatureType.BEASTS);
             talents[(int)Creature.DRAGONKIN] = new TalentTree(CreatureType.DRAGONKIN);
@@ -314,7 +317,8 @@ namespace ARRG_Game
                         if (button == MouseInput.LeftButton)
                         {
                             if (pointsRemaining == 0) return;
-                            if (talents[activeTab].increment(i, j)) {
+                            if (talents[activeTab].increment(i, j))
+                            {
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
                                     openTier(i + 1);
                                 pointsRemaining--;
@@ -337,7 +341,8 @@ namespace ARRG_Game
                         }
                         else if (button == MouseInput.RightButton)
                         {
-                            if (talents[activeTab].decrement(i, j)) {
+                            if (talents[activeTab].decrement(i, j))
+                            {
                                 /* There arises the case where the player will achieve the
                                  * 2/3 points necessary to open the other two trees.  He will
                                  * then spend points in them and go attempt to remove the
@@ -364,7 +369,7 @@ namespace ARRG_Game
                             }
                         }
                     }
-                }                        
+                }
         }
 
         private String getTabHelpString()
@@ -434,17 +439,20 @@ namespace ARRG_Game
             HandleToolTip(mouse);
         }
 
-        private void allocateTextures() {
-            for (int i = 0; i < 3; i++) {
+        private void allocateTextures()
+        {
+            for (int i = 0; i < 3; i++)
+            {
                 for (int j = 0; j < 3; j++)
-                    for (int k = 0; k < 3; k++) {
+                    for (int k = 0; k < 3; k++)
+                    {
                         if (j == 2 && k != 1) continue;
-                        buttonTextures[i,j,k] = content.Load<Texture2D>(
+                        buttonTextures[i, j, k] = content.Load<Texture2D>(
                             String.Format(
                                 "Textures/talents/{0}_{1}{2}",
                                 i == (int)Creature.BEASTS ? "beast" : i == (int)Creature.DRAGONKIN ? "dragonkin" : "robot",
-                                j+1,
-                                j == 2 ? "" : String.Format("_{0}", k+1)));
+                                j + 1,
+                                j == 2 ? "" : String.Format("_{0}", k + 1)));
                     }
                 tabTextures[i] = content.Load<Texture2D>(
                     i == 0 ? "Textures/talents/beasts_tab" :    //http://www.geekcoefficient.com/blog/images/beast.jpg
@@ -483,7 +491,7 @@ namespace ARRG_Game
         {
             for (int k = 0; k < 3; k++)
                 if (k != specialization)
-                   tab[k].TextureColor = Color.White;
+                    tab[k].TextureColor = Color.White;
         }
         private void closeSecondaryTabs()
         {
