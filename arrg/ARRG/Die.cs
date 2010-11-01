@@ -87,9 +87,9 @@ namespace ARRG_Game
 
                             upMarker = side;
                             if (dieNum <= 2)
-                                addMonster(new Monster("Test", "samus", 5, 5));
+                                addMonster(new Monster("Test", "samus", 5, 5,true));
                             else
-                                addMonster(new Monster("Test2", "bear", 5, 5));
+                                addMonster(new Monster("Test2", "bear", 5, 5,true));
                             return true;
                         }
                     }

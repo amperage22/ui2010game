@@ -43,20 +43,21 @@ namespace ARRG_Game
 
     private void createObject()
     {
-      GeometryNode sphereNode = new GeometryNode("Sphere");
-      sphereNode.Model = new Sphere(3, 60, 60);
+        G2DButton brb;
+      //GeometryNode sphereNode = new GeometryNode("Sphere");
+      //sphereNode.Model = new Sphere(3, 60, 60);
 
-      TransformNode sphereTransNode = new TransformNode();
-      sphereTransNode.Scale = new Vector3(0.15f, 0.15f, 0.15f);
-      sphereTransNode.Translation = new Vector3(0, 1.7f, -5);
-      Material sphereMaterial = new Material();
-      sphereMaterial.Diffuse = new Vector4(0.5f, 0, 0, 1);
-      sphereMaterial.Specular = Color.White.ToVector4();
-      sphereMaterial.SpecularPower = 10;
+      //TransformNode sphereTransNode = new TransformNode();
+      //sphereTransNode.Scale = new Vector3(0.15f, 0.15f, 0.15f);
+      //sphereTransNode.Translation = new Vector3(0, 1.7f, -5);
+      //Material sphereMaterial = new Material();
+      //sphereMaterial.Diffuse = new Vector4(0.5f, 0, 0, 1);
+      //sphereMaterial.Specular = Color.White.ToVector4();
+      //sphereMaterial.SpecularPower = 10;
 
-      sphereNode.Material = sphereMaterial;
-      scene.RootNode.AddChild(sphereTransNode);
-      sphereTransNode.AddChild(sphereNode);
+      //sphereNode.Material = sphereMaterial;
+      //scene.RootNode.AddChild(sphereTransNode);
+      //sphereTransNode.AddChild(sphereNode);
       
     }
 
