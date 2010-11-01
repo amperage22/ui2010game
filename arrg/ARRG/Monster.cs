@@ -70,7 +70,7 @@ namespace ARRG_Game
             transNode = new TransformNode();
             transNode.AddChild(robotNode);
             transNode.Scale *= 0.04f;
-            transNode.Translation += new Vector3(10, 10, 3);
+            transNode.Translation += new Vector3(10, 0, 3);
         }
 
 
