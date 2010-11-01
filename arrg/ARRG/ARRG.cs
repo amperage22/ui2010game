@@ -149,7 +149,7 @@ namespace ARRG_Game
 	  // Show Frames-Per-Second on the screen for debugging
 	  State.ShowFPS = true;
 
-	  //bigRed = new brb(scene, menuState, Content, gameState);
+	  bigRed = new brb(scene, menuState, Content, gameState);
 	  //Player player = new Player();
 	  //Player player2 = new Player();
 	  //hb = new healthBar(scene, player, true);
@@ -310,7 +310,7 @@ namespace ARRG_Game
 	  }
 	  p.Update();
       p2.Update();
-      //bigRed.updateMenuBrb(menuState,gameState);
+      bigRed.updateMenuBrb(menuState,gameState);
 	  base.Update(gameTime);
 
 	}
@@ -351,7 +351,7 @@ namespace ARRG_Game
             titleScreen.Kill(scene);
             //Should we somehow free up the memory of the title screen?
             menuState = MenuStates.TALENT;
-            //bigRed.updateMenuBrb(menuState,gameState);
+            bigRed.updateMenuBrb(menuState,gameState);
             talentScreen.Display();
         }
 	}
