@@ -22,9 +22,6 @@ using GoblinXNA.Device.Generic;
 
 namespace ARRG_Game
 {
-    /// <summary>
-    /// This tutorial introduce GoblinXNA's 2D GUI facilities.
-    /// </summary>
     class TalentScreen
     {
         enum TalentState { READY, DISPLAYING, FINISHED };
