@@ -132,9 +132,12 @@ namespace ARRG_Game
                 d.Update();
             }
         }
-        public void updateAtack(Die [] die2)
+        public void updateAtack(Die[] die2)
         {
-            float ds;
+            //Handles where the models face
+            float prev = 1000, curr;
+            Die closest;
+            double angle;
             foreach (Die d in die)
             {
                 if (d != null && d.CurrentMonster != null)
@@ -142,10 +145,33 @@ namespace ARRG_Game
                     foreach (Die d2 in die2)
                     {
                         if (d2 != null && d2.CurrentMonster != null)
-                            ds = Vector3.Distance(d.UpMarker.WorldTransformation.Translation,d2.UpMarker.WorldTransformation.Translation);
+                        {
+
+                            curr = Vector3.Distance(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
+                            if (curr < prev)
+                            {
+                                prev = curr;
+                                closest = d2;
+                            }
+
+                        }
+
+                        if (d2 != null && d2.CurrentMonster != null)
+                        {
+
+                            angle = Math.Acos(Vector3.Dot(d.UpMarker.WorldTransformation.Up,
+                            d2.UpMarker.WorldTransformation.Right));
+                            //Does not work properly
+                            d.CurrentMonster.TransNode.Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ,-(float)angle);
+                        }
                     }
                 }
+                prev = 1000;
             }
+        }
+
+        public void updateDamage(Die[] die2)
+        {
         }
     }
 }
