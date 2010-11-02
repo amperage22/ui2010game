@@ -281,15 +281,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\title_screen.jpg">
-      <Link>Textures\title_screen.jpg</Link>
-      <Name>title_screen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\stone_button.jpg">
       <Link>Textures\stone_button.jpg</Link>
       <Name>stone_button</Name>
@@ -413,6 +404,36 @@
       <Name>Arial-24-Vector</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\title\beasts.png">
+      <Link>Textures\title\beasts.png</Link>
+      <Name>beasts</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\title\dragonkin.png">
+      <Link>Textures\title\dragonkin.png</Link>
+      <Name>dragonkin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\title\robots.png">
+      <Link>Textures\title\robots.png</Link>
+      <Name>robots</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\title\title_screen.jpg">
+      <Link>Textures\title\title_screen.jpg</Link>
+      <Name>title_screen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
