@@ -25,6 +25,7 @@ using GoblinXNA.Device.Util;
 using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
 
+
 namespace ARRG_Game
 {
     class Die
@@ -38,6 +39,7 @@ namespace ARRG_Game
         private MarkerNode ground;
         private MarkerNode upMarker;
         private int dieNum;
+        Scene scene;
 
         public Die(ref Scene s, int dieNum, ref MarkerNode ground)
         {
@@ -52,8 +54,8 @@ namespace ARRG_Game
                 sides[i] = new MarkerNode(s.MarkerTracker, config_file, side_marker);
                 s.RootNode.AddChild(sides[i]);
             }
-
             this.ground = ground;
+            scene = s;
         }
 
         private bool markerSwitch(MarkerNode side)
@@ -133,5 +135,8 @@ namespace ARRG_Game
             currentMonster = null;
             upMarker = null;
         }
+
     }
+
+
 }

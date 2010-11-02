@@ -123,6 +123,7 @@ namespace ARRG_Game
             {
                 Random r = new Random();
                 d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Randomly attach monster to die
+                d.Update();
             }
         }
         public void updateAtack(Die d2)
