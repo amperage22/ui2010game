@@ -32,7 +32,7 @@ namespace ARRG_Game
 
         public TitleScreen(ContentManager c, Scene s)
         {
-            titleScreen = c.Load<Texture2D>("Textures/title_screen");
+            titleScreen = c.Load<Texture2D>("Textures/title/title_screen");
             point = new Vector2(0, 0);
             specialization = CreatureType.NONE;
             createButtons(c, s);
@@ -44,12 +44,12 @@ namespace ARRG_Game
             frame = new G2DPanel();
             frame.DrawBackground = false;
             frame.DrawBorder = false;
-            frame.Bounds = new Rectangle(200, 500, 400, 50);
+            frame.Bounds = new Rectangle(8, 300, 784, 256);
 
             for (int i = 0; i < 3; i++)
             {
                 creature[i] = new G2DButton();
-                creature[i].Bounds = new Rectangle(i * 150, 0, 100, 48);
+                creature[i].Bounds = new Rectangle(i * 264, 0, 256, 256);
                 creature[i].BorderColor = Color.Black;
                 creature[i].HighlightColor = Color.White;
                 creature[i].DrawBorder = true;
@@ -57,9 +57,9 @@ namespace ARRG_Game
                 creature[i].ActionPerformedEvent += new ActionPerformed(HandleSpecialization);
                 switch (i)
                 {
-                    case 0: creature[i].Texture = c.Load<Texture2D>("Textures/talents/beasts_tab"); break;
-                    case 1: creature[i].Texture = c.Load<Texture2D>("Textures/talents/dragonkin_tab"); break;
-                    case 2: creature[i].Texture = c.Load<Texture2D>("Textures/talents/robots_tab"); break;
+                    case 0: creature[i].Texture = c.Load<Texture2D>("Textures/title/beasts"); break;
+                    case 1: creature[i].Texture = c.Load<Texture2D>("Textures/title/dragonkin"); break;
+                    case 2: creature[i].Texture = c.Load<Texture2D>("Textures/title/robots"); break;
                 }
                 creature[i].TextureColor = Color.White;
                 frame.AddChild(creature[i]);
