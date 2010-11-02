@@ -1,0 +1,7 @@
+for ($die = 0; $die < 6; $die++) {
+	for ($side = 0; $side < 6; $side++) {
+		open FILE, ">die".$die."side".$side.".txt" or die $!;
+		print FILE "1\n\n",$die*6+$side+128,"\n\n1\n\n-10.8 -10.8 0\n10.8 -10.8 0\n10.8 10.8 0\n-10.8 10.8 0\n\n\n";
+		close FILE;
+	}
+}
