@@ -141,7 +141,7 @@ namespace ARRG_Game
             currentMonster = null;
             upMarker = null;
         }
-        public updateAttack(Die die2)
+        public void updateAttack(Die die2)
         {
         }
 

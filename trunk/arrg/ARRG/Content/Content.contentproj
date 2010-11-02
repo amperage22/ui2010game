@@ -36,10 +36,6 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Nuclex.Fonts.Content.TrueTypeImporter, Version=1.0.3554.30260, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\GoblinXNAv3.4\bin\Nuclex.Fonts.Content.TrueTypeImporter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Fonts\DebugFont.spritefont">
@@ -416,7 +412,7 @@
       <Link>Arial-24-Vector.spritefont</Link>
       <Name>Arial-24-Vector</Name>
       <Importer>FontDescriptionImporter</Importer>
-      <Processor>NuclexVectorFontDescriptionProcessor</Processor>
+      <Processor>FontDescriptionProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
