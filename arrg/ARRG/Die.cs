@@ -38,6 +38,12 @@ namespace ARRG_Game
         private Monster currentMonster;
         private MarkerNode ground;
         private MarkerNode upMarker;
+
+        public MarkerNode UpMarker
+        {
+            get { return upMarker; }
+            set { upMarker = value; }
+        }
         private int dieNum;
         Scene scene;
 
@@ -134,6 +140,9 @@ namespace ARRG_Game
                 upMarker.RemoveChild(currentMonster.TransNode);
             currentMonster = null;
             upMarker = null;
+        }
+        public updateAttack(Die die2)
+        {
         }
 
     }

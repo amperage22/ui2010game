@@ -134,8 +134,6 @@ namespace ARRG_Game
         public void attack(Monster oppMonster)
         {
             TransformNode oppMonsNode = oppMonster.TransNode;
-            float d;
-            d = Vector3.Distance(transNode.Translation, oppMonsNode.Translation);
 
         }
 
