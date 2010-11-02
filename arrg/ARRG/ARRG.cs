@@ -63,6 +63,10 @@ namespace ARRG_Game
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
+    enum CreatureID { BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
+                      DALEK, GUNDAM, SAMUS, TANK,
+                      DRAGON1, DRAGON2, UNKNOWN1, UNKNOWN2,
+                      JONATHAN, MEYNARD, ALEX };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum Modifier
     {
@@ -232,20 +236,20 @@ namespace ARRG_Game
         private void CreateMonsterList()
         {
             monsters = new List<MonsterBuilder>();
+            
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 4, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 5, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 3, 5, true));
 
-            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Bearrorist", "bear", 4, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Penguinist", "penguin", 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Rhymenoceros", "rhino", 5, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureType.BEASTS, "Tigeriffic", "tiger", 3, 5, true));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 5, 3, true));
+            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 3, 5, false));
 
-            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Dalek", "dalek", 4, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Gundam", "gundam", 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Samus", "samus", 5, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureType.ROBOTS, "Tank", "tank", 3, 5, false));
-
-            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Whelp", "dragon1", 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "Drake", "dragon2", 5, 3, false));
-            monsters.Add(new MonsterBuilder(CreatureType.DRAGONKIN, "WTF", "alexmodel", 2, 3, false));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false));
+            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, false));
             p.PurchasedMonsters = monsters;  //For testing purposes
             p2.PurchasedMonsters = monsters; //For testing purposes
         }
@@ -348,7 +352,7 @@ namespace ARRG_Game
 
                 //TEST
                 menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
-                marketScreen = new MarketScreen(scene, Content, p);  //Should be moved to PRE_GAME and called upon stage transition
+                marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
                 marketScreen.Display();
                 //END TEST
             }
