@@ -158,7 +158,8 @@ namespace ARRG_Game
 
                         if (d2 != null && d2.CurrentMonster != null)
                         {
-
+                            Vector3 diff = Vector3.Subtract(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
+                            double dis = Vector3.Distance(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
                             angle = Math.Acos(Vector3.Dot(d.UpMarker.WorldTransformation.Up,
                             d2.UpMarker.WorldTransformation.Right));
                             //Does not work properly

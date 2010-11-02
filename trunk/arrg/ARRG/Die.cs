@@ -32,7 +32,7 @@ namespace ARRG_Game
     {
         private const int firstDieID = 128;
         private const double PARALLEL_ANGLE = 0;
-        private const double FLOOR_TOLERANCE = 20;
+        private const double FLOOR_TOLERANCE = 60;
 
         private MarkerNode[] sides;
         private Monster currentMonster;
@@ -55,7 +55,7 @@ namespace ARRG_Game
             int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
             {
-                side_marker[0] = (dieNum * 6) + firstDieID;
+                side_marker[0] = (dieNum * 6) + firstDieID +i;
                 String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", dieNum, i);
                 sides[i] = new MarkerNode(s.MarkerTracker, config_file, side_marker);
                 //sides[i] = new MarkerNode(s.MarkerTracker, (dieNum * 6) + firstDieID);
