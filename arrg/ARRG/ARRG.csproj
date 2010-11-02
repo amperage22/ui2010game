@@ -103,6 +103,7 @@
     <Compile Include="Die.cs" />
     <Compile Include="Dragonkin.cs" />
     <Compile Include="healthBar.cs" />
+    <Compile Include="MarketScreen.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
