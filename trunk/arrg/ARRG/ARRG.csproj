@@ -313,6 +313,26 @@
     <None Include="Content\dice_markers\die6side5.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\card_markers\card0.txt" />
+    <Content Include="Content\card_markers\card1.txt" />
+    <Content Include="Content\card_markers\card10.txt" />
+    <Content Include="Content\card_markers\card11.txt" />
+    <Content Include="Content\card_markers\card12.txt" />
+    <Content Include="Content\card_markers\card13.txt" />
+    <Content Include="Content\card_markers\card14.txt" />
+    <Content Include="Content\card_markers\card15.txt" />
+    <Content Include="Content\card_markers\card16.txt" />
+    <Content Include="Content\card_markers\card17.txt" />
+    <Content Include="Content\card_markers\card18.txt" />
+    <Content Include="Content\card_markers\card19.txt" />
+    <Content Include="Content\card_markers\card2.txt" />
+    <Content Include="Content\card_markers\card3.txt" />
+    <Content Include="Content\card_markers\card4.txt" />
+    <Content Include="Content\card_markers\card5.txt" />
+    <Content Include="Content\card_markers\card6.txt" />
+    <Content Include="Content\card_markers\card7.txt" />
+    <Content Include="Content\card_markers\card8.txt" />
+    <Content Include="Content\card_markers\card9.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
