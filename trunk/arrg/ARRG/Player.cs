@@ -42,6 +42,12 @@ namespace ARRG_Game
 
         private Die[] die;
 
+        internal Die[] Die
+        {
+            get { return die; }
+            set { die = value; }
+        }
+
         private Monster[] selectedMonsters;
         private int numMonsters;
 
@@ -126,11 +132,19 @@ namespace ARRG_Game
                 d.Update();
             }
         }
-        public void updateAtack(Die d2)
+        public void updateAtack(Die [] die2)
         {
+            float ds;
             foreach (Die d in die)
             {
-                d.CurrentMonster.attack(d2.CurrentMonster);
+                if (d != null && d.CurrentMonster != null)
+                {
+                    foreach (Die d2 in die2)
+                    {
+                        if (d2 != null && d2.CurrentMonster != null)
+                            ds = Vector3.Distance(d.UpMarker.WorldTransformation.Translation,d2.UpMarker.WorldTransformation.Translation);
+                    }
+                }
             }
         }
     }

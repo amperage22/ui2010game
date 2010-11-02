@@ -399,6 +399,7 @@ namespace ARRG_Game
         }
         private void UpdateAttack()
         {
+            p.updateAtack(p2.Die);
         }
         private void UpdateDamage()
         {
