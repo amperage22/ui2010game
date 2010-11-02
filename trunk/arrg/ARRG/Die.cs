@@ -32,7 +32,7 @@ namespace ARRG_Game
     {
         private const int firstDieID = 128;
         private const double PARALLEL_ANGLE = 0;
-        private const double FLOOR_TOLERANCE = 60;
+        private const double FLOOR_TOLERANCE = 20;
 
         private MarkerNode[] sides;
         private Monster currentMonster;
@@ -99,7 +99,7 @@ namespace ARRG_Game
                             return true;
                         }
                     }
-                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE + 10) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE + 10))
+                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE + 45) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE + 50))
                     {
                         if (side.Equals(upMarker))
                         {
