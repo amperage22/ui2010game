@@ -31,6 +31,7 @@ namespace ARRG_Game
         private G2DPanel mainFrame, itemFrame;
         private G2DButton[,] itemButton = new G2DButton[ROWS, COLS];
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
+        private Texture2D lockedTexture;
         private bool[,,] itemButtonFlag = new bool[ROWS, COLS, 2];
         private G2DLabel tooltip;
         private G2DButton submit, clear;
@@ -42,6 +43,7 @@ namespace ARRG_Game
         private MarketState state;
 
         private Player player;
+        private MonsterBuilder[] monsters = new MonsterBuilder[15];
         private int amountSpent;
 
         /*
@@ -49,8 +51,17 @@ namespace ARRG_Game
          * s The scene to display the talent screen on
          * f The font to be used with within the talent screen being created
          */
-        public MarketScreen(Scene scene, ContentManager content, Player player)
+        public MarketScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
         {
+            List<MonsterBuilder> mb = new List<MonsterBuilder>(monsters);
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.NONE, "unknown1", "unknown1", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false));
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.NONE, "unknown2", "unknown2", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false));
+            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.NONE, "jonathan", "jonathan", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false));
+            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.NONE, "meynard", "meynard", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false));
+            if (mb.Count != 15)
+                throw new Exception("I can't handle this case");
+            foreach (MonsterBuilder m in mb)
+                this.monsters[m.getID()] = m;
             this.scene = scene;
             this.content = content;
             this.player = player;
@@ -61,15 +72,7 @@ namespace ARRG_Game
 
             CreateFrame();
 
-            tooltip = new G2DLabel();
-            tooltip.TextFont = font;
-            tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
-            tooltip.TextColor = Color.White;
-            tooltip.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
-            tooltip.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
-            tooltip.DrawBorder = false;
-            tooltip.DrawBackground = false;
-            itemFrame.AddChild(tooltip);
+            Personalize();
 
             state = MarketState.READY;
         }
@@ -83,6 +86,24 @@ namespace ARRG_Game
             }
         }
 
+        private void CreateMonsterBuilders()
+        {
+
+        }
+
+        /**
+         * Responsible for initializing all of the market screen stuff with
+         * consideration to the player it corresponds to */
+        private void Personalize()
+        {            
+            foreach (MonsterBuilder m in player.PurchasedMonsters)
+            {
+                int i = m.getID() / COLS, j = m.getID() - i * COLS;
+                itemButton[i, j].Texture = lockedTexture;
+                itemButtonFlag[i, j, LOCKED] = true;
+            }
+        }
+
         private void CreateFrame()
         {
             // Create the main panel which holds all other GUI components
@@ -90,7 +111,7 @@ namespace ARRG_Game
             mainFrame.Bounds = new Rectangle(180, 148, 440, 304);
             mainFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             mainFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
-            mainFrame.Texture = content.Load<Texture2D>("Textures/inventory/market_bg");
+            mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
 
             //Create all the slots for the items and stuff
@@ -109,10 +130,21 @@ namespace ARRG_Game
                     itemButton[i, j].DrawBorder = true;
                     itemFrame.AddChild(itemButton[i, j]);
                 }
+
+            //And the tooltip
+            tooltip = new G2DLabel();
+            tooltip.TextFont = font;
+            tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
+            tooltip.TextColor = Color.White;
+            tooltip.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
+            tooltip.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
+            tooltip.DrawBorder = false;
+            tooltip.DrawBackground = false;
+            itemFrame.AddChild(tooltip);
             mainFrame.AddChild(itemFrame);
 
             //Submit and clear buttons
-            Texture2D market_button = content.Load<Texture2D>("Textures/market_button");
+            Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
             submit = new G2DButton("Confirm");
             submit.TextFont = font;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
@@ -207,9 +239,12 @@ namespace ARRG_Game
                 {
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
-                        tooltip.Text = String.Format("{0}, {1}", i, j);
-                        tipFound = true;
-                        break;
+                        if (itemButtonFlag[i, j, LOCKED])
+                        {
+                            tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
+                            tipFound = true;
+                            break;
+                        }
                     }
                 }
 
@@ -219,7 +254,7 @@ namespace ARRG_Game
                 int new_width = (int)(textSize.X + 0.5f) + 5;
                 int new_height = (int)(textSize.Y + 0.5f) + 5;
 
-                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) + 10, mouse.Y - mainFrame.Bounds.Y - 40, new_width, new_height);
+                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - 40, new_width, new_height);
                 tooltip.DrawBackground = true;
                 tooltip.DrawBorder = true;
             }
@@ -240,39 +275,10 @@ namespace ARRG_Game
         {
             for (int i = 0; i < ROWS; i++)
                 for (int j = 0; j < COLS; j++)
-                    buttonTextures[i, j] = content.Load<Texture2D>(getTextureName(i, j));
+                    buttonTextures[i, j] = monsters[i * COLS + j].getInvTexture();
+            lockedTexture = content.Load<Texture2D>("Textures/market/locked");
         }
 
-        //whoo hoo...huge switch for loading textures with different names...
-        private String getTextureName(int row, int col) {
-            switch (row)
-            {
-                case 0: switch (col)
-                    {
-                        case 0: return "Textures/inventory/bear"; //http://www.telegraph.co.uk/news/picturegalleries/picturesoftheday/4804523/Pictures-of-the-day-25-February-2009.html?image=2
-                        case 1: return "Textures/inventory/dalek"; //http://thewertzone.blogspot.com/2010/04/specieswatch-daleks.html
-                        case 2: return "Textures/inventory/dragon1"; //http://www.goodreads.com/topic/show/401347-mutantpack-characters-crash-s-gang
-                        case 3: return "Textures/inventory/dragon2"; //http://www.google.com/imgres?imgurl=http://images.fanpop.com/images/image_uploads/Spyro--Year-of-the-Dragon-WP-spyro-the-dragon-321436_1024_768.jpg&imgrefurl=http://www.fanpop.com/spots/spyro-the-dragon/images/321436&usg=__OgRjWhM1IVMlwKCkbafrdJS3p38=&h=768&w=1024&sz=2305&hl=en&start=34&zoom=1&tbnid=8TlO_avf2pbPjM:&tbnh=119&tbnw=168&prev=/images%3Fq%3Ddragon%26um%3D1%26hl%3Den%26sa%3DN%26biw%3D1280%26bih%3D909%26tbs%3Disch:10,600&um=1&itbs=1&iact=hc&vpx=663&vpy=605&dur=615&hovh=194&hovw=259&tx=162&ty=117&ei=FKPPTK7MN8ydnwezromOBg&oei=2KLPTNvvHoSclgez3dX6BQ&esq=2&page=2&ndsp=35&ved=1t:429,r:17,s:34&biw=1280&bih=909
-                        case 4: return "Textures/inventory/gundam"; //http://loyalkng.com/2009/03/12/real-life-size-gundam-mobile-suit-gundam-30th-anniversary-running-2-months/
-                    } break;
-                case 1: switch (col)
-                    {
-                        case 0: return "Textures/inventory/penguin"; //http://ssjpenguin.yolasite.com/about-me.php
-                        case 1: return "Textures/inventory/rhino"; //http://www.techbanyan.com/11579/female-rhino-south-africa-killed-poachers/
-                        case 2: return "Textures/inventory/samus"; //http://ocremix.org/forums/member.php?u=12644
-                        case 3: return "Textures/inventory/tank"; //http://www.core77.com/blog/object_culture/tanks_but_no_tanks_9108.asp
-                        case 4: return "Textures/inventory/tiger"; //http://www.dailymail.co.uk/news/article-479533/A-spine-tingling-encounter-Indian-tigers-facing-extinction.html
-                    } break;
-                case 2: switch (col)
-                    {
-                        case 0: return "Textures/inventory/unknown";
-                        case 1: return "Textures/inventory/unknown";
-                        case 2: return "Textures/inventory/d_jonathan";
-                        case 3: return "Textures/inventory/d_meynard";
-                        case 4: return "Textures/inventory/d_alex";
-                    } break;
-            }
-            return "Wow, you really screwed something up...";
-        }
+        
     }
 }

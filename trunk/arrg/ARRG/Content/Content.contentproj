@@ -538,18 +538,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\inventory\market_bg.png">
-      <Link>Textures\inventory\market_bg.png</Link>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\market\market_bg.png">
+      <Link>Textures\market\market_bg.png</Link>
       <Name>market_bg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\market\market_button.png">
+      <Link>Textures\market\market_button.png</Link>
+      <Name>market_button</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\market_button.png">
-      <Link>Textures\market_button.png</Link>
-      <Name>market_button</Name>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\market\locked.png">
+      <Link>Textures\market\locked.png</Link>
+      <Name>locked</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

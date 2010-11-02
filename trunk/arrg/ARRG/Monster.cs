@@ -142,20 +142,24 @@ namespace ARRG_Game
 
     class MonsterBuilder
     {
+        CreatureID id;
         CreatureType type;
         protected String name;
         protected String model;
+        protected Texture2D inv_texture; //Texture that shows in the market and inventory
         int health;
         int power;
         bool useInternal;
-        public MonsterBuilder(CreatureType type, String name, String model, int health, int power, bool useInternal)
+        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int health, int power, bool useInternal)
         {
+            this.id = id;
             this.name = name;
             this.health = health;
             this.power = power;
             this.type = type;
             this.model = model;
             this.useInternal = useInternal;
+            this.inv_texture = inv_texture;
         }
         public Monster createMonster()
         {
@@ -166,6 +170,14 @@ namespace ARRG_Game
                 case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal);
             }
             return new Monster(name, model, health, power, useInternal);
+        }
+        public int getID()
+        {
+            return (int)id;
+        }
+        public Texture2D getInvTexture()
+        {
+            return inv_texture;
         }
     }
 
