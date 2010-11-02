@@ -249,7 +249,7 @@ namespace ARRG_Game
 
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true));
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false));
-            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, false));
+            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true));
             p.PurchasedMonsters = monsters;  //For testing purposes
             p2.PurchasedMonsters = monsters; //For testing purposes
         }
@@ -416,6 +416,7 @@ namespace ARRG_Game
         private void UpdateAttack()
         {
             p.updateAtack(p2.Die);
+            p2.updateAtack(p.Die);
         }
         private void UpdateDamage()
         {
