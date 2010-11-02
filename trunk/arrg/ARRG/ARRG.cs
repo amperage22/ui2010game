@@ -82,6 +82,7 @@ namespace ARRG_Game
         healthBar hb, hb2;
         TitleScreen titleScreen;
         TalentScreen talentScreen;
+        MarketScreen marketScreen;
         SpriteBatch spriteBatch;
         Brb bigRed;
 
@@ -346,8 +347,9 @@ namespace ARRG_Game
                 List<Talent> talents = talentScreen.getTalentInfo();
 
                 //TEST
-                menuState = MenuStates.INGAME;  //Should be moved to PRE_GAME and called upon stage transition
-                bigRed = new Brb(ref scene, menuState, gameState);  //Should be moved to PRE_GAME and called upon stage transition
+                menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
+                marketScreen = new MarketScreen(scene, Content, p);  //Should be moved to PRE_GAME and called upon stage transition
+                marketScreen.Display();
                 //END TEST
             }
         }
@@ -363,7 +365,17 @@ namespace ARRG_Game
         /// </summary>
         private void UpdateMarket()
         {
+            marketScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
+            if (marketScreen.wasSubmitted())
+            {
+                //This will automatically update the player passed during creation
+                marketScreen.commit();
 
+                //TEST
+                menuState = MenuStates.INGAME;  //Should be moved to PRE_GAME and called upon stage transition
+                bigRed = new Brb(ref scene, menuState, gameState);  //Should be moved to PRE_GAME and called upon stage transition
+                //END TEST
+            }
         }
         /// <summary>
         /// Update method for Inventory state
