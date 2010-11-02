@@ -40,10 +40,10 @@ namespace ARRG_Game
         private Texture2D[] tabTextures = new Texture2D[3];
         private Color disabledColor = new Color(80, 80, 80);
 
-        Scene scene;
-        ContentManager content;
-        SpriteFont font;
-        TalentState state;
+        private Scene scene;
+        private ContentManager content;
+        private SpriteFont font;
+        private TalentState state;
 
         private const int INITIAL_TALENT_POINTS = 10;
         private const int MULTIPLE_TREE_THRESHOLD = INITIAL_TALENT_POINTS * 2 / 3;
@@ -52,7 +52,7 @@ namespace ARRG_Game
          * Makes the talent screen as per specifications.
          * s The scene to display the talent screen on
          * f The font to be used with within the talent screen being created
-         * activeTab The initial tree to display and tab to select
+         * specialization The initial tree to display and tab to select
          */
         public TalentScreen(Scene scene, ContentManager content, int specialization)
         {
@@ -117,18 +117,19 @@ namespace ARRG_Game
             }
 
             pointCount = new G2DLabel(String.Format("Points Remaining: {0}", pointsRemaining));
-            pointCount.Bounds = new Rectangle(8, 370, 110, 20);
+            pointCount.Bounds = new Rectangle(0, 373, 110, 25);
             pointCount.TextFont = font;
-            pointCount.TextColor = Color.White;
+            pointCount.TextColor = specialization == 0 ? Color.LightBlue : specialization == 1 ? Color.Pink : Color.LightGreen;
             pointCount.DrawBorder = true;
             pointCount.BorderColor = Color.White;
+            pointCount.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
             mainFrame.AddChild(pointCount);
 
 
             Texture2D stone_button = content.Load<Texture2D>("Textures/stone_button");
             submit = new G2DButton("Save");
             submit.TextFont = font;
-            submit.Bounds = new Rectangle(140, 367, 70, 25);
+            submit.Bounds = new Rectangle(150, 373, 70, 25);
             submit.Texture = stone_button;
             submit.TextureColor = disabledColor;
             submit.TextColor = Color.White;
@@ -138,7 +139,7 @@ namespace ARRG_Game
 
             clear = new G2DButton("Clear");
             clear.TextFont = font;
-            clear.Bounds = new Rectangle(220, 367, 70, 25);
+            clear.Bounds = new Rectangle(230, 373, 70, 25);
             clear.Texture = stone_button;
             clear.TextureColor = Color.White;
             clear.TextColor = Color.Black;
@@ -249,7 +250,7 @@ namespace ARRG_Game
                             talentButton[i, j].TextureColor = disabledColor;
                         talentFrame.AddChild(talentButton[i, j]);
 
-                        //Put a black rectangle above the button but below the label
+                        //Put a small black rectangle in the upper left of the button for the points label
                         G2DPanel p = new G2DPanel();
                         p.Bounds = new Rectangle((j * 102) + 16, (i * 102) + 16, 10, 5);
                         p.BackgroundColor = Color.Black;
@@ -301,10 +302,8 @@ namespace ARRG_Game
 
         private void HandleAlloc(int button, Point mouse)
         {
-            //Find the button that got clicked
-            bool tipFound = false;
             //TODO: Make this large yucky if-chain more compact
-            for (int i = 0; i < 3 && !tipFound; i++)
+            for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
                     if (i == 2 && j != 1) continue;
