@@ -112,7 +112,7 @@ namespace ARRG_Game
             mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
 
-            goldLeft = new G2DLabel(String.Format("I Haz {0} Gold", player.Gold));
+            goldLeft = new G2DLabel();
             goldLeft.BackgroundColor = new Color(50, 50, 50); ;
             goldLeft.DrawBackground = true;
             goldLeft.TextFont = font;
@@ -200,8 +200,12 @@ namespace ARRG_Game
             for (int i = 0; i < ROWS; i++)
                 for (int j = 0; j < COLS; j++)
                 {
-                    //itemButton[i, j].TextureColor = isDisabled ? disabledColor : Color.White;
+                    itemButtonFlag[i, j, SELECTED] = false;
+                    itemButton[i, j].TextureColor = Color.White;
+                    itemButton[i, j].BorderColor = Color.Black;
                 }
+            amountSpent = 0;
+            updateMoniesText();
         }
 
         public bool wasSubmitted()
@@ -272,7 +276,7 @@ namespace ARRG_Game
 
         private void updateMoniesText()
         {
-            goldLeft.Text = String.Format("Money Left: {0} Gold", player.Gold - amountSpent);
+            goldLeft.Text = String.Format("I Haz   {0}   Gold!", player.Gold - amountSpent);
             Vector2 v = goldLeft.TextFont.MeasureString(goldLeft.Text);
             goldLeft.Bounds = new Rectangle(10, 266, (int)v.X + 10, 25);
             //I may add more code to this function for milestone 3

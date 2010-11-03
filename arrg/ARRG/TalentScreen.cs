@@ -27,7 +27,8 @@ namespace ARRG_Game
         enum TalentState { READY, DISPLAYING, FINISHED };
         private enum Creature { BEASTS = 0, DRAGONKIN = 1, ROBOTS = 2 };
 
-        private G2DPanel backgroundFrame, mainFrame, talentFrame;
+        private bool showingHelp;
+        private G2DPanel backgroundFrame, mainFrame, talentFrame, helpFrame;
         private G2DButton[] tab = new G2DButton[3];
         private G2DButton[,] talentButton = new G2DButton[3, 3];
         //The label to show how many points the player has used on a certain talent
@@ -38,6 +39,7 @@ namespace ARRG_Game
         private G2DButton submit, clear;
         private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
         private Texture2D[] tabTextures = new Texture2D[3];
+        
         private Color disabledColor = new Color(80, 80, 80);
 
         private Scene scene;
@@ -45,7 +47,7 @@ namespace ARRG_Game
         private SpriteFont font;
         private TalentState state;
 
-        private const int INITIAL_TALENT_POINTS = 0;
+        private const int INITIAL_TALENT_POINTS = 10;
         private const int MULTIPLE_TREE_THRESHOLD = INITIAL_TALENT_POINTS * 2 / 3;
 
         /*
@@ -84,12 +86,18 @@ namespace ARRG_Game
             if (state != TalentState.DISPLAYING)
             {
                 scene.UIRenderer.Add2DComponent(backgroundFrame);
+                scene.UIRenderer.Add2DComponent(helpFrame);
+                showingHelp = true;
                 state = TalentState.DISPLAYING;
             }
         }
 
         private void CreateFrame()
         {
+            helpFrame = new G2DPanel();
+            helpFrame.Bounds = new Rectangle(0, 0, 800, 600);
+            helpFrame.Texture = content.Load<Texture2D>("Textures/talents/help");
+
             backgroundFrame = new G2DPanel();
             backgroundFrame.Bounds = new Rectangle(240, 90, 320, 420);
             backgroundFrame.Border = GoblinEnums.BorderFactory.LineBorder;
@@ -178,6 +186,7 @@ namespace ARRG_Game
         {
             if (pointsRemaining != 0) return;
             scene.UIRenderer.Remove2DComponent(backgroundFrame);
+            if (showingHelp) removeHelp(); //Shouldn't matter unless they get 0 points to spend
             state = TalentState.FINISHED;
         }
 
@@ -313,6 +322,7 @@ namespace ARRG_Game
                         if (button == MouseInput.LeftButton)
                         {
                             if (pointsRemaining == 0) return;
+                            if (showingHelp) removeHelp();
                             if (talents[activeTab].increment(i, j))
                             {
                                 if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
@@ -337,8 +347,24 @@ namespace ARRG_Game
                         }
                         else if (button == MouseInput.RightButton)
                         {
+                            /*
+                             * I need this variable for a special case where the player
+                             * unlocks higher tiers and spends points in them before
+                             * removing some from the lower tiers.  Sometimes, depending 
+                             * on the points given to the player, the remaining two trees
+                             * will remain with the unlocked state inference (by not
+                             * being dimmed) but be unresponsive to clicks.  It doesn't
+                             * permit the user to actually spend points in those trees
+                             * until they satisfy the correct criteria, but the player
+                             * may get confused from the visual cues.  Anyhow, don't worry
+                             * too much about it ;) */
+                            int pointsBeforeDecrement = talents[activeTab].getPointsAllocd();
                             if (talents[activeTab].decrement(i, j))
                             {
+                                if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
+                                    closeTier(i + 1);
+                                pointsRemaining++;
+
                                 /* There arises the case where the player will achieve the
                                  * 2/3 points necessary to open the other two trees.  He will
                                  * then spend points in them and go attempt to remove the
@@ -349,13 +375,10 @@ namespace ARRG_Game
                                 if (activeTab == specialization)
                                 {
                                     int pointsInSpecialization = talents[activeTab].getPointsAllocd();
-                                    if (pointsInSpecialization < MULTIPLE_TREE_THRESHOLD && pointsInSpecialization + 1 >= MULTIPLE_TREE_THRESHOLD)
+                                    if (pointsInSpecialization < MULTIPLE_TREE_THRESHOLD && pointsBeforeDecrement >= MULTIPLE_TREE_THRESHOLD)
                                         closeSecondaryTabs();
                                 }
 
-                                if (beforeAlloc != talents[activeTab].canAllocTier(i + 1))
-                                    closeTier(i + 1);
-                                pointsRemaining++;
                                 submit.TextureColor = disabledColor;
                                 submit.TextColor = Color.White;
                                 pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
@@ -380,6 +403,12 @@ namespace ARRG_Game
             }
             int pointsNeeded = MULTIPLE_TREE_THRESHOLD - (INITIAL_TALENT_POINTS - pointsRemaining);
             return String.Format("You must first place {0} more point{1} in the\n{2} tree before you can access this one!", pointsNeeded, pointsNeeded == 1 ? "" : "s", tree);
+        }
+
+        private void removeHelp()
+        {
+            scene.UIRenderer.Remove2DComponent(helpFrame);
+            showingHelp = false;
         }
 
         private void HandleToolTip(Point mouse)

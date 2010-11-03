@@ -450,7 +450,6 @@ namespace ARRG_Game
         private void DrawTalent()
         {
 
-
         }
         /// <summary>
         /// Draw method for Pre-game state
