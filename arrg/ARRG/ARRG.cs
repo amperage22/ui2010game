@@ -237,20 +237,19 @@ namespace ARRG_Game
         {
             monsters = new List<MonsterBuilder>();
             
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 4, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 5, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 3, 5, true));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 4, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 3, 1, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 5, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 3, 5, true, 1));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 5, 3, true));
-            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 3, 5, false));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 3, 1, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 5, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 3, 5, false, 1));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false));
-            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true));
-            p.PurchasedMonsters = monsters;  //For testing purposes
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
             p2.PurchasedMonsters = monsters; //For testing purposes
         }
 
