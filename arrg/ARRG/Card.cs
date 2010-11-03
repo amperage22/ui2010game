@@ -31,7 +31,6 @@ namespace ARRG_Game
 
     class Card
     {
-        private const int firstCardMarker = 265;
         MarkerNode marker;
         Random random = new Random();
         ParticleNode fireRingEffectNode;
@@ -75,19 +74,9 @@ namespace ARRG_Game
             node = new TransformNode();
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
             //test code
-            Material mat = new Material();
-            mat.Diffuse = Color.Red.ToVector4();
-            mat.Specular = Color.Green.ToVector4();
-            mat.SpecularPower = 2;
-            mat.Emissive = Color.Blue.ToVector4();
-
-            GeometryNode geo = new GeometryNode();
-            geo.Model = new Cylinder(1, 1, 3, 20);
-            geo.Material = mat;
 
             TransformNode trans = new TransformNode();
             trans.Translation = new Vector3(0, 0, 10);
-            trans.AddChild(geo);
             marker.AddChild(trans);
             //End test
 
@@ -138,13 +127,13 @@ namespace ARRG_Game
                     // Add 10 fire particles every frame
                     for (int k = 0; k < 10; k++)
                     {
-                        if(!Vector3.Zero.Equals(marker.WorldTransformation.Translation))
-                            particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+                        if (!Vector3.Zero.Equals(worldTransform.Translation))
+                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), Vector3.Zero);
                     }
                 }
-                else if(!Vector3.Zero.Equals(marker.WorldTransformation.Translation))
+                else if (!Vector3.Zero.Equals(worldTransform.Translation))
                     // Add 1 smoke particle every frame
-                    particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+                    particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), Vector3.Zero);
             }
         }
         private Vector3 RandomPointOnCircle(Vector3 pos)
