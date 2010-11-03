@@ -35,11 +35,7 @@ namespace ARRG_Game
         MarkerNode marker;
         Random random = new Random();
         ParticleNode fireRingEffectNode;
-        public MarkerNode Marker
-        {
-            get { return marker; }
-            set { marker = value; }
-        }
+        
         TransformNode node;
 
         public TransformNode Node
@@ -51,17 +47,17 @@ namespace ARRG_Game
         private int healthMod, dmgMod, dmgDone, dmgPrevent;
         private CardType type;
 
-        public Card(Scene s,CardType type, int markerNum, int dmg, int health)
+        public Card(ref Scene s, CardType type, int markerNum, int dmg, int health)
         {
             this.type = type;
 
-            marker = new MarkerNode();
+
             node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
             String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
-            
+
 
             switch (type)
             {
@@ -70,15 +66,14 @@ namespace ARRG_Game
                 case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = health; healthMod = 0; break;
             }
 
-            
+
             s.RootNode.AddChild(marker);
         }
-        public Card(Scene s,CardType type, int markerNum, int mod)
+        public Card(ref Scene s, CardType type, int markerNum, int mod)
         {
             this.type = type;
 
             //Set up the 6 sides of this die
-            marker = new MarkerNode();
             node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
@@ -99,13 +94,14 @@ namespace ARRG_Game
             trans.Translation = new Vector3(0, 0, 10);
             trans.AddChild(geo);
             marker.AddChild(trans);
+            //End test
 
             switch (type)
             {
                 case CardType.DMG_DONE: dmgMod = 0; dmgDone = mod; dmgPrevent = 0; healthMod = 0; break;
                 case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = mod; healthMod = 0; break;
             }
-            
+
             s.RootNode.AddChild(marker);
         }
         public void castSpell(Monster m)
@@ -119,7 +115,7 @@ namespace ARRG_Game
         }
         public void update()
         {
-                if (marker.MarkerFound)
+            if (marker.MarkerFound)
             {
                 SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
                 FireParticleEffect fireParticles = new FireParticleEffect();
@@ -171,7 +167,7 @@ namespace ARRG_Game
         int markerNum;
         int dmg, health, mod;
 
-        public CardBuilder(Scene s,CardType type, int markerNum, int dmg, int health)
+        public CardBuilder(Scene s, CardType type, int markerNum, int dmg, int health)
         {
             this.s = s;
             this.type = type;
@@ -180,7 +176,7 @@ namespace ARRG_Game
             this.health = health;
         }
 
-        public CardBuilder(Scene s,CardType type, int markerNum, int mod)
+        public CardBuilder(Scene s, CardType type, int markerNum, int mod)
         {
             this.s = s;
             this.type = type;
@@ -191,9 +187,9 @@ namespace ARRG_Game
         {
             switch (type)
             {
-                case CardType.STAT_MOD: return new Card(s, type, markerNum, dmg, health);
+                case CardType.STAT_MOD: return new Card(ref s, type, markerNum, dmg, health);
                 case CardType.DMG_DONE:
-                case CardType.DMG_PREVENT: return new Card(s, type, markerNum, mod);
+                case CardType.DMG_PREVENT: return new Card(ref s, type, markerNum, mod);
             }
             return null;
 
