@@ -40,6 +40,14 @@ namespace ARRG_Game
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
 
+        private bool isDead;
+
+        protected bool IsDead
+        {
+            get { return isDead; }
+            set { isDead = value; }
+        }
+
         public Monster(string name, String model, int health, int power, bool useInternal)
         {
             this.name = name;
@@ -51,24 +59,24 @@ namespace ARRG_Game
             dmgTaken = new List<int>();
             dmgPrevented = new List<int>();
             ModelLoader loader = new ModelLoader();
-            Model robotModel = (Model)loader.Load("Models/", model);
-            GeometryNode robotNode = new GeometryNode("Robot");
-            robotNode.Model = robotModel;
+            Model monsterModel = (Model)loader.Load("Models/", model);
+            GeometryNode monsterNode = new GeometryNode("Robot");
+            monsterNode.Model = monsterModel;
             if (!useInternal)
             {
-                Material robotMaterial = new Material();
-                robotMaterial.Diffuse = Color.Green.ToVector4();
-                robotMaterial.Specular = Color.White.ToVector4();
-                robotMaterial.SpecularPower = 2;
-                robotMaterial.Emissive = Color.Black.ToVector4();
-                robotNode.Material = robotMaterial;
+                Material monsterMaterial = new Material();
+                monsterMaterial.Diffuse = Color.Green.ToVector4();
+                monsterMaterial.Specular = Color.White.ToVector4();
+                monsterMaterial.SpecularPower = 2;
+                monsterMaterial.Emissive = Color.Black.ToVector4();
+                monsterNode.Material = monsterMaterial;
 
             }
             else
-                robotNode.Model.UseInternalMaterials = true;
+                monsterNode.Model.UseInternalMaterials = true;
 
             transNode = new TransformNode();
-            transNode.AddChild(robotNode);
+            transNode.AddChild(monsterNode);
             transNode.Scale *= 0.10f;
             transNode.Translation += new Vector3(10, 0, 20);
         }
@@ -115,14 +123,45 @@ namespace ARRG_Game
 
         public void damageResolution()
         {
+            if (isDead)
+                return;
+            int dmg = 0, prevent = 0;
+
+            foreach (int d in dmgTaken)
+                dmg += d;
+
+            foreach (int p in dmgPrevented)
+                prevent += p;
+
+            dmg = dmg - prevent;
+
+            if (dmg >= health)
+                isDead = true;
+
             dmgTaken.Clear();
             dmgMods.Clear();
             healthMods.Clear();
             dmgPrevented.Clear();
         }
-
-        public void dealDamage(Monster oppMonster)
+        public void healthModeResolution()
         {
+            int hMod =0;
+
+            foreach (int hp in healthMods)
+                hMod += hp;
+
+            hMod += health;
+
+            if (hMod <= 0)
+                isDead = true;
+            
+
+        }
+
+        public void dealAttackDmg(Monster oppMonster)
+        {
+            if (isDead)
+                return;
             int dmgMod = 0;
             foreach (int dmg in dmgMods)
                 dmgMod+= dmg;

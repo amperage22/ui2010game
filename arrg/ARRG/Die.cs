@@ -39,6 +39,10 @@ namespace ARRG_Game
         private MarkerNode ground;
         private MarkerNode upMarker;
 
+        private Die nearestEnemy;
+
+
+
         public MarkerNode UpMarker
         {
             get { return upMarker; }
@@ -52,7 +56,7 @@ namespace ARRG_Game
             sides = new MarkerNode[6];
             for (int i = 0; i < 6; i++)
             {
-                sides[i] = new MarkerNode(s.MarkerTracker, (dieNum * 6) + firstDieID +i,40d);
+                sides[i] = new MarkerNode(s.MarkerTracker, (dieNum * 6) + firstDieID + i, 40d);
                 s.RootNode.AddChild(sides[i]);
             }
             this.ground = ground;
@@ -114,15 +118,6 @@ namespace ARRG_Game
                 currentMonster = m;
             }
         }
-        public bool hasMonster()
-        {
-            return currentMonster != null;
-        }
-
-        public void Update()
-        {
-            //TODO: Make sure that if the die changes orientation, that the monster remains on the top face
-        }
 
         public Monster CurrentMonster
         {
@@ -135,11 +130,38 @@ namespace ARRG_Game
                 upMarker.RemoveChild(currentMonster.TransNode);
             currentMonster = null;
             upMarker = null;
-        }
-        public void updateAttack(Die die2)
-        {
+            nearestEnemy = null;
         }
 
+        public void dealDamageToMonster()
+        {
+            currentMonster.dealAttackDmg(nearestEnemy.currentMonster);
+        }
+
+        public void setNearestEnemy(Die[] die)
+        {
+            float prev = 1000, curr;
+            Die closest;
+            foreach (Die d in die)
+            {
+                if (d != null && d.CurrentMonster != null)
+                {
+
+                    curr = Vector3.Distance(UpMarker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
+                    if (curr < prev)
+                    {
+                        prev = curr;
+                        closest = d;
+                    }
+
+                }
+
+                if (d != null && d.CurrentMonster != null)
+                {
+                    nearestEnemy = d;
+                }
+            }
+        }
     }
 
 
