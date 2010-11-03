@@ -99,16 +99,6 @@ namespace ARRG_Game
         }
         //*********End Selectors and Mutators*************
 
-        public void adjustPower(int mod)
-        {
-            power = power + mod;
-        }
-
-        public void adjustHealth(int mod)
-        {
-            health = health + mod;
-        }
-
         public void addMod(int dmg, int health)
         {
             dmgMods.Add(dmg);
@@ -131,9 +121,12 @@ namespace ARRG_Game
             dmgPrevented.Clear();
         }
 
-        public void attack(Monster oppMonster)
+        public void dealDamage(Monster oppMonster)
         {
-            TransformNode oppMonsNode = oppMonster.TransNode;
+            int dmgMod = 0;
+            foreach (int dmg in dmgMods)
+                dmgMod+= dmg;
+            oppMonster.dealDirectDmg(this.power + dmgMod);
 
         }
 
