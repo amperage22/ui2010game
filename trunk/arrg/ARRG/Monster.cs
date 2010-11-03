@@ -149,8 +149,9 @@ namespace ARRG_Game
         protected Texture2D inv_texture; //Texture that shows in the market and inventory
         int health;
         int power;
+        int cost;
         bool useInternal;
-        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int health, int power, bool useInternal)
+        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int health, int power, bool useInternal, int cost)
         {
             this.id = id;
             this.name = name;
@@ -160,6 +161,7 @@ namespace ARRG_Game
             this.model = model;
             this.useInternal = useInternal;
             this.inv_texture = inv_texture;
+            this.cost = cost;
         }
         public Monster createMonster()
         {
@@ -178,6 +180,18 @@ namespace ARRG_Game
         public Texture2D getInvTexture()
         {
             return inv_texture;
+        }
+        public String getName()
+        {
+            return name;
+        }
+        public int getCost()
+        {
+            return cost;
+        }
+        public CreatureType getType()
+        {
+            return type;
         }
     }
 

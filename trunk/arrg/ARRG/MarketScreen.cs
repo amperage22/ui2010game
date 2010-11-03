@@ -33,7 +33,7 @@ namespace ARRG_Game
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
         private Texture2D lockedTexture;
         private bool[,,] itemButtonFlag = new bool[ROWS, COLS, 2];
-        private G2DLabel tooltip;
+        private G2DLabel tooltip, goldLeft;
         private G2DButton submit, clear;
         private Color disabledColor = new Color(80, 80, 80);
 
@@ -54,10 +54,10 @@ namespace ARRG_Game
         public MarketScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
         {
             List<MonsterBuilder> mb = new List<MonsterBuilder>(monsters);
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.NONE, "unknown1", "unknown1", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false));
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.NONE, "unknown2", "unknown2", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false));
-            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.NONE, "jonathan", "jonathan", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false));
-            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.NONE, "meynard", "meynard", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false));
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 1));
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 1));
+            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false, 1));
+            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false, 1));
             if (mb.Count != 15)
                 throw new Exception("I can't handle this case");
             foreach (MonsterBuilder m in mb)
@@ -86,16 +86,12 @@ namespace ARRG_Game
             }
         }
 
-        private void CreateMonsterBuilders()
-        {
-
-        }
-
         /**
          * Responsible for initializing all of the market screen stuff with
          * consideration to the player it corresponds to */
         private void Personalize()
-        {            
+        {
+            if (player.PurchasedMonsters == null) return;
             foreach (MonsterBuilder m in player.PurchasedMonsters)
             {
                 int i = m.getID() / COLS, j = m.getID() - i * COLS;
@@ -113,6 +109,31 @@ namespace ARRG_Game
             mainFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
             mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
+
+            //Submit and clear buttons
+            Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
+            submit = new G2DButton("Confirm");
+            submit.TextFont = font;
+            submit.Bounds = new Rectangle(280, 266, 70, 25);
+            submit.Texture = market_button;
+            submit.TextureColor = Color.White;
+            submit.DrawBorder = false;
+            submit.TextColor = Color.White;
+            submit.BorderColor = Color.White;
+            submit.HighlightColor = Color.Black;
+            submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
+            mainFrame.AddChild(submit);
+
+            clear = new G2DButton("Clear");
+            clear.TextFont = font;
+            clear.Bounds = new Rectangle(360, 266, 70, 25);
+            clear.Texture = market_button;
+            clear.TextureColor = Color.White;
+            clear.TextColor = Color.White;
+            clear.DrawBorder = false;
+            clear.HighlightColor = Color.Black;
+            clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
+            mainFrame.AddChild(clear);
 
             //Create all the slots for the items and stuff
             itemFrame = new G2DPanel();
@@ -142,31 +163,6 @@ namespace ARRG_Game
             tooltip.DrawBackground = false;
             itemFrame.AddChild(tooltip);
             mainFrame.AddChild(itemFrame);
-
-            //Submit and clear buttons
-            Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
-            submit = new G2DButton("Confirm");
-            submit.TextFont = font;
-            submit.Bounds = new Rectangle(280, 266, 70, 25);
-            submit.Texture = market_button;
-            submit.TextureColor = Color.White;
-            submit.DrawBorder = false;
-            submit.TextColor = Color.White;
-            submit.BorderColor = Color.White;
-            submit.HighlightColor = Color.Black;
-            submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
-            mainFrame.AddChild(submit);
-
-            clear = new G2DButton("Clear");
-            clear.TextFont = font;
-            clear.Bounds = new Rectangle(360, 266, 70, 25);
-            clear.Texture = market_button;
-            clear.TextureColor = Color.White;
-            clear.TextColor = Color.White;
-            clear.DrawBorder = false;
-            clear.HighlightColor = Color.Black;
-            clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
-            mainFrame.AddChild(clear);
         }
         
         private void HandleSubmit(object source)
@@ -198,6 +194,14 @@ namespace ARRG_Game
                 throw new Exception("The selection must be submitted before you can commit it!");
             
             //Set the proper values in the Player object
+            List<MonsterBuilder> newMonsterList = new List<MonsterBuilder>();
+            for (int i = 0; i < ROWS; i++)
+                for (int j = 0; j < COLS; j++)
+                    if (itemButtonFlag[i, j, SELECTED] || itemButtonFlag[i, j, LOCKED])
+                        newMonsterList.Add(monsters[i * COLS + j]);
+            player.PurchasedMonsters = newMonsterList;
+
+            player.Gold -= amountSpent;
         }
 
         private void HandleAlloc(int button, Point mouse)
@@ -215,11 +219,23 @@ namespace ARRG_Game
                         {
                             itemButtonFlag[i, j, SELECTED] = false;
                             itemButton[i, j].TextureColor = Color.White;
+                            itemButton[i, j].BorderColor = Color.Black;
                         }
                         else //the user wants to select this item
                         {
                             itemButtonFlag[i, j, SELECTED] = true;
                             itemButton[i, j].TextureColor = disabledColor;
+                            switch (monsters[i * COLS + j].getType())
+                            {
+                                case CreatureType.BEASTS:
+                                    itemButton[i, j].BorderColor = Color.Blue; break;
+                                case CreatureType.DRAGONKIN:
+                                    itemButton[i, j].BorderColor = Color.Red; break;
+                                case CreatureType.ROBOTS:
+                                    itemButton[i, j].BorderColor = Color.Green; break;
+                                default:
+                                    itemButton[i, j].BorderColor = Color.White; break;
+                            }
                         }
                     }
                 }
@@ -242,9 +258,17 @@ namespace ARRG_Game
                         if (itemButtonFlag[i, j, LOCKED])
                         {
                             tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
-                            tipFound = true;
-                            break;
                         }
+                        else if (itemButtonFlag[i, j, SELECTED])
+                        {
+                            tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
+                        }
+                        else
+                        {
+                            tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getCost());
+                        }
+                        tipFound = true;
+                        break;
                     }
                 }
 
