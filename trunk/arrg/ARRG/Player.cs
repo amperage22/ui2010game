@@ -136,45 +136,16 @@ namespace ARRG_Game
             {
                 Random r = new Random();
                 d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Randomly attach monster to die
-                d.Update();
             }
         }
         public void updateAtack(Die[] die2)
         {
-            //Handles where the models face
-            float prev = 1000, curr;
-            Die closest;
-            double angle;
             foreach (Die d in die)
             {
                 if (d != null && d.CurrentMonster != null)
                 {
-                    foreach (Die d2 in die2)
-                    {
-                        if (d2 != null && d2.CurrentMonster != null)
-                        {
-
-                            curr = Vector3.Distance(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
-                            if (curr < prev)
-                            {
-                                prev = curr;
-                                closest = d2;
-                            }
-
-                        }
-
-                        if (d2 != null && d2.CurrentMonster != null)
-                        {
-                            Vector3 diff = Vector3.Subtract(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
-                            double dis = Vector3.Distance(d.UpMarker.WorldTransformation.Translation, d2.UpMarker.WorldTransformation.Translation);
-                            angle = Math.Acos(Vector3.Dot(d.UpMarker.WorldTransformation.Up,
-                            d2.UpMarker.WorldTransformation.Right));
-                            //Does not work properly
-                            d.CurrentMonster.TransNode.Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ,-(float)angle);
-                        }
-                    }
+                    d.setNearestEnemy(die2);
                 }
-                prev = 1000;
             }
             if (cards == null)
                 return;
