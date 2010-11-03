@@ -41,6 +41,13 @@ namespace ARRG_Game
         private MarkerNode ground;
 
         private Die[] die;
+        private List<Card> cards;
+
+        internal List<Card> Cards
+        {
+            get { return cards; }
+            set { cards = value; }
+        }
 
         internal Die[] Die
         {
@@ -169,6 +176,10 @@ namespace ARRG_Game
                 }
                 prev = 1000;
             }
+            if (cards == null)
+                return;
+            foreach (Card c in cards)
+                c.update();
         }
 
         public void updateDamage(Die[] die2)

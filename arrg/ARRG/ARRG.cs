@@ -80,6 +80,7 @@ namespace ARRG_Game
         GraphicsDeviceManager graphics;
         Player p, p2;
         List<MonsterBuilder> monsters;
+        List<Card> cards;
         Scene scene;
         MarkerNode groundMarkerNode;
         private const int dice_count = 6;
@@ -236,6 +237,7 @@ namespace ARRG_Game
         private void CreateMonsterList()
         {
             monsters = new List<MonsterBuilder>();
+            cards = new List<Card>();
             
             monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 4, 3, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 3, 1, true, 1));
@@ -251,6 +253,9 @@ namespace ARRG_Game
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false, 1));
             monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
             p2.PurchasedMonsters = monsters; //For testing purposes
+
+            cards.Add(new Card(scene, CardType.DMG_DONE, 265, 5));
+            p.Cards = cards;
         }
 
         private void CreateObjects()
