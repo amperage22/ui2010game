@@ -59,7 +59,7 @@ namespace ARRG_Game
             node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
-            String config_file = String.Format("Content/dice_markers/card{0}.txt", markerNum - firstCardMarker);
+            String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
             
 
@@ -82,7 +82,7 @@ namespace ARRG_Game
             node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
-            String config_file = String.Format("Content/dice_markers/card{0}.txt", markerNum - firstCardMarker);
+            String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
 
             switch (type)
@@ -104,7 +104,7 @@ namespace ARRG_Game
         }
         public void update()
         {
-            if (marker.MarkerFound)
+                if (marker.MarkerFound)
             {
                 SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
                 FireParticleEffect fireParticles = new FireParticleEffect();
