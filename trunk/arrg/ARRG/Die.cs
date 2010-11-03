@@ -44,21 +44,18 @@ namespace ARRG_Game
             get { return upMarker; }
             set { upMarker = value; }
         }
-        private int dieNum;
         Scene scene;
 
         public Die(ref Scene s, int dieNum, ref MarkerNode ground)
         {
             //Set up the 6 sides of this die
             sides = new MarkerNode[6];
-            this.dieNum = dieNum;
             int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
             {
                 side_marker[0] = (dieNum * 6) + firstDieID +i;
                 String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", dieNum, i);
                 sides[i] = new MarkerNode(s.MarkerTracker, config_file, side_marker);
-                //sides[i] = new MarkerNode(s.MarkerTracker, (dieNum * 6) + firstDieID);
                 s.RootNode.AddChild(sides[i]);
             }
             this.ground = ground;
