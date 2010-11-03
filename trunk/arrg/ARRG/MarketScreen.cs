@@ -33,9 +33,11 @@ namespace ARRG_Game
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
         private Texture2D lockedTexture;
         private bool[,,] itemButtonFlag = new bool[ROWS, COLS, 2];
-        private G2DLabel tooltip, goldLeft;
+        private G2DLabel tooltip;
         private G2DButton submit, clear;
         private Color disabledColor = new Color(80, 80, 80);
+
+        private G2DLabel goldLeft;
 
         private Scene scene;
         private ContentManager content;
@@ -54,10 +56,10 @@ namespace ARRG_Game
         public MarketScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
         {
             List<MonsterBuilder> mb = new List<MonsterBuilder>(monsters);
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 1));
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 1));
-            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false, 1));
-            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false, 1));
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
+            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
+            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false, 50));
+            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false, 50));
             if (mb.Count != 15)
                 throw new Exception("I can't handle this case");
             foreach (MonsterBuilder m in mb)
@@ -66,7 +68,7 @@ namespace ARRG_Game
             this.content = content;
             this.player = player;
             amountSpent = 0;
-            font = content.Load<SpriteFont>("UIFont");
+            font = content.Load<SpriteFont>("UIFont_Bold");
 
             allocateTextures();
 
@@ -110,15 +112,26 @@ namespace ARRG_Game
             mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
 
+            goldLeft = new G2DLabel(String.Format("I Haz {0} Gold", player.Gold));
+            goldLeft.BackgroundColor = new Color(50, 50, 50); ;
+            goldLeft.DrawBackground = true;
+            goldLeft.TextFont = font;
+            goldLeft.TextColor = Color.Gold;
+            goldLeft.DrawBorder = true;
+            goldLeft.BorderColor = Color.White;
+            goldLeft.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
+            updateMoniesText();
+            mainFrame.AddChild(goldLeft);
+
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
-            submit = new G2DButton("Confirm");
+            submit = new G2DButton("Buy");
             submit.TextFont = font;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
             submit.Texture = market_button;
-            submit.TextureColor = Color.White;
+            submit.TextureColor = new Color(200, 200, 200);
             submit.DrawBorder = false;
-            submit.TextColor = Color.White;
+            submit.TextColor = Color.Gold;
             submit.BorderColor = Color.White;
             submit.HighlightColor = Color.Black;
             submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
@@ -128,8 +141,8 @@ namespace ARRG_Game
             clear.TextFont = font;
             clear.Bounds = new Rectangle(360, 266, 70, 25);
             clear.Texture = market_button;
-            clear.TextureColor = Color.White;
-            clear.TextColor = Color.White;
+            clear.TextureColor = new Color(200, 200, 200);
+            clear.TextColor = Color.Gold;
             clear.DrawBorder = false;
             clear.HighlightColor = Color.Black;
             clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
@@ -149,6 +162,17 @@ namespace ARRG_Game
                     itemButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
                     itemButton[i, j].BorderColor = Color.Black;
                     itemButton[i, j].DrawBorder = true;
+                    switch (monsters[i * COLS + j].getType())
+                    {
+                        case CreatureType.BEASTS:
+                            itemButton[i, j].HighlightColor = Color.Blue; break;
+                        case CreatureType.DRAGONKIN:
+                            itemButton[i, j].HighlightColor = Color.Red; break;
+                        case CreatureType.ROBOTS:
+                            itemButton[i, j].HighlightColor = Color.Green; break;
+                        default:
+                            itemButton[i, j].HighlightColor = Color.White; break;
+                    }
                     itemFrame.AddChild(itemButton[i, j]);
                 }
 
@@ -220,9 +244,12 @@ namespace ARRG_Game
                             itemButtonFlag[i, j, SELECTED] = false;
                             itemButton[i, j].TextureColor = Color.White;
                             itemButton[i, j].BorderColor = Color.Black;
+                            amountSpent -= monsters[i * COLS + j].getCost();
                         }
                         else //the user wants to select this item
                         {
+                            if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
+                                return; //The player has not enough gold to do that.
                             itemButtonFlag[i, j, SELECTED] = true;
                             itemButton[i, j].TextureColor = disabledColor;
                             switch (monsters[i * COLS + j].getType())
@@ -236,9 +263,19 @@ namespace ARRG_Game
                                 default:
                                     itemButton[i, j].BorderColor = Color.White; break;
                             }
+                            amountSpent += monsters[i * COLS + j].getCost();
                         }
+                        updateMoniesText();
                     }
                 }
+        }
+
+        private void updateMoniesText()
+        {
+            goldLeft.Text = String.Format("Money Left: {0} Gold", player.Gold - amountSpent);
+            Vector2 v = goldLeft.TextFont.MeasureString(goldLeft.Text);
+            goldLeft.Bounds = new Rectangle(10, 266, (int)v.X + 10, 25);
+            //I may add more code to this function for milestone 3
         }
 
         private void HandleToolTip(Point mouse)
@@ -263,8 +300,14 @@ namespace ARRG_Game
                         {
                             tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
                         }
+                        else if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
+                        {
+                            //Since the player has not enough monies, we need to tell em.
+                            tooltip.Text = String.Format("You need more money for that :(");
+                        }
                         else
                         {
+                            
                             tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getCost());
                         }
                         tipFound = true;
@@ -278,7 +321,7 @@ namespace ARRG_Game
                 int new_width = (int)(textSize.X + 0.5f) + 5;
                 int new_height = (int)(textSize.Y + 0.5f) + 5;
 
-                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - 40, new_width, new_height);
+                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - 80, new_width, new_height);
                 tooltip.DrawBackground = true;
                 tooltip.DrawBorder = true;
             }
