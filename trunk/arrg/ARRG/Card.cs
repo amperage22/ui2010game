@@ -84,6 +84,21 @@ namespace ARRG_Game
             side_marker[0] = markerNum;
             String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
+            //test code
+            Material mat = new Material();
+            mat.Diffuse = Color.Red.ToVector4();
+            mat.Specular = Color.Green.ToVector4();
+            mat.SpecularPower = 2;
+            mat.Emissive = Color.Blue.ToVector4();
+
+            GeometryNode geo = new GeometryNode();
+            geo.Model = new Cylinder(1, 1, 3, 20);
+            geo.Material = mat;
+
+            TransformNode trans = new TransformNode();
+            trans.Translation = new Vector3(0, 0, 10);
+            trans.AddChild(geo);
+            marker.AddChild(trans);
 
             switch (type)
             {
