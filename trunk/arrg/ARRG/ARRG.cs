@@ -254,7 +254,8 @@ namespace ARRG_Game
             monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
             p2.PurchasedMonsters = monsters; //For testing purposes
 
-            cards.Add(new Card(ref scene, CardType.DMG_DONE, 265, 5));
+            cards.Add(new Card(ref scene, CardType.DMG_DONE, 164, 5));
+            cards.Add(new Card(ref scene, CardType.DMG_DONE, 183, 5));
             p.Cards = cards;
         }
 
