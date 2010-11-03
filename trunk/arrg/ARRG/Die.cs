@@ -50,11 +50,8 @@ namespace ARRG_Game
         {
             //Set up the 6 sides of this die
             sides = new MarkerNode[6];
-            int[] side_marker = new int[1];
             for (int i = 0; i < 6; i++)
             {
-                //side_marker[0] = (dieNum * 6) + firstDieID +i;
-                //String config_file = String.Format("Content/dice_markers/die{0}side{1}.txt", dieNum, i);
                 sides[i] = new MarkerNode(s.MarkerTracker, (dieNum * 6) + firstDieID +i,40d);
                 s.RootNode.AddChild(sides[i]);
             }
@@ -73,16 +70,16 @@ namespace ARRG_Game
 
         public bool setTopMarker(MonsterBuilder m)
         {
-            Vector3 ForwardRightVector = ground.WorldTransformation.Forward;
-            if (ForwardRightVector.Equals(Vector3.Zero))
+            Vector3 groundForwardVectr = ground.WorldTransformation.Forward;
+            if (groundForwardVectr.Equals(Vector3.Zero))
                 return false;
             foreach (MarkerNode side in sides)
             {
-                if (side.MarkerFound)
+                if (!Vector3.Zero.Equals(side.WorldTransformation.Translation))
                 {
                     Vector3 sideUp = side.WorldTransformation.Forward;
 
-                    double d = Math.Acos(Vector3.Dot(sideUp, ForwardRightVector));
+                    double d = Math.Acos(Vector3.Dot(sideUp, groundForwardVectr));
                     d = MathHelper.ToDegrees((float)d);
                     if (d <= PARALLEL_ANGLE + FLOOR_TOLERANCE && d >= PARALLEL_ANGLE - FLOOR_TOLERANCE)
                     {
@@ -96,7 +93,7 @@ namespace ARRG_Game
                             return true;
                         }
                     }
-                    else if (d > PARALLEL_ANGLE + (FLOOR_TOLERANCE + 45) || d < PARALLEL_ANGLE - (FLOOR_TOLERANCE + 50))
+                    else if (d > 70)
                     {
                         if (side.Equals(upMarker))
                         {
