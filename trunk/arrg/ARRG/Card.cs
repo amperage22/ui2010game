@@ -33,6 +33,20 @@ namespace ARRG_Game
     {
         private const int firstCardMarker = 265;
         MarkerNode marker;
+        Random random = new Random();
+        ParticleNode fireRingEffectNode;
+        public MarkerNode Marker
+        {
+            get { return marker; }
+            set { marker = value; }
+        }
+        TransformNode node;
+
+        public TransformNode Node
+        {
+            get { return node; }
+            set { node = value; }
+        }
 
         private int healthMod, dmgMod, dmgDone, dmgPrevent;
         private CardType type;
@@ -41,13 +55,13 @@ namespace ARRG_Game
         {
             this.type = type;
 
-            //Set up the 6 sides of this die
             marker = new MarkerNode();
+            node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
             String config_file = String.Format("Content/dice_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
-            s.RootNode.AddChild(marker);
+            
 
             switch (type)
             {
@@ -55,6 +69,9 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: dmgMod = 0; dmgDone = dmg; dmgPrevent = 0; healthMod = 0; break;
                 case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = health; healthMod = 0; break;
             }
+
+            
+            s.RootNode.AddChild(marker);
         }
         public Card(Scene s,CardType type, int markerNum, int mod)
         {
@@ -62,17 +79,19 @@ namespace ARRG_Game
 
             //Set up the 6 sides of this die
             marker = new MarkerNode();
+            node = new TransformNode();
             int[] side_marker = new int[1];
             side_marker[0] = markerNum;
-            String config_file = String.Format("Content/dice_markers/card{0}.txt", markerNum + firstCardMarker);
+            String config_file = String.Format("Content/dice_markers/card{0}.txt", markerNum - firstCardMarker);
             marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
-            s.RootNode.AddChild(marker);
 
             switch (type)
             {
                 case CardType.DMG_DONE: dmgMod = 0; dmgDone = mod; dmgPrevent = 0; healthMod = 0; break;
                 case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = mod; healthMod = 0; break;
             }
+            
+            s.RootNode.AddChild(marker);
         }
         public void castSpell(Monster m)
         {
@@ -82,6 +101,52 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: m.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: m.preventDmg(dmgPrevent); break;
             }
+        }
+        public void update()
+        {
+            if (marker.MarkerFound)
+            {
+                SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
+                FireParticleEffect fireParticles = new FireParticleEffect();
+                smokeParticles.DrawOrder = 200;
+                fireParticles.DrawOrder = 300;
+                fireRingEffectNode = new ParticleNode();
+                fireRingEffectNode.ParticleEffects.Add(smokeParticles);
+                fireRingEffectNode.ParticleEffects.Add(fireParticles);
+                fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
+                fireRingEffectNode.Enabled = false;
+
+                node.AddChild(fireRingEffectNode);
+                marker.AddChild(node);
+
+            }
+
+        }
+        private void UpdateRingOfFire(Matrix worldTransform, List<ParticleEffect> particleEffects)
+        {
+            foreach (ParticleEffect particle in particleEffects)
+            {
+                if (particle is FireParticleEffect)
+                {
+                    // Add 10 fire particles every frame
+                    for (int k = 0; k < 10; k++)
+                        particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+                }
+                else
+                    // Add 1 smoke particle every frame
+                    particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+            }
+        }
+        private Vector3 RandomPointOnCircle(Vector3 pos)
+        {
+            const float radius = 12.5f;
+
+            double angle = random.NextDouble() * Math.PI * 2;
+
+            float x = (float)Math.Cos(angle);
+            float y = (float)Math.Sin(angle);
+
+            return new Vector3(x * radius + pos.X, y * radius + pos.Y, pos.Z);
         }
     }
     class CardBuilder
