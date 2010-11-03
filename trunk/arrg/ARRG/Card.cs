@@ -35,6 +35,7 @@ namespace ARRG_Game
         MarkerNode marker;
         Random random = new Random();
         ParticleNode fireRingEffectNode;
+        bool particleSet = false;
         
         TransformNode node;
 
@@ -53,10 +54,7 @@ namespace ARRG_Game
 
 
             node = new TransformNode();
-            int[] side_marker = new int[1];
-            side_marker[0] = markerNum;
-            String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
-            marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
+            marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
 
 
             switch (type)
@@ -75,10 +73,7 @@ namespace ARRG_Game
 
             //Set up the 6 sides of this die
             node = new TransformNode();
-            int[] side_marker = new int[1];
-            side_marker[0] = markerNum;
-            String config_file = String.Format("Content/card_markers/card{0}.txt", markerNum - firstCardMarker);
-            marker = new MarkerNode(s.MarkerTracker, config_file, side_marker);
+            marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
             //test code
             Material mat = new Material();
             mat.Diffuse = Color.Red.ToVector4();
@@ -115,7 +110,7 @@ namespace ARRG_Game
         }
         public void update()
         {
-            if (marker.MarkerFound)
+            if (marker.MarkerFound && !particleSet)
             {
                 SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
                 FireParticleEffect fireParticles = new FireParticleEffect();
@@ -125,10 +120,11 @@ namespace ARRG_Game
                 fireRingEffectNode.ParticleEffects.Add(smokeParticles);
                 fireRingEffectNode.ParticleEffects.Add(fireParticles);
                 fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
-                fireRingEffectNode.Enabled = false;
+                fireRingEffectNode.Enabled = true;
 
                 node.AddChild(fireRingEffectNode);
                 marker.AddChild(node);
+                particleSet = true;
 
             }
 
@@ -141,9 +137,12 @@ namespace ARRG_Game
                 {
                     // Add 10 fire particles every frame
                     for (int k = 0; k < 10; k++)
-                        particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+                    {
+                        if(!Vector3.Zero.Equals(marker.WorldTransformation.Translation))
+                            particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
+                    }
                 }
-                else
+                else if(!Vector3.Zero.Equals(marker.WorldTransformation.Translation))
                     // Add 1 smoke particle every frame
                     particle.AddParticle(RandomPointOnCircle(marker.WorldTransformation.Translation), Vector3.Zero);
             }
