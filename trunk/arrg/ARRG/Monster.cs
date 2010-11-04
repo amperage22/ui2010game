@@ -39,6 +39,13 @@ namespace ARRG_Game
         protected List<int> dmgTaken;       //Instantiated through Monster
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
+        protected Monster nearestEnemy;
+
+        public Monster NearestEnemy
+        {
+            get { return nearestEnemy; }
+            set { nearestEnemy = value; }
+        }
 
         private bool isDead;
 
@@ -121,7 +128,7 @@ namespace ARRG_Game
             dmgPrevented.Add(health);
         }
 
-        public void damageResolution()
+        private void damageResolution()
         {
             if (isDead)
                 return;
@@ -143,7 +150,7 @@ namespace ARRG_Game
             healthMods.Clear();
             dmgPrevented.Clear();
         }
-        public void healthModeResolution()
+        private void healthModResolution()
         {
             int hMod =0;
 
@@ -158,24 +165,24 @@ namespace ARRG_Game
 
         }
 
-        public void dealAttackDmg(Monster oppMonster)
+        public void dealAttackDmg()
         {
             if (isDead)
                 return;
             int dmgMod = 0;
             foreach (int dmg in dmgMods)
                 dmgMod+= dmg;
-            oppMonster.dealDirectDmg(this.power + dmgMod);
+            nearestEnemy.dealDirectDmg(power + dmgMod);
 
         }
-        public void attack()
+        public void startAttackAnimation()
         {
             //Should create simple "animation" of Monsters atack
         }
 
-        public void defend()
+        public void endAttackAnimation()
         {
-            //May be useless
+            //Should end simple "animation" of Monsters atack
         }
 
     }

@@ -135,7 +135,7 @@ namespace ARRG_Game
 
         public void dealDamageToMonster()
         {
-            currentMonster.dealAttackDmg(nearestEnemy.currentMonster);
+            currentMonster.dealAttackDmg();
         }
 
         public void setNearestEnemy(Die[] die)
@@ -154,10 +154,10 @@ namespace ARRG_Game
                     }
                 }
 
-                if (d != null && d.CurrentMonster != null)
+                if (d != null && d.CurrentMonster != null && currentMonster != null)
                 {
                     nearestEnemy = d;
-                    //faceNearestEnemy();
+                    currentMonster.NearestEnemy = d.currentMonster;
                 }
             }
         }
