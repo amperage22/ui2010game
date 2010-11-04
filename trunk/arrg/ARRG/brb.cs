@@ -84,33 +84,16 @@ namespace ARRG_Game
                     switch (gameState)
                     {
                         case InGameStates.ATTACK:
-                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
-                            brbButton.Texture = null;
-                            brbButton.BackgroundColor = Color.Red;
-                            brbButton.TextColor = Color.White;
-                            brbButton.Text = gameState.ToString();
-                            
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
                             break;
                         case InGameStates.DAMAGE:
-                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
-                            brbButton.Texture = null;
-                            brbButton.BackgroundColor = Color.Red;
-                            brbButton.TextColor = Color.White;
-                            brbButton.Text = gameState.ToString();
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
                             break;
                         case InGameStates.DISCARD:
-                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
-                            brbButton.Texture = null;
-                            brbButton.BackgroundColor = Color.Red;
-                            brbButton.TextColor = Color.White;
-                            brbButton.Text = gameState.ToString();
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
                             break;
                         case InGameStates.DRAW:
-                            //brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
-                            brbButton.Texture = null;
-                            brbButton.BackgroundColor = Color.Red;
-                            brbButton.TextColor = Color.White;
-                            brbButton.Text = gameState.ToString();
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
                             break;
                         case InGameStates.SUMMON:
                             brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbSummon");
