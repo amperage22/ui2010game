@@ -89,6 +89,7 @@ namespace ARRG_Game
         TalentScreen talentScreen;
         MarketScreen marketScreen;
         SpriteBatch spriteBatch;
+        preGameScreen preGame;
         Brb bigRed;
 
         //Set up the states
@@ -356,10 +357,13 @@ namespace ARRG_Game
                 List<Talent> talents = talentScreen.getTalentInfo();
 
                 //TEST
-                menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
-                marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
-                marketScreen.Display();
+                //menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
+                //marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
+                //marketScreen.Display();
                 //END TEST
+                preGame = new preGameScreen(scene, Content);
+                menuState = MenuStates.PRE_GAME;
+                preGame.display();
             }
         }
         /// <summary>
@@ -367,7 +371,35 @@ namespace ARRG_Game
         /// </summary>
         private void UpdatePreGame()
         {
+          if (preGame.isPregameFinished())
+          {
 
+            //TEST Gotta figure out if we want to create random values if the gamer wants to just jump right in
+            menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
+            marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
+            marketScreen.Display();
+            //END TEST
+            //menuState = preGame.getDecision();
+            /*
+            switch (preGame.getDecision())
+            {
+              case MenuStates.MARKET:
+                menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
+                marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
+                marketScreen.Display();
+                break;
+              case MenuStates.INVENTORY:
+                menuState = MenuStates.INVENTORY;
+                break;
+              case MenuStates.INGAME:
+                menuState = MenuStates.INGAME;
+                bigRed = new Brb(ref scene, menuState, gameState);
+                break;
+
+            }
+            */
+
+          }
         }
         /// <summary>
         /// Update method for Market state
@@ -457,6 +489,7 @@ namespace ARRG_Game
         /// </summary>
         private void DrawPreGame()
         {
+          preGame.display();
 
         }
         /// <summary>
