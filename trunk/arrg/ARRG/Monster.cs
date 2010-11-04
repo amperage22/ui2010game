@@ -168,8 +168,16 @@ namespace ARRG_Game
             oppMonster.dealDirectDmg(this.power + dmgMod);
 
         }
+        public void attack()
+        {
+            //Should create simple "animation" of Monsters atack
+        }
 
- 
+        public void defend()
+        {
+            //May be useless
+        }
+
     }
 
     class MonsterBuilder

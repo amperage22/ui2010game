@@ -14,5 +14,13 @@ namespace ARRG_Game
             dodge = 20;
             crit = 40;
         }
+
+        public void attack()
+        {
+        }
+
+        public void defend()
+        {
+        }
     }
 }

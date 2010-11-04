@@ -103,7 +103,7 @@ namespace ARRG_Game
             {
                 SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
                 FireParticleEffect fireParticles = new FireParticleEffect();
-                fireParticles.TextureName = "particles";
+                //fireParticles.TextureName = "particles";
                 smokeParticles.DrawOrder = 200;
                 fireParticles.DrawOrder = 300;
                 fireRingEffectNode = new ParticleNode();
@@ -126,15 +126,15 @@ namespace ARRG_Game
                 if (particle is FireParticleEffect)
                 {
                     // Add 10 fire particles every frame
-                    for (int k = 0; k < 10; k++)
+                    for (int k = 0; k < 20; k++)
                     {
                         if (!Vector3.Zero.Equals(worldTransform.Translation))
                             particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20,100,20));
                     }
                 }
-                //else if (!Vector3.Zero.Equals(worldTransform.Translation))
+                else if (!Vector3.Zero.Equals(worldTransform.Translation))
                     // Add 1 smoke particle every frame
-                    //particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), Vector3.Zero);
+                    particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(50, 100, 50));
             }
         }
         private Vector3 RandomPointOnCircle(Vector3 pos)
