@@ -631,29 +631,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\beasts_tab_disabled.png">
-      <Link>Textures\talents\beasts_tab_disabled.png</Link>
-      <Name>beasts_tab_disabled</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\dragonkin_tab_disabled.png">
-      <Link>Textures\talents\dragonkin_tab_disabled.png</Link>
-      <Name>dragonkin_tab_disabled</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\robots_tab_disabled.png">
-      <Link>Textures\talents\robots_tab_disabled.png</Link>
-      <Name>robots_tab_disabled</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\bigRedButton\brbDiscard.png">
       <Link>Textures\brb\brbDiscard.png</Link>
       <Name>brbDiscard</Name>

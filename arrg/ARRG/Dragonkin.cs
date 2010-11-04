@@ -15,11 +15,11 @@ namespace ARRG_Game
             crit = 40;
         }
 
-        public void attack()
+        new public void attack()
         {
         }
 
-        public void defend()
+        new public void defend()
         {
         }
     }
