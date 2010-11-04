@@ -146,22 +146,28 @@ namespace ARRG_Game
             {
                 if (d != null && d.CurrentMonster != null)
                 {
-
                     curr = Vector3.Distance(UpMarker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
                     if (curr < prev)
                     {
                         prev = curr;
                         closest = d;
                     }
-
                 }
 
                 if (d != null && d.CurrentMonster != null)
                 {
                     nearestEnemy = d;
+                    //faceNearestEnemy();
                 }
             }
         }
+        private void faceNearestEnemy()
+        {
+            if (nearestEnemy == null || upMarker == null || Vector3.Zero.Equals(upMarker.WorldTransformation.Translation) || Vector3.Zero.Equals(nearestEnemy.UpMarker.WorldTransformation.Translation))
+                return;            
+        }
+
+ 
     }
 
 
