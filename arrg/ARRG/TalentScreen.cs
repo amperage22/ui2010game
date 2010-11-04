@@ -26,6 +26,7 @@ namespace ARRG_Game
     {
         enum TalentState { READY, DISPLAYING, FINISHED };
         private enum Creature { BEASTS = 0, DRAGONKIN = 1, ROBOTS = 2 };
+        private const int TAB_ENABLED = 1, TAB_DISABLED = 0; //Used explicitly with tabTextures[,]
 
         private bool showingHelp;
         private G2DPanel backgroundFrame, mainFrame, talentFrame, helpFrame;
@@ -38,7 +39,7 @@ namespace ARRG_Game
         private G2DLabel pointCount, tooltip;
         private G2DButton submit, clear;
         private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
-        private Texture2D[] tabTextures = new Texture2D[3];
+        private Texture2D[,] tabTextures = new Texture2D[3,2];
         
         private Color disabledColor = new Color(80, 80, 80);
 
@@ -47,7 +48,7 @@ namespace ARRG_Game
         private SpriteFont font;
         private TalentState state;
 
-        private const int INITIAL_TALENT_POINTS = 0;
+        private const int INITIAL_TALENT_POINTS = 10;
         private const int MULTIPLE_TREE_THRESHOLD = 1 + INITIAL_TALENT_POINTS * 2 / 3;
 
         /*
@@ -117,8 +118,8 @@ namespace ARRG_Game
                 tab[i] = new G2DButton();
                 tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
-                tab[i].Texture = tabTextures[i];
-                tab[i].TextureColor = disabledColor;
+                tab[i].Texture = specialization == i ? tabTextures[i, TAB_ENABLED] : tabTextures[i, TAB_DISABLED];
+                tab[i].TextureColor = specialization == i ? Color.White : disabledColor;
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
                 tab[i].DrawBorder = false;
                 mainFrame.AddChild(tab[i]);
@@ -173,8 +174,8 @@ namespace ARRG_Game
                 if (i == activeTab) return;
 
                 //Keep the tab/screen states consistent for the user
-                tab[activeTab].TextureColor = Color.White;
-                tab[i].TextureColor = disabledColor;
+                tab[activeTab].TextureColor = disabledColor;
+                tab[i].TextureColor = Color.White;
                 ChangeToTree(i);
 
                 //Get outta here
@@ -479,10 +480,18 @@ namespace ARRG_Game
                                 j + 1,
                                 j == 2 ? "" : String.Format("_{0}", k + 1)));
                     }
-                tabTextures[i] = content.Load<Texture2D>(
-                    i == 0 ? "Textures/talents/beasts_tab" :    //http://www.geekcoefficient.com/blog/images/beast.jpg
-                    i == 1 ? "Textures/talents/dragonkin_tab" : //http://www.crystalinks.com/dragon.gif
-                             "Textures/talents/robots_tab");    //http://www.techgadgets.in/images/nikko-robot.jpg
+
+                //Load the tab textures
+                String fileLoc;
+                if (i == 0)
+                    fileLoc = "Textures/talents/beasts_tab"; //http://www.geekcoefficient.com/blog/images/beast.jpg
+                else if (i == 1)
+                    fileLoc = "Textures/talents/dragonkin_tab"; //http://www.crystalinks.com/dragon.gif
+                else
+                    fileLoc = "Textures/talents/robots_tab"; //http://www.techgadgets.in/images/nikko-robot.jpg
+                             
+                tabTextures[i, TAB_DISABLED] = content.Load<Texture2D>(String.Format("{0}_disabled", fileLoc));
+                tabTextures[i, TAB_ENABLED] = content.Load<Texture2D>(fileLoc);                    
             }
         }
 
@@ -516,7 +525,11 @@ namespace ARRG_Game
         {
             for (int k = 0; k < 3; k++)
                 if (k != specialization)
-                    tab[k].TextureColor = Color.White;
+                {
+                    tab[k].Texture = tabTextures[k, TAB_ENABLED];
+                    tab[k].TextureColor = disabledColor;
+                    tab[k].DrawBorder = false;
+                }
         }
         private void closeSecondaryTabs()
         {
@@ -526,6 +539,8 @@ namespace ARRG_Game
                     pointsRemaining += talents[i].getPointsAllocd();
                     talents[i].reset();
                     tab[i].TextureColor = disabledColor;
+                    tab[i].Texture = tabTextures[i, TAB_DISABLED];
+                    tab[i].DrawBorder = false;
                 }
         }
     }
