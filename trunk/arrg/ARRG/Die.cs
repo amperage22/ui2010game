@@ -50,7 +50,7 @@ namespace ARRG_Game
         }
         Scene scene;
 
-        public Die(ref Scene s, int dieNum, ref MarkerNode ground)
+        public Die(Scene s, int dieNum, MarkerNode ground)
         {
             //Set up the 6 sides of this die
             sides = new MarkerNode[6];
@@ -110,7 +110,7 @@ namespace ARRG_Game
             }
             return false;
         }
-        public void addMonster(Monster m)
+        private void addMonster(Monster m)
         {
             if (upMarker != null)
             {
@@ -131,11 +131,6 @@ namespace ARRG_Game
             currentMonster = null;
             upMarker = null;
             nearestEnemy = null;
-        }
-
-        public void dealDamageToMonster()
-        {
-            currentMonster.dealAttackDmg();
         }
 
         public void setNearestEnemy(Die[] die)
@@ -161,13 +156,41 @@ namespace ARRG_Game
                 }
             }
         }
-        private void faceNearestEnemy()
+        //*****Monster-Dice interactions*******
+        public void applyHealthMod()
         {
-            if (nearestEnemy == null || upMarker == null || Vector3.Zero.Equals(upMarker.WorldTransformation.Translation) || Vector3.Zero.Equals(nearestEnemy.UpMarker.WorldTransformation.Translation))
-                return;            
+            if (currentMonster == null)
+                return;
+            currentMonster.applyHealthMods();
+            if (currentMonster.IsDead)
+            {
+                upMarker.RemoveChild(currentMonster.TransNode);
+                currentMonster = null;
+            }
         }
 
- 
+        public void applyMonsterDmg()
+        {
+            if (currentMonster == null || currentMonster.IsDead)
+                return;
+            currentMonster.dealAttackDmg();
+        }
+        public void resloveDamage()
+        {
+            if (currentMonster == null || currentMonster.IsDead)
+                return;
+            currentMonster.damageResolution();
+            if (currentMonster.IsDead)
+            {
+                upMarker.RemoveChild(currentMonster.TransNode);
+                currentMonster = null;
+            }
+        }
+        //*****Monster-Dice interactions*******
+
+
+
+
     }
 
 

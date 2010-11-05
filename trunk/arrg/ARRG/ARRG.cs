@@ -63,10 +63,13 @@ namespace ARRG_Game
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
-    enum CreatureID { BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
-                      DALEK, GUNDAM, SAMUS, TANK,
-                      DRAGON1, DRAGON2, UNKNOWN1, UNKNOWN2,
-                      JONATHAN, MEYNARD, ALEX };
+    enum CreatureID
+    {
+        BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
+        DALEK, GUNDAM, SAMUS, TANK,
+        DRAGON1, DRAGON2, UNKNOWN1, UNKNOWN2,
+        JONATHAN, MEYNARD, ALEX
+    };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum Modifier
     {
@@ -158,7 +161,7 @@ namespace ARRG_Game
             // Show Frames-Per-Second on the screen for debugging
             State.ShowFPS = true;
 
-            
+
             //Player player = new Player();
             //Player player2 = new Player();
             //hb = new healthBar(scene, player, true);
@@ -239,24 +242,24 @@ namespace ARRG_Game
         {
             monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
-            
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 4, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 3, 1, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 5, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 3, 5, true, 1));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 3, 1, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 5, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 3, 5, false, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 3, 4, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 1, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 5, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 5, 3, false, 1));
+
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
             p2.PurchasedMonsters = monsters; //For testing purposes
 
-            cards.Add(new Card(ref scene, CardType.DMG_DONE, 164, 5));
-            cards.Add(new Card(ref scene, CardType.DMG_DONE, 183, 5));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 164, 5));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 183, 5));
             p.Cards = cards;
         }
 
@@ -268,11 +271,11 @@ namespace ARRG_Game
                 ground_markers[i] = i;
             groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
-           
+
             scene.RootNode.AddChild(groundMarkerNode);
 
-            p = new Player(ref scene, 1, ref groundMarkerNode);
-            p2 = new Player(ref scene, 2, ref groundMarkerNode);
+            p = new Player(scene, 1, groundMarkerNode);
+            p2 = new Player(scene, 2, groundMarkerNode);
 
         }
 
@@ -371,35 +374,35 @@ namespace ARRG_Game
         /// </summary>
         private void UpdatePreGame()
         {
-          if (preGame.isPregameFinished())
-          {
-
-            //TEST Gotta figure out if we want to create random values if the gamer wants to just jump right in
-            menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
-            marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
-            marketScreen.Display();
-            //END TEST
-            //menuState = preGame.getDecision();
-            /*
-            switch (preGame.getDecision())
+            if (preGame.isPregameFinished())
             {
-              case MenuStates.MARKET:
+
+                //TEST Gotta figure out if we want to create random values if the gamer wants to just jump right in
                 menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
                 marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
                 marketScreen.Display();
-                break;
-              case MenuStates.INVENTORY:
-                menuState = MenuStates.INVENTORY;
-                break;
-              case MenuStates.INGAME:
-                menuState = MenuStates.INGAME;
-                bigRed = new Brb(ref scene, menuState, gameState);
-                break;
+                //END TEST
+                //menuState = preGame.getDecision();
+                /*
+                switch (preGame.getDecision())
+                {
+                  case MenuStates.MARKET:
+                    menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
+                    marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
+                    marketScreen.Display();
+                    break;
+                  case MenuStates.INVENTORY:
+                    menuState = MenuStates.INVENTORY;
+                    break;
+                  case MenuStates.INGAME:
+                    menuState = MenuStates.INGAME;
+                    bigRed = new Brb(ref scene, menuState, gameState);
+                    break;
+
+                }
+                */
 
             }
-            */
-
-          }
         }
         /// <summary>
         /// Update method for Market state
@@ -414,7 +417,7 @@ namespace ARRG_Game
 
                 //TEST
                 menuState = MenuStates.INGAME;  //Should be moved to PRE_GAME and called upon stage transition
-                bigRed = new Brb(ref scene, menuState, gameState);  //Should be moved to PRE_GAME and called upon stage transition
+                bigRed = new Brb(scene, menuState, gameState);  //Should be moved to PRE_GAME and called upon stage transition
                 //END TEST
             }
         }
@@ -430,7 +433,6 @@ namespace ARRG_Game
         /// </summary>
         private void UpdateInGame()
         {
-            gameState = bigRed.getInGameState();
             switch (gameState)
             {
                 case InGameStates.DRAW: UpdateDraw(); break;
@@ -444,22 +446,45 @@ namespace ARRG_Game
         {
             p.updateDraw();
             p2.updateDraw();
+            gameState = bigRed.getInGameState();
         }
         private void UpdateSummon()
         {
             p.updateSummon();
             p2.updateSummon();
+            gameState = bigRed.getInGameState();
         }
         private void UpdateAttack()
         {
-            p.updateAtack(p2.Die);
-            p2.updateAtack(p.Die);
+            p.updateAttack(p2.Die);
+            p2.updateAttack(p.Die);
+            gameState = bigRed.getInGameState();
+
+            if (gameState == InGameStates.DAMAGE)
+            {
+                p.applyHealthMods();
+                p2.applyHealthMods();
+                //Call attack animations here
+            }
         }
         private void UpdateDamage()
         {
+            //End attack animations here
+            gameState = bigRed.getInGameState();
+
+            if (gameState == InGameStates.DISCARD)
+            {
+                p.applyMonsterDmg();
+                p2.applyMonsterDmg();
+
+                p.damageResolution();
+                p2.damageResolution();
+            }
+
         }
         private void UpdateDiscard()
         {
+            gameState = bigRed.getInGameState();
         }
 
 
@@ -489,7 +514,7 @@ namespace ARRG_Game
         /// </summary>
         private void DrawPreGame()
         {
-          preGame.display();
+            preGame.display();
 
         }
         /// <summary>

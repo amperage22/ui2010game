@@ -35,7 +35,7 @@ namespace ARRG_Game
         InGameStates gameState;
         ContentManager content;
         G2DLabel brbButton;
-        public Brb(ref Scene scene, MenuStates menuState, InGameStates gameState)
+        public Brb(Scene scene, MenuStates menuState, InGameStates gameState)
         {
             this.scene = scene;
             this.curState = menuState;

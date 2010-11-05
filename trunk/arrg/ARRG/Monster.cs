@@ -49,7 +49,7 @@ namespace ARRG_Game
 
         private bool isDead;
 
-        protected bool IsDead
+        public bool IsDead
         {
             get { return isDead; }
             set { isDead = value; }
@@ -84,7 +84,7 @@ namespace ARRG_Game
 
             transNode = new TransformNode();
             transNode.AddChild(monsterNode);
-            transNode.Scale *= 0.10f;
+            transNode.Scale *= 0.15f;
             transNode.Translation += new Vector3(10, 0, 20);
         }
 
@@ -114,7 +114,7 @@ namespace ARRG_Game
         }
         //*********End Selectors and Mutators*************
 
-        //*********Card Methods**************************
+        //*********Card-Monster Interactions**************************
         public void addMod(int dmg, int health)
         {
             dmgMods.Add(dmg);
@@ -128,9 +128,10 @@ namespace ARRG_Game
         {
             dmgPrevented.Add(health);
         }
-        //*****End Card Methods**************************
+        //*****End Card-Monster Interactions**************************
 
-        private void healthModResolution()
+        //***********Dice-Monster Interactions************************
+        public void applyHealthMods()
         {
             int hMod = 0;
 
@@ -145,7 +146,7 @@ namespace ARRG_Game
 
         public void dealAttackDmg()
         {
-            if (isDead)
+            if (isDead || nearestEnemy == null)
                 return;
             int dmgMod = 0;
             foreach (int dmg in dmgMods)
@@ -154,31 +155,24 @@ namespace ARRG_Game
 
         }
 
-        private void damageResolution()
+        public void damageResolution()
         {
             if (isDead)
                 return;
-            int dmg = 0, prevent = 0;
+            int dmgRecieved = 0, preventedDmg = 0;
 
             foreach (int d in dmgTaken)
-                dmg += d;
+                dmgRecieved += d;
 
             foreach (int p in dmgPrevented)
-                prevent += p;
+                preventedDmg += p;
 
-            dmg = dmg - prevent;
+            dmgRecieved = dmgRecieved - preventedDmg;
 
-            if (dmg >= health)
+            if (dmgRecieved >= health)
                 isDead = true;
-
-            dmgTaken.Clear();
-            dmgMods.Clear();
-            healthMods.Clear();
-            dmgPrevented.Clear();
         }
-        
 
-        
         public void startAttackAnimation()
         {
             //Should create simple "animation" of Monsters atack
@@ -188,6 +182,15 @@ namespace ARRG_Game
         {
             //Should end simple "animation" of Monsters atack
         }
+        //********End Dice-Monster Interactions********************
+
+        //********Monster-Monster Interactions********************
+        private void resetNearest()
+        {
+            if (nearestEnemy.IsDead)
+                nearestEnemy = null;
+        }
+        //*****End Monster-Monster Interactions********************
 
     }
 
@@ -202,7 +205,7 @@ namespace ARRG_Game
         int power;
         int cost;
         bool useInternal;
-        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int health, int power, bool useInternal, int cost)
+        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int power, int health, bool useInternal, int cost)
         {
             this.id = id;
             this.name = name;
@@ -218,7 +221,7 @@ namespace ARRG_Game
         {
             switch (type)
             {
-                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal); 
+                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal);
                 case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);
                 case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal);
             }

@@ -35,7 +35,9 @@ namespace ARRG_Game
         Random random = new Random();
         ParticleNode fireRingEffectNode;
         bool particleSet = false;
-        
+        float radius = 1;
+        int frameCount = 0;
+
         TransformNode node;
 
         public TransformNode Node
@@ -47,7 +49,7 @@ namespace ARRG_Game
         private int healthMod, dmgMod, dmgDone, dmgPrevent;
         private CardType type;
 
-        public Card(ref Scene s, CardType type, int markerNum, int dmg, int health)
+        public Card(Scene s, CardType type, int markerNum, int dmg, int health)
         {
             this.type = type;
 
@@ -66,7 +68,7 @@ namespace ARRG_Game
 
             s.RootNode.AddChild(marker);
         }
-        public Card(ref Scene s, CardType type, int markerNum, int mod)
+        public Card(Scene s, CardType type, int markerNum, int mod)
         {
             this.type = type;
 
@@ -126,10 +128,10 @@ namespace ARRG_Game
                 if (particle is FireParticleEffect)
                 {
                     // Add 10 fire particles every frame
-                    for (int k = 0; k < 50; k++)
+                    for (int k = 0; k < 20; k++)
                     {
                         if (!Vector3.Zero.Equals(worldTransform.Translation))
-                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20,100,20));
+                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20, 100, 20));
                     }
                 }
                 else if (!Vector3.Zero.Equals(worldTransform.Translation))
@@ -139,15 +141,23 @@ namespace ARRG_Game
         }
         private Vector3 RandomPointOnCircle(Vector3 pos)
         {
-            const float radius = 12.5f;
+
+            if(frameCount++ >= 500 && radius <= 40)
+            {
+                frameCount = 0;
+                radius++;
+            }
+            if (radius > 40)
+                return Vector3.Zero;
 
             double angle = random.NextDouble() * Math.PI * 2;
 
             float x = (float)Math.Cos(angle);
             float y = (float)Math.Sin(angle);
-            float z = (float)Math.Tan(angle);
+            Random rand = new Random();
+            float z = rand.Next(0, 30);
 
-            return new Vector3(x * radius + pos.X, y * radius + pos.Y,z * radius +  pos.Z);
+            return new Vector3(x * radius + pos.X, y * radius + pos.Y, z + pos.Z);
         }
     }
     class CardBuilder
@@ -177,9 +187,9 @@ namespace ARRG_Game
         {
             switch (type)
             {
-                case CardType.STAT_MOD: return new Card(ref s, type, markerNum, dmg, health);
+                case CardType.STAT_MOD: return new Card(s, type, markerNum, dmg, health);
                 case CardType.DMG_DONE:
-                case CardType.DMG_PREVENT: return new Card(ref s, type, markerNum, mod);
+                case CardType.DMG_PREVENT: return new Card(s, type, markerNum, mod);
             }
             return null;
 
