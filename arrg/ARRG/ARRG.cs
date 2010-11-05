@@ -252,7 +252,7 @@ namespace ARRG_Game
 
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 3, 1, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 5, 3, false, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 3, true, 1));
             p2.PurchasedMonsters = monsters; //For testing purposes
 
             cards.Add(new Card(ref scene, CardType.DMG_DONE, 164, 5));
