@@ -33,13 +33,14 @@ namespace ARRG_Game
     {
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
-        protected double hit, dodge, crit;  //Instantiated through Child classes
+        protected double baseHit, baseDodge, baseCrit;  //Instantiated through Child classes
         protected List<int> dmgMods;        //Instantiated through Monster
         protected List<int> healthMods;     //Instantiated through Monster
         protected List<int> dmgTaken;       //Instantiated through Monster
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
+        protected Random rand;
 
         public Monster NearestEnemy
         {
@@ -60,6 +61,7 @@ namespace ARRG_Game
             this.name = name;
             this.health = health;
             this.power = power;
+            rand = new Random();
 
             dmgMods = new List<int>();
             healthMods = new List<int>();
@@ -112,6 +114,23 @@ namespace ARRG_Game
             get { return transNode; }
             set { transNode = value; }
         }
+        public double Crit
+        {
+            get { return baseCrit; }
+            set { baseCrit = value; }
+        }
+
+        public double Dodge
+        {
+            get { return baseDodge; }
+            set { baseDodge = value; }
+        }
+
+        public double Hit
+        {
+            get { return baseHit; }
+            set { baseHit = value; }
+        }
         //*********End Selectors and Mutators*************
 
         //*********Card-Monster Interactions**************************
@@ -151,7 +170,13 @@ namespace ARRG_Game
             int dmgMod = 0;
             foreach (int dmg in dmgMods)
                 dmgMod += dmg;
-            nearestEnemy.dealDirectDmg(power + dmgMod);
+
+            dmgMod += power;
+
+            double chanceToHit = baseHit - nearestEnemy.baseDodge;
+            double critChance = baseCrit;
+
+            nearestEnemy.dealDirectDmg(dmgMod);
 
         }
 
