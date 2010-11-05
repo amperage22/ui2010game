@@ -126,7 +126,7 @@ namespace ARRG_Game
                 if (particle is FireParticleEffect)
                 {
                     // Add 10 fire particles every frame
-                    for (int k = 0; k < 20; k++)
+                    for (int k = 0; k < 50; k++)
                     {
                         if (!Vector3.Zero.Equals(worldTransform.Translation))
                             particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20,100,20));
@@ -145,8 +145,9 @@ namespace ARRG_Game
 
             float x = (float)Math.Cos(angle);
             float y = (float)Math.Sin(angle);
+            float z = (float)Math.Tan(angle);
 
-            return new Vector3(x * radius + pos.X, y * radius + pos.Y, pos.Z);
+            return new Vector3(x * radius + pos.X, y * radius + pos.Y,z * radius +  pos.Z);
         }
     }
     class CardBuilder

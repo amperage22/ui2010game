@@ -114,6 +114,7 @@ namespace ARRG_Game
         }
         //*********End Selectors and Mutators*************
 
+        //*********Card Methods**************************
         public void addMod(int dmg, int health)
         {
             dmgMods.Add(dmg);
@@ -126,6 +127,31 @@ namespace ARRG_Game
         public void preventDmg(int health)
         {
             dmgPrevented.Add(health);
+        }
+        //*****End Card Methods**************************
+
+        private void healthModResolution()
+        {
+            int hMod = 0;
+
+            foreach (int hp in healthMods)
+                hMod += hp;
+
+            hMod += health;
+
+            if (hMod <= 0)
+                isDead = true;
+        }
+
+        public void dealAttackDmg()
+        {
+            if (isDead)
+                return;
+            int dmgMod = 0;
+            foreach (int dmg in dmgMods)
+                dmgMod += dmg;
+            nearestEnemy.dealDirectDmg(power + dmgMod);
+
         }
 
         private void damageResolution()
@@ -150,31 +176,9 @@ namespace ARRG_Game
             healthMods.Clear();
             dmgPrevented.Clear();
         }
-        private void healthModResolution()
-        {
-            int hMod =0;
+        
 
-            foreach (int hp in healthMods)
-                hMod += hp;
-
-            hMod += health;
-
-            if (hMod <= 0)
-                isDead = true;
-            
-
-        }
-
-        public void dealAttackDmg()
-        {
-            if (isDead)
-                return;
-            int dmgMod = 0;
-            foreach (int dmg in dmgMods)
-                dmgMod+= dmg;
-            nearestEnemy.dealDirectDmg(power + dmgMod);
-
-        }
+        
         public void startAttackAnimation()
         {
             //Should create simple "animation" of Monsters atack
