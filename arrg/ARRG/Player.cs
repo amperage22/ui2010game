@@ -76,7 +76,7 @@ namespace ARRG_Game
          * firstDieNum Which die is being created?  Die1, 2, 3?
          * numDice The amount of dice this player will get
          */
-        public Player(ref Scene s, int playerNum, ref MarkerNode ground)
+        public Player(Scene s, int playerNum, MarkerNode ground)
         {
             health = 20;
             mana = 10;
@@ -87,7 +87,7 @@ namespace ARRG_Game
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
-                die[i] = new Die(ref s, i + (playerNum - 1) * MAX_NUM_DIE, ref ground);
+                die[i] = new Die(s, i + (playerNum - 1) * MAX_NUM_DIE, ground);
 
         }
 
@@ -138,7 +138,7 @@ namespace ARRG_Game
                 d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Randomly attach monster to die
             }
         }
-        public void updateAtack(Die[] die2)
+        public void updateAttack(Die[] die2)
         {
             foreach (Die d in die)
             {
@@ -153,8 +153,30 @@ namespace ARRG_Game
                 c.update();
         }
 
-        public void updateDamage(Die[] die2)
+        public void applyHealthMods()
         {
+            foreach (Die d in die)
+            {
+                if (d != null)
+                    d.applyHealthMod();
+            }
+        }
+
+        public void applyMonsterDmg()
+        {
+            foreach (Die d in die)
+            {
+                if (d != null)
+                    d.applyMonsterDmg();
+            }
+        }
+        public void damageResolution()
+        {
+            foreach (Die d in die)
+            {
+                if (die != null)
+                    d.resloveDamage();
+            }
         }
     }
 }
