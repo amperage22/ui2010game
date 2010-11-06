@@ -109,7 +109,7 @@ namespace ARRG_Game
     {
         GraphicsDeviceManager graphics;
         Player p, p2;
-        List<MonsterBuilder> monsters;
+        List<MonsterBuilder> monsters, initial_monsters;
         List<Card> cards;
         Scene scene;
         MarkerNode groundMarkerNode;
@@ -268,6 +268,7 @@ namespace ARRG_Game
         private void CreateMonsterList()
         {
             monsters = new List<MonsterBuilder>();
+            initial_monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
 
             monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1));
@@ -282,7 +283,15 @@ namespace ARRG_Game
 
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "UNKNOWN1", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
+            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "UNKNOWN2", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
+            
+            //Set up the initial monsters for use after the talent screen has been submitted
+            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF-J", "centurion", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 20, 1, true, 50));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF-M", "centurion", Content.Load<Texture2D>("Textures/inventory/d_meynard"), 20, 1, true, 50));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
+            monsters.AddRange(initial_monsters);
+            
             p2.PurchasedMonsters = monsters; //For testing purposes
 
             cards.Add(new Card(scene, CardType.DMG_DONE, 164, 5));
@@ -386,11 +395,9 @@ namespace ARRG_Game
             {
                 p.Buffs = talentScreen.getBuffs();
 
-                //TEST
-                //menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition
-                //marketScreen = new MarketScreen(scene, Content, p, monsters);  //Should be moved to PRE_GAME and called upon stage transition
-                //marketScreen.Display();
-                //END TEST
+                //Add the initial monsterbuilders to the player's list */
+                p.PurchasedMonsters = new List<MonsterBuilder>(initial_monsters);
+
                 preGame = new preGameScreen(scene, Content);
                 menuState = MenuStates.PRE_GAME;
                 preGame.display();
