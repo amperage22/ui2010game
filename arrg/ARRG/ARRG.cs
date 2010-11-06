@@ -62,7 +62,7 @@ namespace ARRG_Game
 {
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-    public enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
+    enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
     enum CreatureID
     {
         BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
@@ -71,12 +71,12 @@ namespace ARRG_Game
         JONATHAN, MEYNARD, ALEX
     };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
-    public enum ModifierType
+    enum ModifierType
     {
         NONE, DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
     };
-    public struct Buff
+    struct Buff
     {
         public ModifierType modifier;
         public CreatureType affectedCreature;
