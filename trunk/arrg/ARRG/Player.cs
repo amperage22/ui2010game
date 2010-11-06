@@ -29,8 +29,8 @@ namespace ARRG_Game
 {
     class Player
     {
-        private static int MAX_NUM_DIE = 3;
-        private static int MAX_CREATURES_INGAME = 6;
+        public const int MAX_NUM_DIE = 3;
+        public const int MAX_CREATURES_INGAME = 6;
 
         //*****Player stats****
         private int health;

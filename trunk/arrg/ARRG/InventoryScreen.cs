@@ -84,18 +84,26 @@ namespace ARRG_Game
          * consideration to the player it corresponds to */
         private void Personalize()
         {
-            if (player.PurchasedMonsters == null) return;
+            //Unlock purchased monsters
             foreach (MonsterBuilder m in player.PurchasedMonsters)
             {
                 int i = m.getID() / COLS, j = m.getID() - i * COLS;
-                itemButton[i, j].Texture = lockedTexture;
-                itemButtonFlag[i, j, LOCKED] = true;
+                itemButton[i, j].Texture = buttonTextures[i, j];
+                itemButton[i, j].TextureColor = disabledColor;
+                itemButtonFlag[i, j, LOCKED] = false;
+            }
+            //Select selected monsters...duuuurrr
+            foreach (MonsterBuilder m in player.SelectedMonsters)
+            {
+                int i = m.getID() / COLS, j = m.getID() - i * COLS;
+                itemButton[i, j].TextureColor = Color.White;
+                itemButtonFlag[i, j, SELECTED] = true;
             }
         }
 
         private void CreateFrame()
         {
-            // Create the main panel which holds all other GUI components
+            //Create the main panel which holds all other GUI components
             mainFrame = new G2DPanel();
             mainFrame.Bounds = new Rectangle(180, 148, 440, 304);
             mainFrame.Border = GoblinEnums.BorderFactory.LineBorder;
@@ -138,7 +146,7 @@ namespace ARRG_Game
                 {
                     itemButton[i, j] = new G2DButton();
                     itemButton[i, j].Bounds = new Rectangle(10 + (j * 88), 10 + (i * 88), 48, 48);
-                    itemButton[i, j].Texture = buttonTextures[i, j];
+                    itemButton[i, j].Texture = lockedTexture;
                     itemButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
                     itemButton[i, j].BorderColor = Color.Black;
                     itemButton[i, j].DrawBorder = true;
@@ -154,6 +162,7 @@ namespace ARRG_Game
                             itemButton[i, j].HighlightColor = Color.White; break;
                     }
                     itemFrame.AddChild(itemButton[i, j]);
+                    itemButtonFlag[i, j, LOCKED] = true;
                 }
 
             //And the tooltip
