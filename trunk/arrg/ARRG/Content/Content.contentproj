@@ -604,15 +604,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\help.png">
-      <Link>Textures\talents\help.png</Link>
-      <Name>help</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\particles.png">
       <Link>particles.png</Link>
       <Name>particles</Name>
@@ -700,6 +691,15 @@
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\inventory\inventory_button.png">
       <Link>Textures\inventory\inventory_button.png</Link>
       <Name>inventory_button</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\talents\talents_help.png">
+      <Link>Textures\talents\talents_help.png</Link>
+      <Name>talents_help</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
