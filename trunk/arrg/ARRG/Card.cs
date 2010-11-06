@@ -35,7 +35,7 @@ namespace ARRG_Game
         Random random = new Random();
         ParticleNode fireRingEffectNode;
         bool particleSet = false;
-        float radius = 1;
+        float radius = 30;
         int frameCount = 0;
 
         TransformNode node;
@@ -131,12 +131,12 @@ namespace ARRG_Game
                     for (int k = 0; k < 20; k++)
                     {
                         if (!Vector3.Zero.Equals(worldTransform.Translation))
-                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20, 100, 20));
+                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(10, 10, 10));
                     }
                 }
                 else if (!Vector3.Zero.Equals(worldTransform.Translation))
                     // Add 1 smoke particle every frame
-                    particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(50, 100, 50));
+                    particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20 + 1, 20 + 1, 20 + 1));
             }
         }
         private Vector3 RandomPointOnCircle(Vector3 pos)
@@ -145,7 +145,8 @@ namespace ARRG_Game
             if(frameCount++ >= 500 && radius <= 40)
             {
                 frameCount = 0;
-                radius++;
+                //radius++;
+                //radius = 25;
             }
             if (radius > 40)
                 return Vector3.Zero;
