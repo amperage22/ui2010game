@@ -8,7 +8,7 @@ namespace ARRG_Game
     class Talent
     {
         private int amount, amount2, points, maxPoints;
-        private Modifier modifier, modifier2;
+        private ModifierType modifier, modifier2;
         private CreatureType opponent;
         private String description, description2;
         private bool dual_effect = false;
@@ -20,7 +20,7 @@ namespace ARRG_Game
          * maxPoints The maximum amount of points a player may spend on this talent
          * mult The multiplier on amount per point of this talent
          */
-        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description)
+        public Talent(int amount, ModifierType mod, CreatureType opponent, int maxPoints, String description)
         {
             this.amount = amount;
             modifier = mod;
@@ -35,7 +35,7 @@ namespace ARRG_Game
         /**
          * If a talent has two attributes, use this constructor
          */
-        public Talent(int amount, Modifier mod, CreatureType opponent, int maxPoints, String description, int amount2, Modifier mod2, String description2)
+        public Talent(int amount, ModifierType mod, CreatureType opponent, int maxPoints, String description, int amount2, ModifierType mod2, String description2)
             : this(amount, mod, opponent, maxPoints, description)
         {
             this.amount2 = amount2;
@@ -97,27 +97,39 @@ namespace ARRG_Game
             return result;
         }
 
-        private bool isPercentModifier(Modifier m)
+        private bool isPercentModifier(ModifierType m)
         {
             switch (m)
             {
-                case Modifier.ADDITIONAL_ATTACK_CHANCE:
-                case Modifier.CRIT_PERCENT:
-                case Modifier.DAMAGE_PERCENT:
-                case Modifier.DODGE_PERCENT:
-                case Modifier.FIREBREATH_ATTACK_CHANCE:
-                case Modifier.HIT_PERCENT:
-                case Modifier.HP_PERCENT:
-                case Modifier.LIGHTNING_ATTACK_CHANCE:
-                case Modifier.PARRY_PERCENT:
-                    return true;
-                default:
+                case ModifierType.NONE:
+                case ModifierType.DAMAGE:
+                case ModifierType.HP:
                     return false;
+                default:
+                    return true;
             }
         }
         
         public bool hasPoints() {
             return points != 0;
+        }
+
+        public bool hasDualEffect()
+        {
+            return dual_effect;
+        }
+
+        public Buff getAsBuff()
+        {
+            return new Buff(modifier, opponent, amount);
+        }
+
+        //Only works if there is a second effect
+        public Buff getAsBuff2()
+        {
+            if (!dual_effect)
+                throw new Exception("This talent only has 1 effect!");
+            return new Buff(modifier2, opponent, amount2);
         }
     }
 }

@@ -18,31 +18,31 @@ namespace ARRG_Game
             switch (c)
             {
                 case CreatureType.BEASTS:
-                    tier1[0] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
-                    tier1[1] = new Talent(5, Modifier.CRIT_PERCENT, CreatureType.ALL, 1, "chance to CRITICALLY hit the enemy.");
-                    tier1[2] = new Talent(1, Modifier.HP, CreatureType.ALL, 2, "HP per monster.");
-                    tier2[0] = new Talent(1, Modifier.DODGE_PERCENT, CreatureType.BEASTS, 2, "chance for your BEASTS to\nDODGE an enemy attack.");
-                    tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.BEASTS, 1, "chance for your BEASTS to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.BEASTS, 2, "chance for your BEASTS to\nPARRY an attack.");
-                    tier3 = new Talent(50, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.BEASTS, 1, "chance for your BEASTS to attack\nTWICE in one turn!");
+                    tier1[0] = new Talent(1, ModifierType.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
+                    tier1[1] = new Talent(5, ModifierType.CRIT, CreatureType.ALL, 1, "chance to CRITICALLY hit the enemy.");
+                    tier1[2] = new Talent(1, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.");
+                    tier2[0] = new Talent(1, ModifierType.DODGE, CreatureType.BEASTS, 2, "chance for your BEASTS to\nDODGE an enemy attack.");
+                    tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.BEASTS, 1, "chance for your BEASTS to attack\nTWICE in one turn.");
+                    tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.BEASTS, 2, "chance for your BEASTS to\nPARRY an attack.");
+                    tier3 = new Talent(50, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.BEASTS, 1, "chance for your BEASTS to attack\nTWICE in one turn!");
                     break;
                 case CreatureType.DRAGONKIN:
-                    tier1[0] = new Talent(1, Modifier.HP, CreatureType.ALL, 2, "HP per monster.");
-                    tier1[1] = new Talent(5, Modifier.HIT_PERCENT, CreatureType.ALL, 1, "chance to HIT the enemy.");
-                    tier1[2] = new Talent(1, Modifier.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
-                    tier2[0] = new Talent(2, Modifier.CRIT_PERCENT, CreatureType.DRAGONKIN, 2, "chance for DRAGONKIN to\nCRITICALLY hit the enemy.");
-                    tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack.");
-                    tier3 = new Talent(30, Modifier.FIREBREATH_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to cast a\nFIRE BREATH attack!");
+                    tier1[0] = new Talent(1, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.");
+                    tier1[1] = new Talent(5, ModifierType.HIT, CreatureType.ALL, 1, "chance to HIT the enemy.");
+                    tier1[2] = new Talent(1, ModifierType.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
+                    tier2[0] = new Talent(2, ModifierType.CRIT, CreatureType.DRAGONKIN, 2, "chance for DRAGONKIN to\nCRITICALLY hit the enemy.");
+                    tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to attack\nTWICE in one turn.");
+                    tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack.");
+                    tier3 = new Talent(30, ModifierType.FIREBREATH_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to cast a\nFIRE BREATH attack!");
                     break;
                 case CreatureType.ROBOTS:
-                    tier1[0] = new Talent(2, Modifier.CRIT_PERCENT, CreatureType.ALL, 2, "chance to CRITICALLY hit the enemy.");
-                    tier1[1] = new Talent(4, Modifier.DODGE_PERCENT, CreatureType.ALL, 1, "chance to DODGE an enemy attack.");
-                    tier1[2] = new Talent(2, Modifier.HP, CreatureType.ALL, 2, "HP per monster.", -2, Modifier.DAMAGE, "DAMAGE dealt.");
-                    tier2[0] = new Talent(2, Modifier.HIT_PERCENT, CreatureType.ROBOTS, 2, "chance for ROBOTS to\nHIT the enemy.");
-                    tier2[1] = new Talent(2, Modifier.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
-                    tier2[2] = new Talent(5, Modifier.PARRY_PERCENT, CreatureType.ROBOTS, 2, "chance for your ROBOTS to\nPARRY an attack.");
-                    tier3 = new Talent(30, Modifier.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
+                    tier1[0] = new Talent(2, ModifierType.CRIT, CreatureType.ALL, 2, "chance to CRITICALLY hit the enemy.");
+                    tier1[1] = new Talent(4, ModifierType.DODGE, CreatureType.ALL, 1, "chance to DODGE an enemy attack.");
+                    tier1[2] = new Talent(2, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.", -2, ModifierType.DAMAGE, "DAMAGE dealt.");
+                    tier2[0] = new Talent(2, ModifierType.HIT, CreatureType.ROBOTS, 2, "chance for ROBOTS to\nHIT the enemy.");
+                    tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
+                    tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.ROBOTS, 2, "chance for your ROBOTS to\nPARRY an attack.");
+                    tier3 = new Talent(30, ModifierType.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
                     break;
                 default:
                     throw new Exception(String.Format("Bad CreatureType passed to TalentTree constructor {0}", c));

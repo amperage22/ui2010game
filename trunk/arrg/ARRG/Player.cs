@@ -66,9 +66,7 @@ namespace ARRG_Game
             get { return purchasedMonsters; }
             set { purchasedMonsters = value; }
         }
-        private List<Talent> talents;  //List for inventory purposes
-
-        private Talent[] activeTalents;
+        private List<Buff> buffs;  //Technically the talents of the player
 
         /**
          * Sets up the player object.
@@ -113,6 +111,11 @@ namespace ARRG_Game
             get { return selectedMonsters; }
             set { selectedMonsters = value; }
         }
+        public List<Buff> Buffs
+        {
+            get { return buffs; }
+            set { buffs = value; }
+        }
 
         public bool addMonster(Monster m)
         {
@@ -132,6 +135,7 @@ namespace ARRG_Game
 
         public void updateSummon()
         {
+            if (purchasedMonsters.Count == 0) return;
             foreach (Die d in die)
             {
                 Random r = new Random();
@@ -157,8 +161,10 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (d != null)
+                if (d != null) {
+                    d.addBuffs(buffs);
                     d.applyHealthMod();
+                }
             }
         }
 

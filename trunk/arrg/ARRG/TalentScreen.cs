@@ -218,13 +218,18 @@ namespace ARRG_Game
             return state == TalentState.FINISHED;
         }
 
-        public List<Talent> getTalentInfo()
+        public List<Buff> getBuffs()
         {
             if (state != TalentState.FINISHED)
                 throw new Exception("The selection must be submitted before you can get the info!");
-            List<Talent> toReturn = new List<Talent>();
+            List<Buff> toReturn = new List<Buff>();
             for (int i = 0; i < 3; i++)
-                toReturn.AddRange(talents[i].getTalents());
+                foreach (Talent t in talents[i].getTalents())
+                {
+                    if (t.hasDualEffect())
+                        toReturn.Add(t.getAsBuff2());
+                    toReturn.Add(t.getAsBuff());
+                }
             return toReturn;
         }
 

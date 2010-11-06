@@ -156,6 +156,11 @@ namespace ARRG_Game
                 }
             }
         }
+        public void addBuffs(List<Buff> buffs)
+        {
+            if (currentMonster != null)
+                currentMonster.addBuffs(buffs);
+        }
         //*****Monster-Dice interactions*******
         public void applyHealthMod()
         {
