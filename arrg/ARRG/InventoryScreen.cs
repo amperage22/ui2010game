@@ -36,6 +36,8 @@ namespace ARRG_Game
         private G2DLabel tooltip;
         private G2DButton submit, clear;
         private Color disabledColor = new Color(80, 80, 80);
+        private G2DLabel monstersSelectedText;
+        private int numSelectedMonsters;
 
         private Scene scene;
         private ContentManager content;
@@ -59,6 +61,7 @@ namespace ARRG_Game
             this.scene = scene;
             this.content = content;
             this.player = player;
+            numSelectedMonsters = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
 
             allocateTextures();
@@ -92,13 +95,7 @@ namespace ARRG_Game
                 itemButton[i, j].TextureColor = disabledColor;
                 itemButtonFlag[i, j, LOCKED] = false;
             }
-            //Select selected monsters...duuuurrr
-            foreach (MonsterBuilder m in player.SelectedMonsters)
-            {
-                int i = m.getID() / COLS, j = m.getID() - i * COLS;
-                itemButton[i, j].TextureColor = Color.White;
-                itemButtonFlag[i, j, SELECTED] = true;
-            }
+            HandleClear(null);
         }
 
         private void CreateFrame()
@@ -108,30 +105,35 @@ namespace ARRG_Game
             mainFrame.Bounds = new Rectangle(180, 148, 440, 304);
             mainFrame.Border = GoblinEnums.BorderFactory.LineBorder;
             mainFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
-            mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
+            mainFrame.Texture = content.Load<Texture2D>("Textures/inventory/inventory_bg");
             mainFrame.DrawBorder = true;
 
             //Submit and clear buttons
-            Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
-            submit = new G2DButton("Buy");
+            Texture2D market_button = content.Load<Texture2D>("Textures/inventory/inventory_button");
+            submit = new G2DButton("Win");
             submit.TextFont = font;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
-            submit.Texture = market_button;
-            submit.TextureColor = new Color(200, 200, 200);
-            submit.DrawBorder = false;
-            submit.TextColor = Color.Gold;
-            submit.BorderColor = Color.White;
+            //submit.Texture = market_button;
+            //submit.TextureColor = new Color(200, 200, 200);
+            submit.BackgroundColor = Color.White;
+            submit.DrawBackground = true;
+            submit.BorderColor = Color.Black;
+            submit.DrawBorder = true;
+            submit.TextColor = Color.Black;
             submit.HighlightColor = Color.Black;
             submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
             mainFrame.AddChild(submit);
 
-            clear = new G2DButton("Clear");
+            clear = new G2DButton("Reset");
             clear.TextFont = font;
             clear.Bounds = new Rectangle(360, 266, 70, 25);
-            clear.Texture = market_button;
-            clear.TextureColor = new Color(200, 200, 200);
-            clear.TextColor = Color.Gold;
-            clear.DrawBorder = false;
+            //clear.Texture = market_button;
+            //clear.TextureColor = new Color(200, 200, 200);
+            clear.BackgroundColor = Color.White;
+            clear.DrawBackground = true;
+            clear.BorderColor = Color.Black;
+            clear.TextColor = Color.Black;
+            clear.DrawBorder = true;
             clear.HighlightColor = Color.Black;
             clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
             mainFrame.AddChild(clear);
@@ -165,6 +167,17 @@ namespace ARRG_Game
                     itemButtonFlag[i, j, LOCKED] = true;
                 }
 
+            monstersSelectedText = new G2DLabel();
+            monstersSelectedText.BackgroundColor = Color.Black;
+            monstersSelectedText.DrawBackground = true;
+            monstersSelectedText.TextFont = font;
+            monstersSelectedText.TextColor = Color.White;
+            monstersSelectedText.DrawBorder = true;
+            monstersSelectedText.BorderColor = Color.White;
+            monstersSelectedText.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
+            updateSelectedMonstersText();
+            mainFrame.AddChild(monstersSelectedText);
+
             //And the tooltip
             tooltip = new G2DLabel();
             tooltip.TextFont = font;
@@ -178,8 +191,17 @@ namespace ARRG_Game
             mainFrame.AddChild(itemFrame);
         }
 
+        private void updateSelectedMonstersText()
+        {
+            monstersSelectedText.Text = String.Format("Monsters: {0} / {1}", numSelectedMonsters, Player.MAX_CREATURES_INGAME);
+            Vector2 v = monstersSelectedText.TextFont.MeasureString(monstersSelectedText.Text);
+            monstersSelectedText.Bounds = new Rectangle(10, 266, (int)v.X + 10, 25);
+            //I may add more code to this function for milestone 3
+        }
+
         private void HandleSubmit(object source)
         {
+            if (numSelectedMonsters == 0) return;
             scene.UIRenderer.Remove2DComponent(mainFrame);
             state = InventoryState.FINISHED;
         }
@@ -190,9 +212,20 @@ namespace ARRG_Game
                 for (int j = 0; j < COLS; j++)
                 {
                     itemButtonFlag[i, j, SELECTED] = false;
-                    itemButton[i, j].TextureColor = Color.White;
+                    itemButton[i, j].TextureColor = disabledColor;
                     itemButton[i, j].BorderColor = Color.Black;
                 }
+
+            //Select selected monsters...duuuurrr
+            foreach (MonsterBuilder m in player.SelectedMonsters)
+            {
+                int i = m.getID() / COLS, j = m.getID() - i * COLS;
+                itemButton[i, j].TextureColor = Color.White;
+                itemButtonFlag[i, j, SELECTED] = true;
+            }
+            //For some reason
+            numSelectedMonsters = player.SelectedMonsters.Count;
+            updateSelectedMonstersText();
         }
 
         public bool wasSubmitted()
@@ -212,9 +245,9 @@ namespace ARRG_Game
             List<MonsterBuilder> newMonsterList = new List<MonsterBuilder>();
             for (int i = 0; i < ROWS; i++)
                 for (int j = 0; j < COLS; j++)
-                    if (itemButtonFlag[i, j, SELECTED] || itemButtonFlag[i, j, LOCKED])
+                    if (itemButtonFlag[i, j, SELECTED])
                         newMonsterList.Add(monsters[i * COLS + j]);
-            player.PurchasedMonsters = newMonsterList;
+            player.SelectedMonsters = newMonsterList;
         }
 
         private void HandleAlloc(int button, Point mouse)
@@ -231,13 +264,15 @@ namespace ARRG_Game
                         if (itemButtonFlag[i, j, SELECTED])
                         {
                             itemButtonFlag[i, j, SELECTED] = false;
-                            itemButton[i, j].TextureColor = Color.White;
+                            itemButton[i, j].TextureColor = disabledColor;
                             itemButton[i, j].BorderColor = Color.Black;
+                            numSelectedMonsters--;
                         }
                         else //the user wants to select this item
                         {
+                            if (numSelectedMonsters == Player.MAX_CREATURES_INGAME) return;
                             itemButtonFlag[i, j, SELECTED] = true;
-                            itemButton[i, j].TextureColor = disabledColor;
+                            itemButton[i, j].TextureColor = Color.White;
                             switch (monsters[i * COLS + j].getType())
                             {
                                 case CreatureType.BEASTS:
@@ -249,7 +284,9 @@ namespace ARRG_Game
                                 default:
                                     itemButton[i, j].BorderColor = Color.White; break;
                             }
+                            numSelectedMonsters++;
                         }
+                        updateSelectedMonstersText();
                     }
                 }
         }
@@ -260,7 +297,12 @@ namespace ARRG_Game
             bool tipFound = false;
             if (submit.PaintBounds.Contains(mouse))
             {
-                tooltip.Text = "Purchase all your selected monsters.";
+                if (numSelectedMonsters == 0)
+                    tooltip.Text = "You must take at least ONE\nmonster to battle with ya...";
+                else if (numSelectedMonsters == 1)
+                    tooltip.Text = "I can pwn with one monster!";
+                else
+                    tooltip.Text = "This'll work.";
                 tipFound = true;
             }
             for (int i = 0; i < ROWS && !tipFound; i++)
@@ -270,18 +312,17 @@ namespace ARRG_Game
                     {
                         if (itemButtonFlag[i, j, LOCKED])
                         {
-                            tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
+                            tooltip.Text = String.Format("You do not own this monster!", i, j);
                         }
                         else if (itemButtonFlag[i, j, SELECTED])
                         {
-                            tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
+                            tooltip.Text = String.Format("Click to de-select {0}.", monsters[i * COLS + j].getName());
                         }
                         else
                         {
-                            tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getCost());
+                            tooltip.Text = String.Format("Take {0} to battle with you!\nSummon Cost: {1} Mana", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getManaCost());
                         }
                         tipFound = true;
-                        break;
                     }
                 }
 
@@ -297,6 +338,8 @@ namespace ARRG_Game
             }
             else  //hide the tooltip from the user
             {
+                //In retrospect I should've done stuff like this with the
+                //Visible property..
                 tooltip.DrawBorder = false;
                 tooltip.DrawBackground = false;
                 tooltip.Text = "";
