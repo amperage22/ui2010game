@@ -73,7 +73,7 @@ namespace ARRG_Game
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum ModifierType
     {
-        NONE, DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
+        NONE, POWER,DAMAGE_MOD, CRIT, HIT, DODGE, HP,HP_MOD, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
     };
     public class ARRG : Microsoft.Xna.Framework.Game
@@ -257,16 +257,16 @@ namespace ARRG_Game
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0));
             monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "UNKNOWN1", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
             monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "UNKNOWN2", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
-            
+
             //Set up the initial monsters for use after the talent screen has been submitted
             initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.ROBOTS, "RoboCone", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 20, 1, true, 50, 0));
             initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 20, 1, true, 50, 0));
             initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1, 0));
             monsters.AddRange(initial_monsters);
-            
+
             p2.PurchasedMonsters = monsters; //For testing purposes
 
-            cards.Add(new Card(scene, CardType.DMG_DONE, 164, 5));
+            cards.Add(new Card(scene, 164, 5, ModifierType.HP, CreatureType.ALL));
             cards.Add(new Card(scene, CardType.DMG_DONE, 183, 5));
             p.Cards = cards;
         }
@@ -469,16 +469,20 @@ namespace ARRG_Game
             p2.updateAttack(p.Die);
 
             foreach (Card c in cards)
-            {
                 c.getNearestCreature(p.Die, p2.Die);
-            }
             gameState = bigRed.getInGameState();
 
             if (gameState == InGameStates.DAMAGE)
             {
                 p.applyHealthMods();
                 p2.applyHealthMods();
+                foreach (Card c in cards)
+                {
+                    c.castSpell();
+                }
+
                 //Call attack animations here
+                
             }
         }
         private void UpdateDamage()

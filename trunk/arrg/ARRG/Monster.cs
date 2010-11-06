@@ -31,6 +31,10 @@ namespace ARRG_Game
 {
     class Monster
     {
+        /*
+        DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
+        ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
+         */
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
         protected double baseHit, baseDodge, baseCrit;  //Instantiated through Child classes
@@ -41,7 +45,6 @@ namespace ARRG_Game
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
-        protected Random rand;
 
         public Monster NearestEnemy
         {
@@ -62,7 +65,7 @@ namespace ARRG_Game
             this.name = name;
             this.health = health;
             this.power = power;
-            rand = new Random();
+            Random rand = new Random();
 
             dmgMods = new List<int>();
             healthMods = new List<int>();
@@ -89,49 +92,18 @@ namespace ARRG_Game
             transNode.AddChild(monsterNode);
             transNode.Scale *= 0.15f;
             transNode.Translation += new Vector3(10, 0, 20);
+            buffs = new List<Buff>();
         }
 
 
         //********* Selectors and Mutators****************
-        public int Health
-        {
-            get { return health; }
-            set { health = value; }
-        }
 
-        public int Power
-        {
-            get { return power; }
-            set { power = value; }
-        }
-
-        public String Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
         public TransformNode TransNode
         {
             get { return transNode; }
             set { transNode = value; }
         }
-        public double Crit
-        {
-            get { return baseCrit; }
-            set { baseCrit = value; }
-        }
 
-        public double Dodge
-        {
-            get { return baseDodge; }
-            set { baseDodge = value; }
-        }
-
-        public double Hit
-        {
-            get { return baseHit; }
-            set { baseHit = value; }
-        }
         //*********End Selectors and Mutators*************
 
         //*********Card-Monster Interactions**************************
@@ -141,7 +113,8 @@ namespace ARRG_Game
         }
         public void addBuffs(List<Buff> buffs)
         {
-            this.buffs.AddRange(buffs);
+            if (buffs != null)
+                this.buffs.AddRange(buffs);
         }
         public void addMod(int dmg, int health)
         {
@@ -159,7 +132,7 @@ namespace ARRG_Game
         //*****End Card-Monster Interactions**************************
 
         //***********Dice-Monster Interactions************************
-        public void applyHealthMods()
+        public void applyMods()
         {
             int hMod = 0;
 
@@ -181,7 +154,7 @@ namespace ARRG_Game
                 dmgMod += dmg;
 
             dmgMod += power;
-
+            //Needs to be finished
             double chanceToHit = baseHit - nearestEnemy.baseDodge;
             double critChance = baseCrit;
 

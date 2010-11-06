@@ -10,9 +10,9 @@ namespace ARRG_Game
         public Robots(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
         {
-            Hit = 85;
-            Dodge = 25;
-            Crit = 30;
+            baseHit = 85;
+            baseDodge = 25;
+            baseCrit = 30;
         }
     }
 }

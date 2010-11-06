@@ -62,26 +62,30 @@ namespace ARRG_Game
 
             foreach (Die d in d1)
             {
-                if (d.UpMarker == null && d.CurrentMonster == null) break;
+                double ds;
+                if (d.UpMarker != null && d.CurrentMonster != null)
+                {
+                    ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
 
-                double ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
-
-                if (ds < distance)
-                    nearest = d.CurrentMonster;
+                    if (ds < distance)
+                        nearest = d.CurrentMonster;
+                }
             }
             foreach (Die d in d2)
             {
-                if (d.UpMarker == null && d.CurrentMonster == null) break;
+                double ds;
+                if (d.UpMarker != null && d.CurrentMonster != null)
+                {
+                    ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
 
-                double ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
-
-                if (ds < distance)
-                    nearest = d.CurrentMonster;
+                    if (ds < distance)
+                        nearest = d.CurrentMonster;
+                }
             }
         }
         public void castSpell()
         {
-            if (nearest == null)
+            if (nearest == null || Vector3.Zero.Equals(marker.WorldTransformation.Translation))
                 return;
             switch (type)
             {

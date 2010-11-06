@@ -10,17 +10,23 @@ namespace ARRG_Game
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
         {
-            Hit = 80;
-            Dodge = 20;
-            Crit = 40;
+            baseHit = 80;
+            baseDodge = 20;
+            baseCrit = 40;
         }
 
-        new public void attack()
+        public void endAttackAnimation()
         {
+            //Should end simple "animation" of Monsters atack
         }
+        //********End Dice-Monster Interactions********************
 
-        new public void defend()
+        //********Monster-Monster Interactions********************
+        private void resetNearest()
         {
+            if (nearestEnemy.IsDead)
+                nearestEnemy = null;
         }
+        //*****End Monster-Monster Interactions********************
     }
 }
