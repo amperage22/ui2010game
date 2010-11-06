@@ -76,35 +76,6 @@ namespace ARRG_Game
         NONE, DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
     };
-    struct Buff
-    {
-        public ModifierType modifier;
-        public CreatureType affectedCreature;
-        public int amount;
-        public Buff(ModifierType m, CreatureType c, int a)
-        {
-            modifier = m;
-            affectedCreature = c;
-            amount = a;
-        }
-        public ModifierType Modifier
-        {
-            get { return modifier; }
-            set { modifier = value; }
-        }
-        public CreatureType AffectedCreature
-        {
-            get { return affectedCreature; }
-            set { affectedCreature = value; }
-        }
-        public int Amount
-        {
-            get { return amount; }
-            set { amount = value; }
-        }
-
-    }
-
     public class ARRG : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
