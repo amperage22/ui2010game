@@ -32,170 +32,124 @@ namespace ARRG_Game
     class Card
     {
         MarkerNode marker;
-        Random random = new Random();
-        ParticleNode fireRingEffectNode;
-        bool particleSet = false;
-        float radius = 30;
-        int frameCount = 0;
+        Monster nearest;
+        int dmgDone, dmgPrevent;
+        CardType type;
+        Buff buff;
 
-        TransformNode node;
-
-        public TransformNode Node
+        public Card(Scene s, int markerNum, int mod, ModifierType modType, CreatureType againstCreatureType)
         {
-            get { return node; }
-            set { node = value; }
-        }
-
-        private int healthMod, dmgMod, dmgDone, dmgPrevent;
-        private CardType type;
-
-        public Card(Scene s, CardType type, int markerNum, int dmg, int health)
-        {
-            this.type = type;
-
-
-            node = new TransformNode();
+            type = CardType.STAT_MOD;
+            buff = new Buff(modType, againstCreatureType, mod);
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
-
-
-            switch (type)
-            {
-                case CardType.STAT_MOD: dmgMod = dmg; dmgDone = 0; dmgPrevent = 0; healthMod = health; break;
-                case CardType.DMG_DONE: dmgMod = 0; dmgDone = dmg; dmgPrevent = 0; healthMod = 0; break;
-                case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = health; healthMod = 0; break;
-            }
-
-
             s.RootNode.AddChild(marker);
         }
         public Card(Scene s, CardType type, int markerNum, int mod)
         {
             this.type = type;
-
-            //Set up the 6 sides of this die
-            node = new TransformNode();
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
-            //test code
-
-            TransformNode trans = new TransformNode();
-            trans.Translation = new Vector3(0, 0, 10);
-            marker.AddChild(trans);
-            //End test
-
             switch (type)
             {
-                case CardType.DMG_DONE: dmgMod = 0; dmgDone = mod; dmgPrevent = 0; healthMod = 0; break;
-                case CardType.DMG_PREVENT: dmgMod = 0; dmgDone = 0; dmgPrevent = mod; healthMod = 0; break;
+                case CardType.DMG_DONE: dmgDone = mod; dmgPrevent = 0; break;
+                case CardType.DMG_PREVENT: dmgDone = 0; dmgPrevent = mod; break;
             }
 
             s.RootNode.AddChild(marker);
         }
-        public void castSpell(Monster m)
+        public void getNearestCreature(Die[] d1, Die[] d2)
         {
+            double distance = 1000;
+
+            foreach (Die d in d1)
+            {
+                if (d.UpMarker == null && d.CurrentMonster == null) break;
+
+                double ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
+
+                if (ds < distance)
+                    nearest = d.CurrentMonster;
+            }
+            foreach (Die d in d2)
+            {
+                if (d.UpMarker == null && d.CurrentMonster == null) break;
+
+                double ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
+
+                if (ds < distance)
+                    nearest = d.CurrentMonster;
+            }
+        }
+        public void castSpell()
+        {
+            if (nearest == null)
+                return;
             switch (type)
             {
-                case CardType.STAT_MOD: m.addMod(dmgMod, healthMod); break;
-                case CardType.DMG_DONE: m.dealDirectDmg(dmgDone); break;
-                case CardType.DMG_PREVENT: m.preventDmg(dmgPrevent); break;
+                case CardType.STAT_MOD: nearest.addBuff(buff); break;
+                case CardType.DMG_DONE: nearest.dealDirectDmg(dmgDone); break;
+                case CardType.DMG_PREVENT: nearest.preventDmg(dmgPrevent); break;
             }
         }
-        public void update()
-        {
-            if (marker.MarkerFound && !particleSet)
-            {
-                SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
-                FireParticleEffect fireParticles = new FireParticleEffect();
-                //fireParticles.TextureName = "particles";
-                smokeParticles.DrawOrder = 200;
-                fireParticles.DrawOrder = 300;
-                fireRingEffectNode = new ParticleNode();
-                fireRingEffectNode.ParticleEffects.Add(smokeParticles);
-                fireRingEffectNode.ParticleEffects.Add(fireParticles);
-                fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
-                fireRingEffectNode.Enabled = true;
+        //    public void update()
+        //    {
+        //        if (marker.MarkerFound && !particleSet)
+        //        {
+        //            SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
+        //            FireParticleEffect fireParticles = new FireParticleEffect();
+        //            //fireParticles.TextureName = "particles";
+        //            smokeParticles.DrawOrder = 200;
+        //            fireParticles.DrawOrder = 300;
+        //            fireRingEffectNode = new ParticleNode();
+        //            fireRingEffectNode.ParticleEffects.Add(smokeParticles);
+        //            fireRingEffectNode.ParticleEffects.Add(fireParticles);
+        //            fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
+        //            fireRingEffectNode.Enabled = true;
 
-                node.AddChild(fireRingEffectNode);
-                marker.AddChild(node);
-                particleSet = true;
+        //            node.AddChild(fireRingEffectNode);
+        //            marker.AddChild(node);
+        //            particleSet = true;
 
-            }
+        //        }
 
-        }
-        private void UpdateRingOfFire(Matrix worldTransform, List<ParticleEffect> particleEffects)
-        {
-            foreach (ParticleEffect particle in particleEffects)
-            {
-                if (particle is FireParticleEffect)
-                {
-                    // Add 10 fire particles every frame
-                    for (int k = 0; k < 20; k++)
-                    {
-                        if (!Vector3.Zero.Equals(worldTransform.Translation))
-                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(10, 10, 10));
-                    }
-                }
-                else if (!Vector3.Zero.Equals(worldTransform.Translation))
-                    // Add 1 smoke particle every frame
-                    particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20 + 1, 20 + 1, 20 + 1));
-            }
-        }
-        private Vector3 RandomPointOnCircle(Vector3 pos)
-        {
+        //    }
+        //    private void UpdateRingOfFire(Matrix worldTransform, List<ParticleEffect> particleEffects)
+        //    {
+        //        foreach (ParticleEffect particle in particleEffects)
+        //        {
+        //            if (particle is FireParticleEffect)
+        //            {
+        //                // Add 10 fire particles every frame
+        //                for (int k = 0; k < 30; k++)
+        //                {
+        //                    if (!Vector3.Zero.Equals(worldTransform.Translation))
+        //                        particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(2, 2, 2));
+        //                }
+        //            }
+        //            else if (!Vector3.Zero.Equals(worldTransform.Translation))
+        //                // Add 1 smoke particle every frame
+        //                particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(2 + 1, 2 + 1, 2 + 1));
+        //        }
+        //    }
+        //    private Vector3 RandomPointOnCircle(Vector3 pos)
+        //    {
 
-            if(frameCount++ >= 500 && radius <= 40)
-            {
-                frameCount = 0;
-                //radius++;
-                //radius = 25;
-            }
-            if (radius > 40)
-                return Vector3.Zero;
+        //        if(frameCount++ >= 500 && radius <= 40)
+        //        {
+        //            frameCount = 0;
+        //            radius += .001f;
+        //        }
+        //        if (radius > 40)
+        //            return Vector3.Zero;
 
-            double angle = random.NextDouble() * Math.PI * 2;
+        //        double theta = random.NextDouble() * Math.PI;
+        //        double angle = random.NextDouble() * Math.PI * 2;
 
-            float x = (float)Math.Cos(angle);
-            float y = (float)Math.Sin(angle);
-            Random rand = new Random();
-            float z = rand.Next(0, 30);
+        //        float x = radius * (float)Math.Sin(theta) * (float)Math.Cos(angle);
+        //        float y = radius * (float)Math.Sin(theta) * (float)Math.Sin(angle);
+        //        Random rand = new Random();
+        //        float z = radius * (float)Math.Cos(theta);
 
-            return new Vector3(x * radius + pos.X, y * radius + pos.Y, z + pos.Z);
-        }
-    }
-    class CardBuilder
-    {
-        Scene s;
-        CardType type;
-        int markerNum;
-        int dmg, health, mod;
-
-        public CardBuilder(Scene s, CardType type, int markerNum, int dmg, int health)
-        {
-            this.s = s;
-            this.type = type;
-            this.markerNum = markerNum;
-            this.dmg = dmg;
-            this.health = health;
-        }
-
-        public CardBuilder(Scene s, CardType type, int markerNum, int mod)
-        {
-            this.s = s;
-            this.type = type;
-            this.markerNum = markerNum;
-            this.mod = mod;
-        }
-        public Card createCard()
-        {
-            switch (type)
-            {
-                case CardType.STAT_MOD: return new Card(s, type, markerNum, dmg, health);
-                case CardType.DMG_DONE:
-                case CardType.DMG_PREVENT: return new Card(s, type, markerNum, mod);
-            }
-            return null;
-
-
-        }
-
+        //        return new Vector3(x * radius + pos.X, y * radius + pos.Y, z + pos.Z * 2);
+        //    }
     }
 }

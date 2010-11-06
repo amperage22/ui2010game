@@ -29,12 +29,12 @@ namespace ARRG_Game
     {
         public ModifierType modifier;
         public CreatureType affectedCreature;
-        public int amount;
-        public Buff(ModifierType m, CreatureType c, int a)
+        public int mod;
+        public Buff(ModifierType m, CreatureType c, int mod)
         {
             modifier = m;
             affectedCreature = c;
-            amount = a;
+            this.mod = mod;
         }
         public ModifierType Modifier
         {
@@ -48,8 +48,8 @@ namespace ARRG_Game
         }
         public int Amount
         {
-            get { return amount; }
-            set { amount = value; }
+            get { return mod; }
+            set { mod = value; }
         }
 
     }

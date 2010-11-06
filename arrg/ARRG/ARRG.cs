@@ -467,6 +467,11 @@ namespace ARRG_Game
         {
             p.updateAttack(p2.Die);
             p2.updateAttack(p.Die);
+
+            foreach (Card c in cards)
+            {
+                c.getNearestCreature(p.Die, p2.Die);
+            }
             gameState = bigRed.getInGameState();
 
             if (gameState == InGameStates.DAMAGE)

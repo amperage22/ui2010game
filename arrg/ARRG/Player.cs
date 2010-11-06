@@ -136,10 +136,6 @@ namespace ARRG_Game
                     d.setNearestEnemy(die2);
                 }
             }
-            if (cards == null)
-                return;
-            foreach (Card c in cards)
-                c.update();
         }
 
         public void applyHealthMods()
