@@ -62,7 +62,7 @@ namespace ARRG_Game
 {
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
-    enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
+    public enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
     enum CreatureID
     {
         BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
@@ -71,12 +71,39 @@ namespace ARRG_Game
         JONATHAN, MEYNARD, ALEX
     };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
-    enum Modifier
+    public enum ModifierType
     {
-        NONE, DAMAGE, DAMAGE_PERCENT, CRIT, CRIT_PERCENT, HIT, HIT_PERCENT,
-        DODGE, DODGE_PERCENT, HP, HP_PERCENT, PARRY, PARRY_PERCENT,
+        NONE, DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
     };
+    public struct Buff
+    {
+        public ModifierType modifier;
+        public CreatureType affectedCreature;
+        public int amount;
+        public Buff(ModifierType m, CreatureType c, int a)
+        {
+            modifier = m;
+            affectedCreature = c;
+            amount = a;
+        }
+        public ModifierType Modifier
+        {
+            get { return modifier; }
+            set { modifier = value; }
+        }
+        public CreatureType AffectedCreature
+        {
+            get { return affectedCreature; }
+            set { affectedCreature = value; }
+        }
+        public int Amount
+        {
+            get { return amount; }
+            set { amount = value; }
+        }
+
+    }
 
     public class ARRG : Microsoft.Xna.Framework.Game
     {
@@ -357,7 +384,7 @@ namespace ARRG_Game
             talentScreen.update(new Point(Mouse.GetState().X, Mouse.GetState().Y));
             if (talentScreen.wasSubmitted())
             {
-                List<Talent> talents = talentScreen.getTalentInfo();
+                p.Buffs = talentScreen.getBuffs();
 
                 //TEST
                 //menuState = MenuStates.MARKET;  //Should be moved to PRE_GAME and called upon stage transition

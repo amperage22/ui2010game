@@ -36,6 +36,7 @@ namespace ARRG_Game
         protected double baseHit, baseDodge, baseCrit;  //Instantiated through Child classes
         protected List<int> dmgMods;        //Instantiated through Monster
         protected List<int> healthMods;     //Instantiated through Monster
+        protected List<Buff> buffs;
         protected List<int> dmgTaken;       //Instantiated through Monster
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
@@ -134,6 +135,14 @@ namespace ARRG_Game
         //*********End Selectors and Mutators*************
 
         //*********Card-Monster Interactions**************************
+        public void addBuff(Buff buff)
+        {
+            buffs.Add(buff);
+        }
+        public void addBuffs(List<Buff> buffs)
+        {
+            this.buffs.AddRange(buffs);
+        }
         public void addMod(int dmg, int health)
         {
             dmgMods.Add(dmg);
