@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ARRG_Game
 {
-    public class Dragonkin : Monster
+    class Dragonkin : Monster
     {
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)

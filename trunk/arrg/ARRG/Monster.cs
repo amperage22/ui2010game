@@ -29,7 +29,7 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
-    public class Monster
+    class Monster
     {
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
