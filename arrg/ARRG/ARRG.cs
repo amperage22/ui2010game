@@ -392,12 +392,14 @@ namespace ARRG_Game
                 switch (menuState = preGame.getDecision())
                 {
                     case MenuStates.MARKET:
-                        marketScreen = new MarketScreen(scene, Content, p, monsters);
-                        marketScreen.Display();
+                        if (marketScreen == null)
+                            marketScreen = new MarketScreen(scene, Content, monsters);
+                        marketScreen.Display(p);
                         break;
                     case MenuStates.INVENTORY:
-                        inventoryScreen = new InventoryScreen(scene, Content, p, monsters);
-                        inventoryScreen.Display();
+                        if (inventoryScreen == null)
+                            inventoryScreen = new InventoryScreen(scene, Content, monsters);
+                        inventoryScreen.Display(p);
                         break;
                     case MenuStates.INGAME:
                         bigRed = new Brb(scene, menuState, gameState);
