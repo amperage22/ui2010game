@@ -402,7 +402,6 @@ namespace ARRG_Game
                     case MenuStates.INGAME:
                         bigRed = new Brb(scene, menuState, gameState);
                         break;
-
                 }
             }
             else if (!preGame.isDisplaying())
@@ -522,7 +521,6 @@ namespace ARRG_Game
         /// </summary>
         private void DrawPreGame()
         {
-            preGame.display();
 
         }
         /// <summary>

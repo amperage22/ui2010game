@@ -49,6 +49,7 @@ namespace ARRG_Game
       if (state != preGameState.DISPLAYING)
       {
         scene.UIRenderer.Add2DComponent(arrg);
+        state = preGameState.DISPLAYING;
       }
     }
 
