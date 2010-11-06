@@ -66,7 +66,7 @@ namespace ARRG_Game
     enum CreatureID
     {
         BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
-        DALEK, GUNDAM, SAMUS, TANK,
+        DALEK, GUNDAM, SAMUS, CENTURION,
         DRAGON1, DRAGON2, UNKNOWN1, UNKNOWN2,
         JONATHAN, MEYNARD, ALEX
     };
@@ -280,7 +280,7 @@ namespace ARRG_Game
             monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 3, 4, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 1, 3, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 5, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.TANK, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 5, 3, false, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/tank"), 5, 3, false, 1));
 
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1));
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1));
@@ -289,8 +289,8 @@ namespace ARRG_Game
             
             //Set up the initial monsters for use after the talent screen has been submitted
             initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF-J", "centurion", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 20, 1, true, 50));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF-M", "centurion", Content.Load<Texture2D>("Textures/inventory/d_meynard"), 20, 1, true, 50));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "centurion", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/d_meynard"), 20, 1, true, 50));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
             monsters.AddRange(initial_monsters);
             
             p2.PurchasedMonsters = monsters; //For testing purposes
