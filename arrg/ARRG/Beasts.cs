@@ -11,9 +11,9 @@ namespace ARRG_Game
         public Beasts(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
         {
-            Hit = 70;
-            Dodge = 40;
-            Crit = 30;
+            baseHit = 70;
+            baseDodge = 40;
+            baseCrit = 30;
         }
     }
 }

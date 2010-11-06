@@ -18,7 +18,7 @@ namespace ARRG_Game
             switch (c)
             {
                 case CreatureType.BEASTS:
-                    tier1[0] = new Talent(1, ModifierType.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
+                    tier1[0] = new Talent(1, ModifierType.POWER, CreatureType.ALL, 2, "DAMAGE dealt.");
                     tier1[1] = new Talent(5, ModifierType.CRIT, CreatureType.ALL, 1, "chance to CRITICALLY hit the enemy.");
                     tier1[2] = new Talent(1, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.");
                     tier2[0] = new Talent(1, ModifierType.DODGE, CreatureType.BEASTS, 2, "chance for your BEASTS to\nDODGE an enemy attack.");
@@ -29,7 +29,7 @@ namespace ARRG_Game
                 case CreatureType.DRAGONKIN:
                     tier1[0] = new Talent(1, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.");
                     tier1[1] = new Talent(5, ModifierType.HIT, CreatureType.ALL, 1, "chance to HIT the enemy.");
-                    tier1[2] = new Talent(1, ModifierType.DAMAGE, CreatureType.ALL, 2, "DAMAGE dealt.");
+                    tier1[2] = new Talent(1, ModifierType.POWER, CreatureType.ALL, 2, "DAMAGE dealt.");
                     tier2[0] = new Talent(2, ModifierType.CRIT, CreatureType.DRAGONKIN, 2, "chance for DRAGONKIN to\nCRITICALLY hit the enemy.");
                     tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.DRAGONKIN, 1, "chance for your DRAGONKIN to attack\nTWICE in one turn.");
                     tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.DRAGONKIN, 2, "chance for your DRAGONKIN to\nPARRY an attack.");
@@ -38,7 +38,7 @@ namespace ARRG_Game
                 case CreatureType.ROBOTS:
                     tier1[0] = new Talent(2, ModifierType.CRIT, CreatureType.ALL, 2, "chance to CRITICALLY hit the enemy.");
                     tier1[1] = new Talent(4, ModifierType.DODGE, CreatureType.ALL, 1, "chance to DODGE an enemy attack.");
-                    tier1[2] = new Talent(2, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.", -2, ModifierType.DAMAGE, "DAMAGE dealt.");
+                    tier1[2] = new Talent(2, ModifierType.HP, CreatureType.ALL, 2, "HP per monster.", -2, ModifierType.POWER, "DAMAGE dealt.");
                     tier2[0] = new Talent(2, ModifierType.HIT, CreatureType.ROBOTS, 2, "chance for ROBOTS to\nHIT the enemy.");
                     tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
                     tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.ROBOTS, 2, "chance for your ROBOTS to\nPARRY an attack.");

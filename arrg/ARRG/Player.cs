@@ -78,6 +78,7 @@ namespace ARRG_Game
         public Player(Scene s, int playerNum, MarkerNode ground)
         {
             health = 20;
+            buffs = new List<Buff>();
             mana = 10;
             gold = 100;
             die = new Die[MAX_NUM_DIE];

@@ -166,7 +166,7 @@ namespace ARRG_Game
         {
             if (currentMonster == null)
                 return;
-            currentMonster.applyHealthMods();
+            currentMonster.applyMods();
             if (currentMonster.IsDead)
             {
                 upMarker.RemoveChild(currentMonster.TransNode);

@@ -102,7 +102,7 @@ namespace ARRG_Game
             switch (m)
             {
                 case ModifierType.NONE:
-                case ModifierType.DAMAGE:
+                case ModifierType.POWER:
                 case ModifierType.HP:
                     return false;
                 default:
