@@ -28,7 +28,8 @@ namespace ARRG_Game
 
         private const int ROWS = 3, COLS = 5, SELECTED = 0, LOCKED = 1;
 
-        private G2DPanel mainFrame, itemFrame;
+        private bool showHelpFrame;
+        private G2DPanel mainFrame, itemFrame, helpFrame;
         private G2DButton[,] itemButton = new G2DButton[ROWS, COLS];
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
         private Texture2D lockedTexture;
@@ -52,7 +53,7 @@ namespace ARRG_Game
          * s The scene to display the talent screen on
          * f The font to be used with within the talent screen being created
          */
-        public InventoryScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
+        public InventoryScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
                 throw new Exception("I can't handle this case");
@@ -61,6 +62,7 @@ namespace ARRG_Game
             this.scene = scene;
             this.content = content;
             this.player = player;
+            showHelpFrame = true;
             numSelectedMonsters = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
 
@@ -68,16 +70,20 @@ namespace ARRG_Game
 
             CreateFrame();
 
-            Personalize();
-
             state = InventoryState.READY;
         }
 
-        public void Display()
+        public void Display(Player p)
         {
+            player = p;
+            Personalize();
+            updateSelectedMonstersText();
             if (state != InventoryState.DISPLAYING)
             {
                 scene.UIRenderer.Add2DComponent(mainFrame);
+                if (showHelpFrame)
+                    scene.UIRenderer.Add2DComponent(helpFrame);
+                mainFrame.Enabled = true;
                 state = InventoryState.DISPLAYING;
             }
         }
@@ -107,6 +113,11 @@ namespace ARRG_Game
             mainFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
             mainFrame.Texture = content.Load<Texture2D>("Textures/inventory/inventory_bg");
             mainFrame.DrawBorder = true;
+
+            //Gotta tweak it into place
+            helpFrame = new G2DPanel();
+            helpFrame.Texture = content.Load<Texture2D>("Textures/inventory/inventory_help");
+            helpFrame.Bounds = new Rectangle(175, 60, helpFrame.Texture.Width, helpFrame.Texture.Height);
 
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/inventory/inventory_button");
@@ -175,7 +186,6 @@ namespace ARRG_Game
             monstersSelectedText.DrawBorder = true;
             monstersSelectedText.BorderColor = Color.White;
             monstersSelectedText.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
-            updateSelectedMonstersText();
             mainFrame.AddChild(monstersSelectedText);
 
             //And the tooltip
@@ -189,6 +199,7 @@ namespace ARRG_Game
             tooltip.DrawBackground = false;
             itemFrame.AddChild(tooltip);
             mainFrame.AddChild(itemFrame);
+            mainFrame.Enabled = false;
         }
 
         private void updateSelectedMonstersText()
@@ -203,6 +214,9 @@ namespace ARRG_Game
         {
             if (numSelectedMonsters == 0) return;
             scene.UIRenderer.Remove2DComponent(mainFrame);
+            if (showHelpFrame)
+               scene.UIRenderer.Remove2DComponent(helpFrame);
+            mainFrame.Enabled = false;
             state = InventoryState.FINISHED;
         }
 
@@ -287,6 +301,14 @@ namespace ARRG_Game
                             numSelectedMonsters++;
                         }
                         updateSelectedMonstersText();
+
+                        if (showHelpFrame)
+                        {
+                            scene.UIRenderer.Remove2DComponent(helpFrame);
+                            showHelpFrame = false;
+                        }
+
+                        return;
                     }
                 }
         }

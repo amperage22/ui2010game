@@ -28,7 +28,8 @@ namespace ARRG_Game
 
         private const int ROWS = 3, COLS = 5, SELECTED = 0, LOCKED = 1;
 
-        private G2DPanel mainFrame, itemFrame;
+        private bool showHelpFrame;
+        private G2DPanel mainFrame, itemFrame, helpFrame;
         private G2DButton[,] itemButton = new G2DButton[ROWS, COLS];
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
         private Texture2D lockedTexture;
@@ -53,7 +54,7 @@ namespace ARRG_Game
          * s The scene to display the talent screen on
          * f The font to be used with within the talent screen being created
          */
-        public MarketScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
+        public MarketScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
                 throw new Exception("I can't handle this case");
@@ -61,7 +62,7 @@ namespace ARRG_Game
                 this.monsters[m.getID()] = m;
             this.scene = scene;
             this.content = content;
-            this.player = player;
+            showHelpFrame = true;
             amountSpent = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
 
@@ -69,16 +70,20 @@ namespace ARRG_Game
 
             CreateFrame();
 
-            Personalize();
-
             state = MarketState.READY;
         }
 
-        public void Display()
+        public void Display(Player p)
         {
+            player = p;
+            Personalize();
+            updateMoniesText();
             if (state != MarketState.DISPLAYING)
             {
                 scene.UIRenderer.Add2DComponent(mainFrame);
+                if (showHelpFrame)
+                    scene.UIRenderer.Add2DComponent(helpFrame);
+                mainFrame.Enabled = true;
                 state = MarketState.DISPLAYING;
             }
         }
@@ -108,6 +113,11 @@ namespace ARRG_Game
             mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
 
+            //Gotta tweak it into place
+            helpFrame = new G2DPanel();
+            helpFrame.Texture = content.Load<Texture2D>("Textures/market/market_help");
+            helpFrame.Bounds = new Rectangle(10, 60, helpFrame.Texture.Width, helpFrame.Texture.Height);
+
             goldLeft = new G2DLabel();
             goldLeft.BackgroundColor = new Color(50, 50, 50); ;
             goldLeft.DrawBackground = true;
@@ -116,7 +126,6 @@ namespace ARRG_Game
             goldLeft.DrawBorder = true;
             goldLeft.BorderColor = Color.White;
             goldLeft.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
-            updateMoniesText();
             mainFrame.AddChild(goldLeft);
 
             //Submit and clear buttons
@@ -183,11 +192,15 @@ namespace ARRG_Game
             tooltip.DrawBackground = false;
             itemFrame.AddChild(tooltip);
             mainFrame.AddChild(itemFrame);
+            mainFrame.Enabled = false;
         }
         
         private void HandleSubmit(object source)
         {
             scene.UIRenderer.Remove2DComponent(mainFrame);
+            if (showHelpFrame)
+                scene.UIRenderer.Remove2DComponent(helpFrame);
+            mainFrame.Enabled = false;
             state = MarketState.FINISHED;
         }
 
@@ -227,6 +240,7 @@ namespace ARRG_Game
             player.PurchasedMonsters = newMonsterList;
 
             player.Gold -= amountSpent;
+            amountSpent = 0;
         }
 
         private void HandleAlloc(int button, Point mouse)
@@ -272,6 +286,14 @@ namespace ARRG_Game
                             amountSpent += monsters[i * COLS + j].getGoldCost();
                         }
                         updateMoniesText();
+
+                        if (showHelpFrame)
+                        {
+                            scene.UIRenderer.Remove2DComponent(helpFrame);
+                            showHelpFrame = false;
+                        }
+
+                        return;
                     }
                 }
         }

@@ -29,7 +29,8 @@ namespace ARRG_Game
     private Scene scene;
     private ContentManager content;
     private preGameState state;
-    //private G2DPanel menuFrame;
+    private G2DPanel buttonHelpFrame, menuHelpFrame;
+    private bool showButtonHelp, showMenuHelp;
     private G2DButton arrg, inventory, game, market;
     private bool optionsOnScreen = false;
     //private string preGameDecision;
@@ -38,6 +39,8 @@ namespace ARRG_Game
     {
       this.scene = scene;
       this.content = content;
+      showButtonHelp = true;
+      showMenuHelp = true;
 
       createFrame();
 
@@ -49,6 +52,8 @@ namespace ARRG_Game
       if (state != preGameState.DISPLAYING)
       {
         scene.UIRenderer.Add2DComponent(arrg);
+        if (showButtonHelp)
+            scene.UIRenderer.Add2DComponent(buttonHelpFrame);
         state = preGameState.DISPLAYING;
       }
     }
@@ -56,9 +61,20 @@ namespace ARRG_Game
     private void createFrame()
     {
       int buttonX, buttonY;
-      buttonX = 310;
-      buttonY = 250;
+      buttonX = 345;
+      buttonY = 245;
 
+      //Gotta tweak it into place
+      buttonHelpFrame = new G2DPanel();
+      buttonHelpFrame.Texture = content.Load<Texture2D>("Textures/brb/arrg_button_help");
+      Point p = new Point((800 - buttonHelpFrame.Texture.Width) / 2, (600 - buttonHelpFrame.Texture.Height) / 2 - 21);
+      buttonHelpFrame.Bounds = new Rectangle(p.X, p.Y, buttonHelpFrame.Texture.Width, buttonHelpFrame.Texture.Height);
+
+      //Gotta tweak it into place
+      menuHelpFrame = new G2DPanel();
+      menuHelpFrame.Texture = content.Load<Texture2D>("Textures/brb/arrg_menu_help");
+      p = new Point((800 - menuHelpFrame.Texture.Width) / 2, (600 - menuHelpFrame.Texture.Height) / 2);
+      menuHelpFrame.Bounds = new Rectangle(p.X, p.Y, menuHelpFrame.Texture.Width, menuHelpFrame.Texture.Height);
 
       Texture2D arrg_button = content.Load<Texture2D>("Textures/brb/brbArrg");
       arrg = new G2DButton("ARRG");
@@ -114,6 +130,17 @@ namespace ARRG_Game
           decision = MenuStates.INVENTORY;
           finishPreGame();
           break;
+      }
+      if (showButtonHelp)
+      {
+          scene.UIRenderer.Remove2DComponent(buttonHelpFrame);
+          showButtonHelp = false;
+          scene.UIRenderer.Add2DComponent(menuHelpFrame);
+      }
+      else if (showMenuHelp)
+      {
+          scene.UIRenderer.Remove2DComponent(menuHelpFrame);
+          showMenuHelp = false;
       }
     }
 
