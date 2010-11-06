@@ -97,7 +97,7 @@ namespace ARRG_Game
         {
             helpFrame = new G2DPanel();
             helpFrame.Bounds = new Rectangle(0, 0, 800, 600);
-            helpFrame.Texture = content.Load<Texture2D>("Textures/talents/help");
+            helpFrame.Texture = content.Load<Texture2D>("Textures/talents/talents_help");
 
             backgroundFrame = new G2DPanel();
             backgroundFrame.Bounds = new Rectangle(240, 90, 320, 420);
