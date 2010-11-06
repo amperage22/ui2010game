@@ -93,6 +93,7 @@ namespace ARRG_Game
             {
                 int i = m.getID() / COLS, j = m.getID() - i * COLS;
                 itemButton[i, j].Texture = lockedTexture;
+                itemButton[i, j].TextureColor = disabledColor;
                 itemButtonFlag[i, j, LOCKED] = true;
             }
         }
@@ -195,6 +196,7 @@ namespace ARRG_Game
             for (int i = 0; i < ROWS; i++)
                 for (int j = 0; j < COLS; j++)
                 {
+                    if (itemButtonFlag[i, j, LOCKED]) continue;
                     itemButtonFlag[i, j, SELECTED] = false;
                     itemButton[i, j].TextureColor = Color.White;
                     itemButton[i, j].BorderColor = Color.Black;
