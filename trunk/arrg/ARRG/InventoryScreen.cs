@@ -61,7 +61,6 @@ namespace ARRG_Game
                 this.monsters[m.getID()] = m;
             this.scene = scene;
             this.content = content;
-            this.player = player;
             showHelpFrame = true;
             numSelectedMonsters = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
