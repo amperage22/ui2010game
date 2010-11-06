@@ -55,14 +55,9 @@ namespace ARRG_Game
          */
         public InventoryScreen(Scene scene, ContentManager content, Player player, List<MonsterBuilder> monsters)
         {
-            List<MonsterBuilder> mb = new List<MonsterBuilder>(monsters);
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
-            mb.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
-            mb.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_jonathan"), 0, 0, false, 50));
-            mb.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "WTF", "alexmodel", content.Load<Texture2D>("Textures/inventory/d_meynard"), 0, 0, false, 50));
-            if (mb.Count != 15)
+            if (monsters.Count != 15)
                 throw new Exception("I can't handle this case");
-            foreach (MonsterBuilder m in mb)
+            foreach (MonsterBuilder m in monsters)
                 this.monsters[m.getID()] = m;
             this.scene = scene;
             this.content = content;
