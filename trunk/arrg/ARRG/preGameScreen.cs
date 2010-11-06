@@ -48,19 +48,12 @@ namespace ARRG_Game
     {
       if (state != preGameState.DISPLAYING)
       {
-        //scene.UIRenderer.Add2DComponent(menuFrame);
-        //state = preGameState.DISPLAYING;
         scene.UIRenderer.Add2DComponent(arrg);
       }
     }
 
     private void createFrame()
     {
-      //menuFrame = new G2DPanel();
-      //menuFrame.Bounds = new Rectangle(10, 10, 400, 400);
-      //menuFrame.Border = GoblinEnums.BorderFactory.EmptyBorder;
-      //menuFrame.Transparency = 1;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
-
       int buttonX, buttonY;
       buttonX = 310;
       buttonY = 250;
@@ -98,11 +91,6 @@ namespace ARRG_Game
       game.HighlightColor = Color.TransparentWhite;
       game.ActionPerformedEvent += new ActionPerformed(handleButtonPress);
       game.DrawBorder = false;
-      //menuFrame.AddChild(game);
-      //menuFrame.AddChild(arrg);
-      //menuFrame.AddChild(inventory);
-      //menuFrame.AddChild(talent);
-
     }
 
     public void handleButtonPress(object source)

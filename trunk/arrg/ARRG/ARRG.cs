@@ -398,6 +398,7 @@ namespace ARRG_Game
 
                 //Add the initial monsterbuilders to the player's list */
                 p.PurchasedMonsters = new List<MonsterBuilder>(initial_monsters);
+                p.SelectedMonsters = new List<MonsterBuilder>(initial_monsters);
 
                 preGame = new preGameScreen(scene, Content);
                 menuState = MenuStates.PRE_GAME;

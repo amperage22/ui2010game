@@ -55,12 +55,13 @@ namespace ARRG_Game
             set { die = value; }
         }
 
-        private Monster[] selectedMonsters;
-        private int numMonsters;
-
-
+        private List<MonsterBuilder> selectedMonsters;
+        public List<MonsterBuilder> SelectedMonsters
+        {
+            get { return selectedMonsters; }
+            set { selectedMonsters = value; }
+        }
         private List<MonsterBuilder> purchasedMonsters;     //List for inventory purposes
-
         internal List<MonsterBuilder> PurchasedMonsters
         {
             get { return purchasedMonsters; }
@@ -81,7 +82,7 @@ namespace ARRG_Game
             gold = 100;
             die = new Die[MAX_NUM_DIE];
             this.ground = ground;
-            selectedMonsters = new Monster[MAX_CREATURES_INGAME];
+            selectedMonsters = new List<MonsterBuilder>();
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
@@ -106,27 +107,11 @@ namespace ARRG_Game
             get { return gold; }
             set { gold = value; }
         }
-        public Monster[] SelectedMonsters
-        {
-            get { return selectedMonsters; }
-            set { selectedMonsters = value; }
-        }
         public List<Buff> Buffs
         {
             get { return buffs; }
             set { buffs = value; }
         }
-
-        public bool addMonster(Monster m)
-        {
-            if (numMonsters < MAX_CREATURES_INGAME)
-            {
-                selectedMonsters[numMonsters++] = m;
-                return true;
-            }
-            return false;
-        }
-
         public void updateDraw()
         {
             foreach (Die d in die)

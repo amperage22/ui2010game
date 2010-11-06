@@ -32,12 +32,10 @@ namespace ARRG_Game
         private G2DButton[,] itemButton = new G2DButton[ROWS, COLS];
         private Texture2D[,] buttonTextures = new Texture2D[ROWS, COLS];
         private Texture2D lockedTexture;
-        private bool[, ,] itemButtonFlag = new bool[ROWS, COLS, 2];
+        private bool[,,] itemButtonFlag = new bool[ROWS, COLS, 2];
         private G2DLabel tooltip;
         private G2DButton submit, clear;
         private Color disabledColor = new Color(80, 80, 80);
-
-        private G2DLabel goldLeft;
 
         private Scene scene;
         private ContentManager content;
@@ -46,7 +44,6 @@ namespace ARRG_Game
 
         private Player player;
         private MonsterBuilder[] monsters = new MonsterBuilder[15];
-        private int amountSpent;
 
         /*
          * Makes the talent screen as per specifications.
@@ -62,7 +59,6 @@ namespace ARRG_Game
             this.scene = scene;
             this.content = content;
             this.player = player;
-            amountSpent = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
 
             allocateTextures();
@@ -106,17 +102,6 @@ namespace ARRG_Game
             mainFrame.Transparency = 1.0f;  // Ranges from 0 (fully transparent) to 1 (fully opaque)
             mainFrame.Texture = content.Load<Texture2D>("Textures/market/market_bg");
             mainFrame.DrawBorder = true;
-
-            goldLeft = new G2DLabel();
-            goldLeft.BackgroundColor = new Color(50, 50, 50); ;
-            goldLeft.DrawBackground = true;
-            goldLeft.TextFont = font;
-            goldLeft.TextColor = Color.Gold;
-            goldLeft.DrawBorder = true;
-            goldLeft.BorderColor = Color.White;
-            goldLeft.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
-            updateMoniesText();
-            mainFrame.AddChild(goldLeft);
 
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
@@ -199,8 +184,6 @@ namespace ARRG_Game
                     itemButton[i, j].TextureColor = Color.White;
                     itemButton[i, j].BorderColor = Color.Black;
                 }
-            amountSpent = 0;
-            updateMoniesText();
         }
 
         public bool wasSubmitted()
@@ -223,8 +206,6 @@ namespace ARRG_Game
                     if (itemButtonFlag[i, j, SELECTED] || itemButtonFlag[i, j, LOCKED])
                         newMonsterList.Add(monsters[i * COLS + j]);
             player.PurchasedMonsters = newMonsterList;
-
-            player.Gold -= amountSpent;
         }
 
         private void HandleAlloc(int button, Point mouse)
@@ -243,12 +224,9 @@ namespace ARRG_Game
                             itemButtonFlag[i, j, SELECTED] = false;
                             itemButton[i, j].TextureColor = Color.White;
                             itemButton[i, j].BorderColor = Color.Black;
-                            amountSpent -= monsters[i * COLS + j].getCost();
                         }
                         else //the user wants to select this item
                         {
-                            if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
-                                return; //The player has not enough gold to do that.
                             itemButtonFlag[i, j, SELECTED] = true;
                             itemButton[i, j].TextureColor = disabledColor;
                             switch (monsters[i * COLS + j].getType())
@@ -262,19 +240,9 @@ namespace ARRG_Game
                                 default:
                                     itemButton[i, j].BorderColor = Color.White; break;
                             }
-                            amountSpent += monsters[i * COLS + j].getCost();
                         }
-                        updateMoniesText();
                     }
                 }
-        }
-
-        private void updateMoniesText()
-        {
-            goldLeft.Text = String.Format("I Haz   {0}   Gold!", player.Gold - amountSpent);
-            Vector2 v = goldLeft.TextFont.MeasureString(goldLeft.Text);
-            goldLeft.Bounds = new Rectangle(10, 266, (int)v.X + 10, 25);
-            //I may add more code to this function for milestone 3
         }
 
         private void HandleToolTip(Point mouse)
@@ -299,14 +267,8 @@ namespace ARRG_Game
                         {
                             tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
                         }
-                        else if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
-                        {
-                            //Since the player has not enough monies, we need to tell em.
-                            tooltip.Text = String.Format("You need more money for that :(");
-                        }
                         else
                         {
-
                             tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getCost());
                         }
                         tipFound = true;
