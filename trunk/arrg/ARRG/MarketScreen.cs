@@ -120,7 +120,7 @@ namespace ARRG_Game
 
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
-            submit = new G2DButton("Buy");
+            submit = new G2DButton("Done");
             submit.TextFont = font;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
             submit.Texture = market_button;
@@ -235,6 +235,11 @@ namespace ARRG_Game
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
                         if (itemButtonFlag[i, j, LOCKED]) return;
+                        if (i == 2 && (j == 0 || j == 1))
+                        {
+                            //These have no function yet
+                            return;
+                        }
                         /* We don't care if the player left or right clicks
                          * since we aren't counting up or down, only on or
                          * off states */
@@ -243,11 +248,11 @@ namespace ARRG_Game
                             itemButtonFlag[i, j, SELECTED] = false;
                             itemButton[i, j].TextureColor = Color.White;
                             itemButton[i, j].BorderColor = Color.Black;
-                            amountSpent -= monsters[i * COLS + j].getCost();
+                            amountSpent -= monsters[i * COLS + j].getGoldCost();
                         }
                         else //the user wants to select this item
                         {
-                            if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
+                            if (player.Gold - amountSpent < monsters[i * COLS + j].getGoldCost())
                                 return; //The player has not enough gold to do that.
                             itemButtonFlag[i, j, SELECTED] = true;
                             itemButton[i, j].TextureColor = disabledColor;
@@ -262,7 +267,7 @@ namespace ARRG_Game
                                 default:
                                     itemButton[i, j].BorderColor = Color.White; break;
                             }
-                            amountSpent += monsters[i * COLS + j].getCost();
+                            amountSpent += monsters[i * COLS + j].getGoldCost();
                         }
                         updateMoniesText();
                     }
@@ -291,7 +296,11 @@ namespace ARRG_Game
                 {
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
-                        if (itemButtonFlag[i, j, LOCKED])
+                        if (i == 2 && (j == 0 || j == 1))
+                        {
+                            tooltip.Text = "Oooh, what could this be!?";
+                        }
+                        else if (itemButtonFlag[i, j, LOCKED])
                         {
                             tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
                         }
@@ -299,18 +308,16 @@ namespace ARRG_Game
                         {
                             tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
                         }
-                        else if (player.Gold - amountSpent < monsters[i * COLS + j].getCost())
+                        else if (player.Gold - amountSpent < monsters[i * COLS + j].getGoldCost())
                         {
                             //Since the player has not enough monies, we need to tell em.
                             tooltip.Text = String.Format("You need more money for that :(");
                         }
                         else
                         {
-                            
-                            tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getCost());
+                            tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getGoldCost());
                         }
                         tipFound = true;
-                        break;
                     }
                 }
 

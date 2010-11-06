@@ -243,25 +243,25 @@ namespace ARRG_Game
             initial_monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
 
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 3, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 3, 4, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 1, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 5, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/tank"), 5, 3, false, 1));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 3, 4, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 1, 3, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 5, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/centurion"), 5, 3, false, 1, 0));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1));
-            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "UNKNOWN1", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
-            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "UNKNOWN2", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN1, CreatureType.DRAGONKIN, "UNKNOWN1", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.UNKNOWN2, CreatureType.DRAGONKIN, "UNKNOWN2", "centurion", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
             
             //Set up the initial monsters for use after the talent screen has been submitted
-            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF-J", "centurion", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 20, 1, true, 50));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/d_meynard"), 20, 1, true, 50));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "WTF-J", "centurion", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 20, 1, true, 50, 0));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.DRAGONKIN, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 20, 1, true, 50, 0));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.DRAGONKIN, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 20, 1, true, 1, 0));
             monsters.AddRange(initial_monsters);
             
             p2.PurchasedMonsters = monsters; //For testing purposes
