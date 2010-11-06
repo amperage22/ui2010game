@@ -31,6 +31,7 @@ namespace ARRG_Game
     private preGameState state;
     //private G2DPanel menuFrame;
     private G2DButton arrg, inventory, game, market;
+    private bool optionsOnScreen = false;
     //private string preGameDecision;
 
     public preGameScreen(Scene scene, ContentManager content)
@@ -97,18 +98,6 @@ namespace ARRG_Game
       game.HighlightColor = Color.TransparentWhite;
       game.ActionPerformedEvent += new ActionPerformed(handleButtonPress);
       game.DrawBorder = false;
-
-      game.Enabled = false;
-      game.Visible = false;
-      inventory.Enabled = false;
-      inventory.Visible = false;
-      market.Enabled = false;
-      market.Visible = false;
-
-      scene.UIRenderer.Add2DComponent(arrg);
-      scene.UIRenderer.Add2DComponent(inventory);
-      scene.UIRenderer.Add2DComponent(market);
-      scene.UIRenderer.Add2DComponent(game);
       //menuFrame.AddChild(game);
       //menuFrame.AddChild(arrg);
       //menuFrame.AddChild(inventory);
@@ -122,7 +111,6 @@ namespace ARRG_Game
       switch (comp.Text)
       {
         case "ARRG":
-          Console.WriteLine("ARRG");
           togglePathsVisible();
           break;
         case "Market":
@@ -142,19 +130,25 @@ namespace ARRG_Game
 
     public void togglePathsVisible()
     {
-      game.Enabled = !game.Enabled;
-      game.Visible = !game.Visible;
-      inventory.Enabled = !inventory.Enabled;
-      inventory.Visible = !inventory.Visible;
-      market.Enabled = !market.Enabled;
-      market.Visible = !market.Visible;
+        if (optionsOnScreen)
+        {
+            scene.UIRenderer.Remove2DComponent(inventory);
+            scene.UIRenderer.Remove2DComponent(market);
+            scene.UIRenderer.Remove2DComponent(game);
+        }
+        else
+        {
+            scene.UIRenderer.Add2DComponent(inventory);
+            scene.UIRenderer.Add2DComponent(market);
+            scene.UIRenderer.Add2DComponent(game);
+        }
+        optionsOnScreen = !optionsOnScreen;
     }
 
     public void finishPreGame()
     {
       togglePathsVisible();
-      arrg.Visible = false;
-      arrg.Enabled = false;
+      scene.UIRenderer.Remove2DComponent(arrg);
       state = preGameState.FINISHED;
     }
 
@@ -163,9 +157,15 @@ namespace ARRG_Game
       return state == preGameState.FINISHED;
     }
 
+    public bool isDisplaying()
+    {
+        return state == preGameState.DISPLAYING;
+    }
     public MenuStates getDecision()
     {
-
+        if (state != preGameState.FINISHED)
+            throw new Exception("Not finished yet damnit!");
+        state = preGameState.READY;
       return decision;
     }
 
