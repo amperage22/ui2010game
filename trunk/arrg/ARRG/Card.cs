@@ -36,12 +36,20 @@ namespace ARRG_Game
         int dmgDone, dmgPrevent;
         CardType type;
         Buff buff;
+        //test
+        bool particleSet;
+        ParticleNode fireRingEffectNode;
+        float radius;
+        TransformNode node;
+        int frameCount;
+        Random random = new Random();
 
         public Card(Scene s, int markerNum, int mod, ModifierType modType, CreatureType againstCreatureType)
         {
             type = CardType.STAT_MOD;
             buff = new Buff(modType, againstCreatureType, mod);
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
+            node = new TransformNode();
             s.RootNode.AddChild(marker);
         }
         public Card(Scene s, CardType type, int markerNum, int mod)
@@ -53,7 +61,7 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: dmgDone = mod; dmgPrevent = 0; break;
                 case CardType.DMG_PREVENT: dmgDone = 0; dmgPrevent = mod; break;
             }
-
+            node = new TransformNode();
             s.RootNode.AddChild(marker);
         }
         public void getNearestCreature(Die[] d1, Die[] d2)
@@ -94,66 +102,58 @@ namespace ARRG_Game
                 case CardType.DMG_PREVENT: nearest.preventDmg(dmgPrevent); break;
             }
         }
-        //    public void update()
-        //    {
-        //        if (marker.MarkerFound && !particleSet)
-        //        {
-        //            SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
-        //            FireParticleEffect fireParticles = new FireParticleEffect();
-        //            //fireParticles.TextureName = "particles";
-        //            smokeParticles.DrawOrder = 200;
-        //            fireParticles.DrawOrder = 300;
-        //            fireRingEffectNode = new ParticleNode();
-        //            fireRingEffectNode.ParticleEffects.Add(smokeParticles);
-        //            fireRingEffectNode.ParticleEffects.Add(fireParticles);
-        //            fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
-        //            fireRingEffectNode.Enabled = true;
+        public void update()
+        {
+            if (marker.MarkerFound && !particleSet)
+            {
+                SmokePlumeParticleEffect smokeParticles = new SmokePlumeParticleEffect();
+                FireParticleEffect fireParticles = new FireParticleEffect();
+                //fireParticles.TextureName = "particles";
+                smokeParticles.DrawOrder = 200;
+                fireParticles.DrawOrder = 300;
+                fireRingEffectNode = new ParticleNode();
+                fireRingEffectNode.ParticleEffects.Add(smokeParticles);
+                fireRingEffectNode.ParticleEffects.Add(fireParticles);
+                fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
+                fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
+                fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateRingOfFire);
 
-        //            node.AddChild(fireRingEffectNode);
-        //            marker.AddChild(node);
-        //            particleSet = true;
+                node.AddChild(fireRingEffectNode);
+                marker.AddChild(node);
+                particleSet = true;
 
-        //        }
+            }
 
-        //    }
-        //    private void UpdateRingOfFire(Matrix worldTransform, List<ParticleEffect> particleEffects)
-        //    {
-        //        foreach (ParticleEffect particle in particleEffects)
-        //        {
-        //            if (particle is FireParticleEffect)
-        //            {
-        //                // Add 10 fire particles every frame
-        //                for (int k = 0; k < 30; k++)
-        //                {
-        //                    if (!Vector3.Zero.Equals(worldTransform.Translation))
-        //                        particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(2, 2, 2));
-        //                }
-        //            }
-        //            else if (!Vector3.Zero.Equals(worldTransform.Translation))
-        //                // Add 1 smoke particle every frame
-        //                particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(2 + 1, 2 + 1, 2 + 1));
-        //        }
-        //    }
-        //    private Vector3 RandomPointOnCircle(Vector3 pos)
-        //    {
+        }
+        private void UpdateRingOfFire(Matrix worldTransform, List<ParticleEffect> particleEffects)
+        {
+            foreach (ParticleEffect particle in particleEffects)
+            {
+                if (particle is FireParticleEffect)
+                {
+                    // Add 10 fire particles every frame
+                    for (int k = 0; k < 20; k++)
+                    {
+                        if (!Vector3.Zero.Equals(worldTransform.Translation))
+                            particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), new Vector3(20, 100, 20));
+                    }
+                }
+                //else if (!Vector3.Zero.Equals(worldTransform.Translation))
+                // Add 1 smoke particle every frame
+                particle.AddParticle(RandomPointOnCircle(worldTransform.Translation), Vector3.Zero);
+            }
+        }
+        private Vector3 RandomPointOnCircle(Vector3 pos)
+        {
+            const float radius = 15f;
 
-        //        if(frameCount++ >= 500 && radius <= 40)
-        //        {
-        //            frameCount = 0;
-        //            radius += .001f;
-        //        }
-        //        if (radius > 40)
-        //            return Vector3.Zero;
+            double angle = random.NextDouble() * Math.PI * 2;
 
-        //        double theta = random.NextDouble() * Math.PI;
-        //        double angle = random.NextDouble() * Math.PI * 2;
+            float x = (float)Math.Cos(angle);
+            float y = (float)Math.Sin(angle);
+            float z = (float)random.NextDouble() * 50;
 
-        //        float x = radius * (float)Math.Sin(theta) * (float)Math.Cos(angle);
-        //        float y = radius * (float)Math.Sin(theta) * (float)Math.Sin(angle);
-        //        Random rand = new Random();
-        //        float z = radius * (float)Math.Cos(theta);
-
-        //        return new Vector3(x * radius + pos.X, y * radius + pos.Y, z + pos.Z * 2);
-        //    }
+            return new Vector3(x * radius + pos.X, y * radius + pos.Y, z + pos.Z);
+        }
     }
 }
