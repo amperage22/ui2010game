@@ -73,7 +73,7 @@ namespace ARRG_Game
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum ModifierType
     {
-        NONE, POWER,DAMAGE_MOD, CRIT, HIT, DODGE, HP,HP_MOD, PARRY,
+        NONE, POWER, DAMAGE_MOD, CRIT, HIT, DODGE, HP, HP_MOD, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
     };
     public class ARRG : Microsoft.Xna.Framework.Game
@@ -480,13 +480,10 @@ namespace ARRG_Game
                 p.applyHealthMods();
                 p2.applyHealthMods();
                 foreach (Card c in cards)
-                {
-                    
                     c.castSpell();
-                }
 
                 //Call attack animations here
-                
+
             }
         }
         private void UpdateDamage()
