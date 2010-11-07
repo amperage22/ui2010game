@@ -99,7 +99,7 @@ namespace ARRG_Game
                 case CardType.STAT_MOD: nearest.addBuff(buff);
                     if (buff.Amount > 0)
                         nearest.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
-                    else nearest.TransNode.Scale *= (float)(buff.Amount * BUFF_SCALE);
+                    else if (buff.Amount < 0) nearest.TransNode.Scale *= (float)(buff.Amount * BUFF_SCALE);
                         break;
                 case CardType.DMG_DONE: nearest.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: nearest.preventDmg(dmgPrevent); break;
