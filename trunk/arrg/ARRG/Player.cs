@@ -31,11 +31,14 @@ namespace ARRG_Game
     {
         public const int MAX_NUM_DIE = 3;
         public const int MAX_CREATURES_INGAME = 6;
+        private healthBar healthBar;
 
         //*****Player stats****
         private int health;
         private int mana;
         private int gold;
+        private Scene scene;
+        private int playerNum;
         //***End player stats***
 
         private MarkerNode ground;
@@ -84,6 +87,9 @@ namespace ARRG_Game
             die = new Die[MAX_NUM_DIE];
             this.ground = ground;
             selectedMonsters = new List<MonsterBuilder>();
+            //healthBar = new healthBar(s, playerNum, health, mana);
+            this.scene = s;
+            this.playerNum = playerNum;
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
@@ -165,6 +171,11 @@ namespace ARRG_Game
                 if (die != null)
                     d.resloveDamage();
             }
+        }
+
+        public void showHealth()
+        {
+          healthBar = new healthBar(scene, playerNum, health, mana);
         }
     }
 }
