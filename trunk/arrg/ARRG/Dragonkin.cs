@@ -1,7 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Net;
+using Microsoft.Xna.Framework.Storage;
+
+using GoblinXNA;
+using GoblinXNA.Graphics;
+using GoblinXNA.SceneGraph;
+using Model = GoblinXNA.Graphics.Model;
+using GoblinXNA.Graphics.Geometry;
+using GoblinXNA.Graphics.ParticleEffects;
+using GoblinXNA.Device.Generic;
+using GoblinXNA.Device.Capture;
+using GoblinXNA.Device.Vision;
+using GoblinXNA.Device.Vision.Marker;
+using GoblinXNA.Device.Util;
+using GoblinXNA.Physics;
+using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
@@ -15,8 +35,11 @@ namespace ARRG_Game
             crit = 40;
             type = CreatureType.DRAGONKIN;
         }
-
-        new public void endAttackAnimation()
+        public override void startAttackAnimation()
+        {
+            transNode.Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 2);
+        }
+        public override void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
         }

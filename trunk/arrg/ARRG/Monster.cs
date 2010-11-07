@@ -185,7 +185,8 @@ namespace ARRG_Game
                     nearestEnemy.defend((int)Math.Floor(1.5 * power),this);
                 else nearestEnemy.defend(power,this);
             }
-            if (RandomHelper.GetRandomInt(100) <= extraAttack)
+            if (RandomHelper.GetRandomInt(100) <= extraAttack || 
+                RandomHelper.GetRandomInt(100) <= fireBreath || RandomHelper.GetRandomInt(100) <= lightningAttack)
             {
                 if (RandomHelper.GetRandomInt(100) <= crit)
                     nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
@@ -212,13 +213,13 @@ namespace ARRG_Game
                 isDead = true;
         }
 
-        public void startAttackAnimation()
+        public virtual void startAttackAnimation()
         {
             //Should create simple "animation" of Monsters atack
           
         }
 
-        public void endAttackAnimation()
+        public virtual void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
         }

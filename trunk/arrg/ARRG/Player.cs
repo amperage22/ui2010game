@@ -144,6 +144,16 @@ namespace ARRG_Game
                 }
             }
         }
+        public void updateDamage()
+        {
+            foreach (Die d in die)
+            {
+                if (d != null && d.CurrentMonster != null)
+                {
+                    d.CurrentMonster.startAttackAnimation();
+                }
+            }
+        }
 
         public void applyHealthMods()
         {
