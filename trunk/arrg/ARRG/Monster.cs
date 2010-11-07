@@ -37,14 +37,14 @@ namespace ARRG_Game
          */
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
-        protected double baseHit, baseDodge, baseCrit;  //Instantiated through Child classes
-        protected List<int> dmgMods;        //Instantiated through Monster
-        protected List<int> healthMods;     //Instantiated through Monster
+        protected double hit, dodge, crit, extraAttack, fireBreath, lightningAttack;
+        protected double parry;
         protected List<Buff> buffs;
         protected List<int> dmgTaken;       //Instantiated through Monster
         protected List<int> dmgPrevented;   //Instantiated through Monster
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
+        protected CreatureType type;
 
         public Monster NearestEnemy
         {
@@ -67,8 +67,6 @@ namespace ARRG_Game
             this.power = power;
             Random rand = new Random();
 
-            dmgMods = new List<int>();
-            healthMods = new List<int>();
             dmgTaken = new List<int>();
             dmgPrevented = new List<int>();
             ModelLoader loader = new ModelLoader();
@@ -116,11 +114,6 @@ namespace ARRG_Game
             if (buffs != null)
                 this.buffs.AddRange(buffs);
         }
-        public void addMod(int dmg, int health)
-        {
-            dmgMods.Add(dmg);
-            healthMods.Add(health);
-        }
         public void dealDirectDmg(int dmg)
         {
             dmgTaken.Add(dmg);
@@ -134,31 +127,64 @@ namespace ARRG_Game
         //***********Dice-Monster Interactions************************
         public void applyMods()
         {
-            int hMod = 0;
+            foreach (Buff b in buffs)
+            {
+                if (b.AffectedCreature == CreatureType.ALL || b.AffectedCreature == type)
+                    switch (b.Modifier)
+                    {
+                        case ModifierType.POWER: power += b.Amount;
+                            break;
+                        case ModifierType.DAMAGE_MOD:
+                            break;
+                        case ModifierType.CRIT: crit += b.Amount;
+                            break;
+                        case ModifierType.HIT: hit += b.Amount;
+                            break;
+                        case ModifierType.DODGE: dodge += b.Amount;
+                            break;
+                        case ModifierType.HP: health += b.Amount;
+                            break;
+                        case ModifierType.HP_MOD:
+                            break;
+                        case ModifierType.PARRY: parry += b.Amount;
+                            break;
+                        //Type specific attacks
+                        case ModifierType.ADDITIONAL_ATTACK_CHANCE: extraAttack += b.Amount;
+                            break;
+                        case ModifierType.FIREBREATH_ATTACK_CHANCE: fireBreath += b.Amount;
+                            break;
+                        case ModifierType.LIGHTNING_ATTACK_CHANCE: lightningAttack += b.Amount;
+                            break;
+                        //End Type specific attacks
+                        default:
+                            break;
+                    }
+            }
 
-            foreach (int hp in healthMods)
-                hMod += hp;
-
-            hMod += health;
-
-            if (hMod <= 0)
+            if (health <= 0)
                 isDead = true;
         }
 
+        public void defend(int dmg, Monster attacker)
+        {
+            dealDirectDmg(dmg);
+            if (RandomHelper.GetRandomInt(100) <= parry)
+                attacker.dealDirectDmg(power);
+        }
         public void dealAttackDmg()
         {
             if (isDead || nearestEnemy == null)
                 return;
-            int dmgMod = 0;
-            foreach (int dmg in dmgMods)
-                dmgMod += dmg;
 
-            dmgMod += power;
             //Needs to be finished
-            double chanceToHit = baseHit - nearestEnemy.baseDodge;
-            double critChance = baseCrit;
+            double chanceToHit = hit - nearestEnemy.dodge;
 
-            nearestEnemy.dealDirectDmg(dmgMod);
+            if (RandomHelper.GetRandomInt(100) <= chanceToHit)
+            {
+                if (RandomHelper.GetRandomInt(100) <= crit)
+                    nearestEnemy.defend(2 * power,this);
+                else nearestEnemy.defend(power,this);
+            }           
 
         }
 
