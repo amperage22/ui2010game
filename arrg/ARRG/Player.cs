@@ -44,13 +44,7 @@ namespace ARRG_Game
         private MarkerNode ground;
 
         private Die[] die;
-        private List<Card> cards;
 
-        internal List<Card> Cards
-        {
-            get { return cards; }
-            set { cards = value; }
-        }
 
         internal Die[] Die
         {

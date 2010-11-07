@@ -37,7 +37,7 @@ namespace ARRG_Game
         }
         public override void startAttackAnimation()
         {
-            transNode.Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 2);
+            transNode.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(10));
         }
         public override void endAttackAnimation()
         {
