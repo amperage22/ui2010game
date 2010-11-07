@@ -489,6 +489,7 @@ namespace ARRG_Game
         private void UpdateDamage()
         {
             //End attack animations here
+            p.updateDamage();
             gameState = bigRed.getInGameState();
 
             if (gameState == InGameStates.DISCARD)
