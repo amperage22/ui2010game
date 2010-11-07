@@ -182,9 +182,15 @@ namespace ARRG_Game
             if (RandomHelper.GetRandomInt(100) <= chanceToHit)
             {
                 if (RandomHelper.GetRandomInt(100) <= crit)
-                    nearestEnemy.defend(2 * power,this);
+                    nearestEnemy.defend((int)Math.Floor(1.5 * power),this);
                 else nearestEnemy.defend(power,this);
-            }           
+            }
+            if (RandomHelper.GetRandomInt(100) <= extraAttack)
+            {
+                if (RandomHelper.GetRandomInt(100) <= crit)
+                    nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
+                else nearestEnemy.defend(power, this);
+            }
 
         }
 
