@@ -268,7 +268,6 @@ namespace ARRG_Game
 
             cards.Add(new Card(scene, 164, 5, ModifierType.HP, CreatureType.ALL));
             cards.Add(new Card(scene, CardType.DMG_DONE, 183, 5));
-            p.Cards = cards;
         }
 
         private void CreateObjects()
