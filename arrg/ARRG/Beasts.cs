@@ -16,5 +16,10 @@ namespace ARRG_Game
             crit = 30;
             type = CreatureType.BEASTS;
         }
+
+        new public void startAttackAnimation(Monster enemyMonster)
+        {
+          
+        }
     }
 }

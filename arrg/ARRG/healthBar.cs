@@ -31,13 +31,14 @@ namespace ARRG_Game
 
     Player player;
     Scene scene;
-    int health, mana;
+    int health, mana, playerNum;
     float healthBarLength,manaBarLength, healthRatio, manaRatio;
     Boolean player1;
     GeometryNode healthNode = new GeometryNode("Box");
     TransformNode healthTransNode = new TransformNode();
     GeometryNode manaNode = new GeometryNode("Box");
     TransformNode manaTransNode = new TransformNode();
+   
 
     public healthBar(Scene scene, Player player, Boolean player1)
     {
@@ -54,12 +55,25 @@ namespace ARRG_Game
       createObjects();
     }
 
+    public healthBar(Scene scene, int playerNum, int health, int mana)
+    {
+      this.scene = scene;
+      this.playerNum = playerNum;
+      this.health = health;
+      this.mana = mana;
+      healthBarLength = 1.2f;
+      manaBarLength = healthBarLength / 2;
+      healthRatio = healthBarLength / ((float)health);
+      manaRatio = manaBarLength / ((float)mana);
+      createObjects();
+      
+
+    }
+
     private void createObjects()
     {
 
-      
       healthNode.Model = new Box(Vector3.One * 3);
-
       Material healthMat = new Material();
       healthMat.Diffuse = Color.Red.ToVector4();
       healthMat.Specular = Color.White.ToVector4();
@@ -81,7 +95,7 @@ namespace ARRG_Game
       //For player: To change health +/- from the X value of the Translation and Scale Vectors
       
 
-      if (player1)
+      if (playerNum ==1)
       {
         healthTransNode.Translation = new Vector3(-1.5f, 2.1f, -6);
         healthTransNode.Scale = new Vector3(healthBarLength, 0.14f, 0.1f);
@@ -124,7 +138,7 @@ namespace ARRG_Game
       float amount = modifier * manaRatio;
       manaBarLength = manaBarLength + amount;
       manaTransNode.Scale += new Vector3(amount, 0, 0);
-      if (player1)
+      if (playerNum == 1)
       {
         manaTransNode.Translation += new Vector3(-amount, 0, 0);
 

@@ -209,6 +209,7 @@ namespace ARRG_Game
         public void startAttackAnimation()
         {
             //Should create simple "animation" of Monsters atack
+          
         }
 
         public void endAttackAnimation()
