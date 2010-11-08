@@ -266,6 +266,11 @@ namespace ARRG_Game
 
             p2.PurchasedMonsters = monsters; //For testing purposes
 
+<<<<<<< .mine
+            cards.Add(new Card(scene, 164, 5, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 183, 5));
+            //p.Cards = cards;
+=======
             //Modifier type spells
             cards.Add(new Card(scene, 164, 2, 4, ModifierType.HP, CreatureType.ALL));
             cards.Add(new Card(scene, 165, 1, 2, ModifierType.HP, CreatureType.ALL));
@@ -291,6 +296,7 @@ namespace ARRG_Game
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 181, 2, 4));
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 182, 2, 4));
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 183, 3, 6));
+>>>>>>> .r160
         }
 
         private void CreateObjects()
@@ -505,17 +511,62 @@ namespace ARRG_Game
                 p2.applyHealthMods();
                 foreach (Card c in cards)
                     c.castSpell();
+//                DateTime endTime = DateTime.Now.AddSeconds(5.0);
+  //              while (DateTime.Now.CompareTo(endTime) < 0)
+    //            {
 
+<<<<<<< .mine
+
+                  /*Call attack animations here
+                  foreach (Die die in p.Die)
+                  {
+                    if (die.CurrentMonster != null)
+                      for (int c = 0; c < 1000; c++)
+                      {
+                        if (c % 100 == 0)
+                        {
+                          die.CurrentMonster.startAttackAnimation();
+                          Console.WriteLine("Start Attack" +DateTime.Now.Millisecond);
+                        }
+                      }
+                  }
+      //          }
+              */
+                  foreach (Die die in p.Die)
+                  {
+                    Console.WriteLine("New Die");
+                    if (die.CurrentMonster != null)
+                      for (int c = 0; c < 1000; c++)
+                      {
+                        if (c % 100 == 0)
+                        {
+                          die.CurrentMonster.startAttackAnimation();
+                          Console.WriteLine("End Attack " + DateTime.Now.Millisecond + " " +c);
+                        }
+                      }
+                  }
+
+=======
                 //Call attack animations here
 
+>>>>>>> .r160
             }
         }
         private void UpdateDamage()
         {
             //End attack animations here
+<<<<<<< .mine
+      
+=======
             p.updateDamage();
             p2.updateDamage();
+>>>>>>> .r160
             gameState = bigRed.getInGameState();
+            foreach (Die die in p.Die)
+            {
+              if (die.CurrentMonster != null)
+                die.CurrentMonster.endAttackAnimation();
+            }
 
             if (gameState == InGameStates.DISCARD)
             {
