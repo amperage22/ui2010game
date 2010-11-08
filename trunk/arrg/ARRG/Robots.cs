@@ -25,6 +25,7 @@ namespace ARRG_Game
             showAttack = false;
             this.scene = scene;
             origin = transNode;
+            createDonut();
         }
         public override void startAttackAnimation()
         {
@@ -59,17 +60,9 @@ namespace ARRG_Game
 
           torusNode.Material = torusMat;
 
-          TransformNode torusTransNode = new TransformNode();
-          torusTransNode.Translation = new Vector3(-2, 0, 3);
+          TransformNode torusTransNode = transNode;
 
-          // Since GoblinXNA does not have a predefined shape type
-          // of torus, we define the shape to be ConvexHull,
-          // which is applicable to any shape, but more computationally
-          // expensive compared to the other primitive shape types we have
-          // used thus far
-          torusNode.Physics.Shape = GoblinXNA.Physics.ShapeType.ConvexHull;
-          torusNode.Physics.Pickable = true;
-          torusNode.AddToPhysicsEngine = true;
+
 
           scene.RootNode.AddChild(torusTransNode);
           torusTransNode.AddChild(torusNode);
