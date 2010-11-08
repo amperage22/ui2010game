@@ -78,14 +78,19 @@ namespace ARRG_Game
         }
         public void getNearestCreature(Die[] d1, Die[] d2)
         {
-            double distance = 1000;
+
+            if (Vector3.Zero.Equals(marker.WorldTransformation.Translation))
+                return;
+            double distance = 100000;
 
             foreach (Die d in d1)
             {
                 double ds;
                 if (d.UpMarker != null && d.CurrentMonster != null)
                 {
-                    ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
+                    Vector3 tar = d.UpMarker.WorldTransformation.Translation;
+                    tar.Z = 0;
+                    ds = Vector3.Distance(marker.WorldTransformation.Translation, tar);
 
                     if (ds < distance)
                     {
@@ -100,7 +105,9 @@ namespace ARRG_Game
                 double ds;
                 if (d.UpMarker != null && d.CurrentMonster != null)
                 {
-                    ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
+                    Vector3 tar = d.UpMarker.WorldTransformation.Translation;
+                    tar.Z = 0;
+                    ds = Vector3.Distance(marker.WorldTransformation.Translation, tar);
 
                     if (ds < distance)
                     {
@@ -110,7 +117,7 @@ namespace ARRG_Game
                     }
                 }
             }
-            if (nearestMonster != null)
+            if (nearestMonster != null && !Vector3.Zero.Equals(marker.WorldTransformation.Translation))
                 applyLine(marker.WorldTransformation.Translation, nearestDice.UpMarker.WorldTransformation.Translation);
         }
         public void castSpell()
