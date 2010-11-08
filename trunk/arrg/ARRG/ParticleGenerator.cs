@@ -35,13 +35,30 @@ namespace ARRG_Game
 
         public ParticleNode addParticle()
         {
-            FireParticleEffect fireParticles = new FireParticleEffect();
-            fireParticles.TextureName = "particles";
+            ParticleEffect fireParticles = new FireParticleEffect();
+            fireParticles.TextureName = "particleLine";
+            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
+            fireParticles.MinEndSize = fireParticles.MinStartSize;
+            fireParticles.EndVelocity = 0;
             fireRingEffectNode = new ParticleNode();
             fireRingEffectNode.ParticleEffects.Add(fireParticles);
+
             fireParticles = new FireParticleEffect();
-            fireParticles.TextureName = "particles";
+            fireParticles.TextureName = "particleLine";
+            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
+            fireParticles.MinEndSize = fireParticles.MinStartSize;
+            fireParticles.EndVelocity = 0;
+            fireRingEffectNode = new ParticleNode();
             fireRingEffectNode.ParticleEffects.Add(fireParticles);
+
+            fireParticles = new FireParticleEffect();
+            fireParticles.TextureName = "particleLine";
+            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
+            fireParticles.MinEndSize = fireParticles.MinStartSize;
+            fireParticles.EndVelocity = 0;
+            fireRingEffectNode = new ParticleNode();
+            fireRingEffectNode.ParticleEffects.Add(fireParticles);
+
             //fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
             fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
             fireRingEffectNode.Enabled = false;
@@ -58,6 +75,8 @@ namespace ARRG_Game
         }
         private void UpdateLine(Matrix worldTransform, List<ParticleEffect> particleEffects)
         {
+            if (Vector3.Zero.Equals(target))
+                return;
             Vector3 vel = target - source;
             foreach (ParticleEffect particle in particleEffects)
             {
