@@ -266,8 +266,31 @@ namespace ARRG_Game
 
             p2.PurchasedMonsters = monsters; //For testing purposes
 
-            cards.Add(new Card(scene, 164, 5, ModifierType.HP, CreatureType.ALL));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 183, 5));
+            //Modifier type spells
+            cards.Add(new Card(scene, 164, 2, 4, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(scene, 165, 1, 2, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(scene, 166, 2, 4, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 167, 1, 2, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 168, 2, 4, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(scene, 169, 1, 2, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(scene, 170, 2, 4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(scene, 171, 1, 2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(scene, 172, 3, 6, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 173, 3, 6, ModifierType.HP, CreatureType.ALL));
+
+            //dmg dealing spells
+            cards.Add(new Card(scene, CardType.DMG_DONE, 174, 1, 2));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 175, 1, 2));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 176, 2, 4));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 177, 2, 4));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 178, 3, 5));
+
+            //dmg preventing spells
+            cards.Add(new Card(scene, CardType.DMG_PREVENT, 179, 1, 2));
+            cards.Add(new Card(scene, CardType.DMG_PREVENT, 180, 1, 2));
+            cards.Add(new Card(scene, CardType.DMG_PREVENT, 181, 2, 4));
+            cards.Add(new Card(scene, CardType.DMG_PREVENT, 182, 2, 4));
+            cards.Add(new Card(scene, CardType.DMG_PREVENT, 183, 3, 6));
         }
 
         private void CreateObjects()
@@ -402,6 +425,8 @@ namespace ARRG_Game
                         break;
                     case MenuStates.INGAME:
                         bigRed = new Brb(scene, menuState, gameState);
+                        p.showHealth();
+                        p2.showHealth();
                         break;
                 }
             }
@@ -489,6 +514,7 @@ namespace ARRG_Game
         {
             //End attack animations here
             p.updateDamage();
+            p2.updateDamage();
             gameState = bigRed.getInGameState();
 
             if (gameState == InGameStates.DISCARD)
