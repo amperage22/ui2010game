@@ -186,8 +186,8 @@ namespace ARRG_Game
             }
             if (healthBar != null)
             {
-                healthBar.adjustHealth(health);
-                healthBar.adjustMana(mana);
+                //healthBar.adjustHealth(health);
+                //healthBar.adjustMana(mana);
             }
         }
         public void applyPlayerDamage(Player other)
@@ -206,7 +206,7 @@ namespace ARRG_Game
                     theirCount++;
             if (myCount < theirCount)
             {
-                //healthBar.adjustHealth(-1);
+                healthBar.adjustHealth(-1);
                 health--;
             }
         }
