@@ -29,18 +29,20 @@ namespace ARRG_Game
 {
     class ParticleLineGenerator
     {
-        Vector3 source = Vector3.Zero
-            , target = Vector3.Zero;
+        Vector3 source
+            , target;
+        ParticleNode fireRingEffectNode;
 
         public ParticleNode addParticle()
         {
             FireParticleEffect fireParticles = new FireParticleEffect();
             //fireParticles.TextureName = "particles";
-            ParticleNode fireRingEffectNode = new ParticleNode();
+            fireRingEffectNode = new ParticleNode();
             fireRingEffectNode.ParticleEffects.Add(fireParticles);
             fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
             //fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
             fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
+            fireRingEffectNode.Enabled = false;
 
             return fireRingEffectNode;
 
@@ -49,10 +51,12 @@ namespace ARRG_Game
         {
             this.source = source;
             this.target = target;
+            if (!fireRingEffectNode.Enabled)
+                fireRingEffectNode.Enabled = true;
         }
         private void UpdateLine(Matrix worldTransform, List<ParticleEffect> particleEffects)
         {
-            Vector3 vel = source - target;
+            Vector3 vel = target - source;
             foreach (ParticleEffect particle in particleEffects)
             {
                 if (particle is FireParticleEffect)

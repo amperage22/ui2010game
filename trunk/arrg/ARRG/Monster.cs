@@ -171,9 +171,9 @@ namespace ARRG_Game
                 isDead = true;
         }
 
-        public void applyLine()
+        public void applyLine(Vector3 source, Vector3 target)
         {
-            line.update(transNode.WorldTransformation.Translation, nearestEnemy.TransNode.WorldTransformation.Translation);
+            line.update(source, target);
         }
 
         public void defend(int dmg, Monster attacker)
