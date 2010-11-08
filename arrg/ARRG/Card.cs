@@ -33,7 +33,7 @@ namespace ARRG_Game
     {
         MarkerNode marker;
         Monster nearest;
-        int dmgDone, dmgPrevent;
+        int dmgDone, dmgPrevent, manaCost;
         CardType type;
         Buff buff;
         static double BUFF_SCALE = .15;
@@ -45,15 +45,17 @@ namespace ARRG_Game
         //int frameCount;
         //Random random = new Random();
 
-        public Card(Scene s, int markerNum, int mod, ModifierType modType, CreatureType againstCreatureType)
+        public Card(Scene s, int markerNum,int manaCost, int mod, ModifierType modType, CreatureType againstCreatureType)
         {
+            this.manaCost = manaCost;
             type = CardType.STAT_MOD;
             buff = new Buff(modType, againstCreatureType, mod);
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
             s.RootNode.AddChild(marker);
         }
-        public Card(Scene s, CardType type, int markerNum, int mod)
+        public Card(Scene s, CardType type, int markerNum,int manaCost, int mod)
         {
+            this.manaCost = manaCost;
             this.type = type;
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
             switch (type)

@@ -107,6 +107,7 @@
     <Compile Include="InventoryScreen.cs" />
     <Compile Include="MarketScreen.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="preGameScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -175,6 +175,11 @@ namespace ARRG_Game
                 if (die != null)
                     d.resloveDamage();
             }
+            if (healthBar != null)
+            {
+                healthBar.adjustHealth(health);
+                healthBar.adjustMana(mana);
+            }
         }
 
         public void showHealth()
