@@ -533,12 +533,7 @@ namespace ARRG_Game
         }
         private void UpdateDamage()
         {
-            //End attack animations here
-            foreach (Die die in p.Die)
-            {
-                if (die.CurrentMonster != null)
-                    die.CurrentMonster.endAttackAnimation();
-            }
+
             p.updateDamage();
             p2.updateDamage();
             gameState = bigRed.getInGameState();

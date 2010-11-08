@@ -116,38 +116,34 @@ namespace ARRG_Game
 
     public void adjustHealth(int modifier)
     {
-      Console.WriteLine(modifier);
       float amount = modifier * healthRatio;
-      healthBarLength = amount;
-      healthTransNode.Scale = new Vector3(amount, 0, 0);
-      if (playerNum == 1)
+      healthBarLength = healthBarLength + amount;
+      healthTransNode.Scale += new Vector3(amount, 0, 0);
+      if(playerNum ==1)
       {
-        healthTransNode.Translation = new Vector3(-modifier, 0, 0);
-        Console.WriteLine(healthTransNode.Translation.X);
+        healthTransNode.Translation += new Vector3(-amount, 0, 0);
 
       }
       else
       {
-        healthTransNode.Translation = new Vector3(modifier / 2, 0, 0);
-        Console.WriteLine(healthTransNode.Translation.X);
+        healthTransNode.Translation += new Vector3(amount / 2, 0, 0);
       }
     }
 
     public void adjustMana(int modifier)
     {
       float amount = modifier * manaRatio;
-      manaBarLength = amount;
-      manaTransNode.Scale = new Vector3(amount, 0, 0);
+      manaBarLength = manaBarLength + amount;
+      manaTransNode.Scale += new Vector3(amount, 0, 0);
       if (playerNum == 1)
       {
-        manaTransNode.Translation = new Vector3(-modifier, 0, 0);
+        manaTransNode.Translation += new Vector3(-amount, 0, 0);
 
       }
       else
       {
-        manaTransNode.Translation = new Vector3(modifier / 2, 0, 0);
+        manaTransNode.Translation += new Vector3(amount / 2, 0, 0);
       }
-
     }
 
     public void Kill()
