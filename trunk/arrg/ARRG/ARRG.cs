@@ -243,7 +243,7 @@ namespace ARRG_Game
             initial_monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
 
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0,scene));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0, scene));
             monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 2, true, 1, 0, scene));
             monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0, scene));
             monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0, scene));
@@ -533,9 +533,10 @@ namespace ARRG_Game
         private void UpdateDamage()
         {
             //End attack animations here
-            foreach(Die die in p.Die)
+            foreach (Die die in p.Die)
             {
-              die.CurrentMonster.endAttackAnimation();
+                if (die.CurrentMonster != null)
+                    die.CurrentMonster.endAttackAnimation();
             }
             p.updateDamage();
             p2.updateDamage();
