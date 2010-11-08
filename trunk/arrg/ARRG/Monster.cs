@@ -35,6 +35,7 @@ namespace ARRG_Game
         DAMAGE, CRIT, HIT, DODGE, HP, PARRY,
         ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
          */
+        public const int ATTACK_LENGTH = 50;
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
         protected double hit, dodge, crit, extraAttack, fireBreath, lightningAttack;
@@ -45,6 +46,8 @@ namespace ARRG_Game
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
         protected CreatureType type;
+        protected ParticleLineGenerator line = new ParticleLineGenerator();
+        protected int attackTimer = ATTACK_LENGTH;
         protected Vector3 origin;
         protected Boolean animating;
 
@@ -93,6 +96,7 @@ namespace ARRG_Game
             transNode.Scale *= 0.15f;
             transNode.Translation += new Vector3(10, 0, 20);
             buffs = new List<Buff>();
+            transNode.AddChild(line.addParticle());;
         }
 
 
@@ -167,6 +171,11 @@ namespace ARRG_Game
                 isDead = true;
         }
 
+        public void applyLine()
+        {
+            line.update(transNode.WorldTransformation.Translation, nearestEnemy.TransNode.WorldTransformation.Translation);
+        }
+
         public void defend(int dmg, Monster attacker)
         {
             dealDirectDmg(dmg);
@@ -217,8 +226,7 @@ namespace ARRG_Game
 
         public virtual void startAttackAnimation()
         {
-
-          float modifier;
+            float modifier;
             //Should create simple "animation" of Monsters atack
           origin = transNode.Translation;
           //Console.Write(DateTime.Now.Second);
@@ -241,6 +249,7 @@ namespace ARRG_Game
           transNode.Translation += new Vector3(modifier, 0, 0);
           
         }
+          
 
         public virtual void endAttackAnimation()
         {

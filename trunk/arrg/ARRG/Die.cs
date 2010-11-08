@@ -153,6 +153,7 @@ namespace ARRG_Game
                 {
                     nearestEnemy = d;
                     currentMonster.NearestEnemy = d.currentMonster;
+                    currentMonster.applyLine();
                 }
             }
         }
