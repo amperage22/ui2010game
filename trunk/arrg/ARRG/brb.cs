@@ -58,7 +58,11 @@ namespace ARRG_Game
 
             scene.UIRenderer.Add2DComponent(brbButton);
         }
-
+        public void Kill()
+        {
+            scene.UIRenderer.Remove2DComponent(brbButton);
+            brbButton.Enabled = false;
+        }
         public void updateMenuState(MenuStates s)
         {
             curState = s;

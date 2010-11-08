@@ -39,6 +39,9 @@ namespace ARRG_Game
         private int gold;
         private Scene scene;
         private int playerNum;
+        private const int INITIAL_HEALTH = 20;
+        private const int INITIAL_MANA = 10;
+        private const int INITIAL_GOLD = 100;
         //***End player stats***
 
         private MarkerNode ground;
@@ -74,10 +77,10 @@ namespace ARRG_Game
          */
         public Player(Scene s, int playerNum, MarkerNode ground)
         {
-            health = 20;
+            health = INITIAL_HEALTH;
             buffs = new List<Buff>();
-            mana = 10;
-            gold = 100;
+            mana = INITIAL_MANA;
+            gold = INITIAL_GOLD;
             die = new Die[MAX_NUM_DIE];
             this.ground = ground;
             selectedMonsters = new List<MonsterBuilder>();
@@ -91,6 +94,11 @@ namespace ARRG_Game
 
         }
 
+        public void resetForNextRound()
+        {
+            health = INITIAL_HEALTH;
+            mana = INITIAL_MANA;
+        }
 
         public int Health
         {
@@ -206,6 +214,11 @@ namespace ARRG_Game
         public void showHealth()
         {
             healthBar = new healthBar(scene, playerNum, health, mana);
+        }
+        public void hideHealth()
+        {
+            healthBar.Kill();
+            healthBar = null;
         }
     }
 }
