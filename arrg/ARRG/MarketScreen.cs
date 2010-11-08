@@ -251,11 +251,6 @@ namespace ARRG_Game
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
                         if (itemButtonFlag[i, j, LOCKED]) return;
-                        if (i == 2 && (j == 0 || j == 1))
-                        {
-                            //These have no function yet
-                            return;
-                        }
                         /* We don't care if the player left or right clicks
                          * since we aren't counting up or down, only on or
                          * off states */
@@ -320,11 +315,7 @@ namespace ARRG_Game
                 {
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
-                        if (i == 2 && (j == 0 || j == 1))
-                        {
-                            tooltip.Text = "Oooh, what could this be!?";
-                        }
-                        else if (itemButtonFlag[i, j, LOCKED])
+                        if (itemButtonFlag[i, j, LOCKED])
                         {
                             tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
                         }
