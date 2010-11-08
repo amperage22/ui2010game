@@ -48,11 +48,6 @@ namespace ARRG_Game
         private Player player;
         private MonsterBuilder[] monsters = new MonsterBuilder[15];
 
-        /*
-         * Makes the talent screen as per specifications.
-         * s The scene to display the talent screen on
-         * f The font to be used with within the talent screen being created
-         */
         public InventoryScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
@@ -88,7 +83,7 @@ namespace ARRG_Game
         }
 
         /**
-         * Responsible for initializing all of the market screen stuff with
+         * Responsible for initializing all of the inventory screen stuff with
          * consideration to the player it corresponds to */
         private void Personalize()
         {
@@ -100,6 +95,8 @@ namespace ARRG_Game
                 itemButton[i, j].TextureColor = disabledColor;
                 itemButtonFlag[i, j, LOCKED] = false;
             }
+            //This is to make everything consistent as if the player clicked
+            //the reset button.
             HandleClear(null);
         }
 

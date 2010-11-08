@@ -90,6 +90,7 @@ namespace ARRG_Game
         TalentScreen talentScreen;
         MarketScreen marketScreen;
         InventoryScreen inventoryScreen;
+        Dialog dialog;
         SpriteBatch spriteBatch;
         preGameScreen preGame;
         Brb bigRed;
@@ -309,7 +310,7 @@ namespace ARRG_Game
 
             p = new Player(scene, 1, groundMarkerNode);
             p2 = new Player(scene, 2, groundMarkerNode);
-
+            dialog = new Dialog(scene, Content);
         }
 
         /// <summary>
@@ -433,7 +434,7 @@ namespace ARRG_Game
                         break;
                 }
             }
-            else if (!preGame.isDisplaying())
+            else if (!preGame.isDisplaying() && !dialog.isDisplaying())
                 preGame.display();
         }
         /// <summary>
@@ -562,6 +563,31 @@ namespace ARRG_Game
         }
         private void UpdateDiscard()
         {
+            //When the player clicks the BRB while in this state...
+            if (gameState != bigRed.getInGameState())
+            {
+                if (p2.Health <= 0)
+                {
+                    //Player 1 wins!
+                    p.Gold += 10;
+                    dialog.Display("Congratualations, you won 10 gold!");
+                    p.resetForNextRound();
+                    menuState = MenuStates.PRE_GAME;
+                    bigRed.Kill();
+                    p.hideHealth();
+                    p2.hideHealth();
+                }
+                else if (p.Health <= 0)
+                {
+                    //And player 1 loses...
+                    dialog.Display("You lost this time around.\nTry again!");
+                    p.resetForNextRound();
+                    menuState = MenuStates.PRE_GAME;
+                    bigRed.Kill();
+                    p.hideHealth();
+                    p2.hideHealth();
+                }
+            }
             gameState = bigRed.getInGameState();
         }
 

@@ -149,5 +149,11 @@ namespace ARRG_Game
       }
 
     }
+
+    public void Kill()
+    {
+        scene.RootNode.RemoveChild(healthTransNode);
+        scene.RootNode.RemoveChild(manaTransNode);
+    }
   }
 }

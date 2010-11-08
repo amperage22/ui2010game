@@ -49,11 +49,6 @@ namespace ARRG_Game
         private MonsterBuilder[] monsters = new MonsterBuilder[15];
         private int amountSpent;
 
-        /*
-         * Makes the talent screen as per specifications.
-         * s The scene to display the talent screen on
-         * f The font to be used with within the talent screen being created
-         */
         public MarketScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
