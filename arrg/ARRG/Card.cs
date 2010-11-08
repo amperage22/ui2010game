@@ -31,12 +31,15 @@ namespace ARRG_Game
 
     class Card
     {
-        MarkerNode marker;
-        Monster nearest;
-        int dmgDone, dmgPrevent, manaCost;
-        CardType type;
-        Buff buff;
-        static double BUFF_SCALE = .15;
+        private MarkerNode marker;
+        private Monster nearestMonster;
+        private Die nearestDice;
+        private int dmgDone, dmgPrevent, manaCost;
+        private CardType type;
+        private Buff buff;
+        public static double BUFF_SCALE = .15;
+        private TransformNode node = new TransformNode();
+        protected ParticleLineGenerator line = new ParticleLineGenerator();
         //test
         //bool particleSet;
         //ParticleNode fireRingEffectNode;
@@ -45,15 +48,19 @@ namespace ARRG_Game
         //int frameCount;
         //Random random = new Random();
 
-        public Card(Scene s, int markerNum,int manaCost, int mod, ModifierType modType, CreatureType againstCreatureType)
+        public Card(Scene s, int markerNum, int manaCost, int mod, ModifierType modType, CreatureType againstCreatureType)
         {
             this.manaCost = manaCost;
             type = CardType.STAT_MOD;
             buff = new Buff(modType, againstCreatureType, mod);
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
+            //transNode.AddChild(line.addParticle());
             s.RootNode.AddChild(marker);
+            marker.AddChild(node);
+            marker.AddChild(line.addParticle());
+            
         }
-        public Card(Scene s, CardType type, int markerNum,int manaCost, int mod)
+        public Card(Scene s, CardType type, int markerNum, int manaCost, int mod)
         {
             this.manaCost = manaCost;
             this.type = type;
@@ -63,7 +70,11 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: dmgDone = mod; dmgPrevent = 0; break;
                 case CardType.DMG_PREVENT: dmgDone = 0; dmgPrevent = mod; break;
             }
+            //transNode.AddChild(line.addParticle());
             s.RootNode.AddChild(marker);
+            marker.AddChild(node);
+            marker.AddChild(line.addParticle());
+            
         }
         public void getNearestCreature(Die[] d1, Die[] d2)
         {
@@ -77,7 +88,11 @@ namespace ARRG_Game
                     ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
 
                     if (ds < distance)
-                        nearest = d.CurrentMonster;
+                    {
+                        nearestMonster = d.CurrentMonster;
+                        nearestDice = d;
+                        distance = ds;
+                    }
                 }
             }
             foreach (Die d in d2)
@@ -88,24 +103,35 @@ namespace ARRG_Game
                     ds = Vector3.Distance(marker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
 
                     if (ds < distance)
-                        nearest = d.CurrentMonster;
+                    {
+                        nearestDice = d;
+                        nearestMonster = d.CurrentMonster;
+                        distance = ds;
+                    }
                 }
             }
+            if (nearestMonster != null)
+                applyLine(marker.WorldTransformation.Translation, nearestDice.UpMarker.WorldTransformation.Translation);
         }
         public void castSpell()
         {
-            if (nearest == null || Vector3.Zero.Equals(marker.WorldTransformation.Translation))
+            if (nearestMonster == null || Vector3.Zero.Equals(marker.WorldTransformation.Translation))
                 return;
             switch (type)
             {
-                case CardType.STAT_MOD: nearest.addBuff(buff);
+                case CardType.STAT_MOD: nearestMonster.addBuff(buff);
                     if (buff.Amount > 0)
-                        nearest.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
-                    else if (buff.Amount < 0) nearest.TransNode.Scale *= (float)(buff.Amount * BUFF_SCALE);
-                        break;
-                case CardType.DMG_DONE: nearest.dealDirectDmg(dmgDone); break;
-                case CardType.DMG_PREVENT: nearest.preventDmg(dmgPrevent); break;
+                        nearestMonster.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
+                    else if (buff.Amount < 0) nearestMonster.TransNode.Scale *= (float)(buff.Amount * BUFF_SCALE);
+                    break;
+                case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
+                case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;
             }
+        }
+
+        public void applyLine(Vector3 source, Vector3 target)
+        {
+            line.update(source, target);
         }
         //public void update()
         //{
