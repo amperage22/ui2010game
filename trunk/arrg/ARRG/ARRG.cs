@@ -507,40 +507,40 @@ namespace ARRG_Game
                 p2.applyHealthMods();
                 foreach (Card c in cards)
                     c.castSpell();
-//                DateTime endTime = DateTime.Now.AddSeconds(5.0);
-  //              while (DateTime.Now.CompareTo(endTime) < 0)
-    //            {
+                //                DateTime endTime = DateTime.Now.AddSeconds(5.0);
+                //              while (DateTime.Now.CompareTo(endTime) < 0)
+                //            {
 
 
 
-                  /*Call attack animations here
-                  foreach (Die die in p.Die)
-                  {
-                    if (die.CurrentMonster != null)
-                      for (int c = 0; c < 1000; c++)
+                /*Call attack animations here
+                foreach (Die die in p.Die)
+                {
+                  if (die.CurrentMonster != null)
+                    for (int c = 0; c < 1000; c++)
+                    {
+                      if (c % 100 == 0)
                       {
-                        if (c % 100 == 0)
-                        {
-                          die.CurrentMonster.startAttackAnimation();
-                          Console.WriteLine("Start Attack" +DateTime.Now.Millisecond);
-                        }
+                        die.CurrentMonster.startAttackAnimation();
+                        Console.WriteLine("Start Attack" +DateTime.Now.Millisecond);
                       }
-                  }
-      //          }
-              */
-                  foreach (Die die in p.Die)
-                  {
+                    }
+                }
+    //          }
+            */
+                foreach (Die die in p.Die)
+                {
                     Console.WriteLine("New Die");
                     if (die.CurrentMonster != null)
-                      for (int c = 0; c < 1000; c++)
-                      {
-                        if (c % 100 == 0)
+                        for (int c = 0; c < 1000; c++)
                         {
-                          die.CurrentMonster.startAttackAnimation();
-                          Console.WriteLine("End Attack " + DateTime.Now.Millisecond + " " +c);
+                            if (c % 100 == 0)
+                            {
+                                die.CurrentMonster.startAttackAnimation();
+                                Console.WriteLine("End Attack " + DateTime.Now.Millisecond + " " + c);
+                            }
                         }
-                      }
-                  }
+                }
 
 
                 //Call attack animations here
@@ -557,8 +557,8 @@ namespace ARRG_Game
             gameState = bigRed.getInGameState();
             foreach (Die die in p.Die)
             {
-              if (die.CurrentMonster != null)
-                die.CurrentMonster.endAttackAnimation();
+                if (die.CurrentMonster != null)
+                    die.CurrentMonster.endAttackAnimation();
             }
 
             if (gameState == InGameStates.DISCARD)

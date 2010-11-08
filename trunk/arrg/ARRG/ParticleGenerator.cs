@@ -36,10 +36,12 @@ namespace ARRG_Game
         public ParticleNode addParticle()
         {
             FireParticleEffect fireParticles = new FireParticleEffect();
-            //fireParticles.TextureName = "particles";
+            fireParticles.TextureName = "particles";
             fireRingEffectNode = new ParticleNode();
             fireRingEffectNode.ParticleEffects.Add(fireParticles);
-            fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
+            fireParticles = new FireParticleEffect();
+            fireParticles.TextureName = "particles";
+            fireRingEffectNode.ParticleEffects.Add(fireParticles);
             //fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
             fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
             fireRingEffectNode.Enabled = false;
@@ -59,14 +61,12 @@ namespace ARRG_Game
             Vector3 vel = target - source;
             foreach (ParticleEffect particle in particleEffects)
             {
-                if (particle is FireParticleEffect)
+
+                // Add 10 fire particles every frame
+                for (int k = 0; k < 20; k++)
                 {
-                    // Add 10 fire particles every frame
-                    for (int k = 0; k < 20; k++)
-                    {
-                        if (!Vector3.Zero.Equals(worldTransform.Translation))
-                            particle.AddParticle(source, vel);
-                    }
+                    if (!Vector3.Zero.Equals(worldTransform.Translation))
+                        particle.AddParticle(source, vel);
                 }
             }
         }
