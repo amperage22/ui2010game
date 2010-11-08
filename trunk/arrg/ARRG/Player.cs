@@ -193,8 +193,9 @@ namespace ARRG_Game
                     theirCount++;
             if (myCount < theirCount)
             {
-                healthBar.adjustHealth(-1);
+                //healthBar.adjustHealth(-1);
                 health--;
+                healthBar.adjustHealth(health);
             }
         }
 

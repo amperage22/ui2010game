@@ -243,25 +243,26 @@ namespace ARRG_Game
             initial_monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
 
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 2, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0,scene));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 2, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0, scene));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 5, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 8, 8, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 4, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/centurion"), 4, 2, false, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 5, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 8, 8, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 4, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/centurion"), 4, 2, false, 1, 0, scene));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "Escaflowne", "escaflowne", Content.Load<Texture2D>("Textures/inventory/escaflowne"), 0, 0, false, 50, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "Dragon", "dragon3", Content.Load<Texture2D>("Textures/inventory/dragon3"), 0, 0, false, 50, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "UNKNOWN1", "escaflowne", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "UNKNOWN2", "dragon3", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0, scene));
+
 
             //Set up the initial monsters for use after the talent screen has been submitted
-            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, false, 50, 0));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 6, 3, false, 50, 0));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, false, 50, 0, scene));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 6, 3, false, 50, 0, scene));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0, scene));
             monsters.AddRange(initial_monsters);
 
             p2.PurchasedMonsters = monsters; //For testing purposes
@@ -511,33 +512,14 @@ namespace ARRG_Game
                 //              while (DateTime.Now.CompareTo(endTime) < 0)
                 //            {
 
-
-
-                /*Call attack animations here
                 foreach (Die die in p.Die)
                 {
-                  if (die.CurrentMonster != null)
-                    for (int c = 0; c < 1000; c++)
-                    {
-                      if (c % 100 == 0)
-                      {
-                        die.CurrentMonster.startAttackAnimation();
-                        Console.WriteLine("Start Attack" +DateTime.Now.Millisecond);
-                      }
-                    }
-                }
-    //          }
-            */
-                foreach (Die die in p.Die)
-                {
-                    Console.WriteLine("New Die");
                     if (die.CurrentMonster != null)
-                        for (int c = 0; c < 1000; c++)
+                        for (int c = 0; c < 100; c++)
                         {
-                            if (c % 100 == 0)
+                            if (c % 10 == 0)
                             {
                                 die.CurrentMonster.startAttackAnimation();
-                                Console.WriteLine("End Attack " + DateTime.Now.Millisecond + " " + c);
                             }
                         }
                 }
@@ -551,7 +533,10 @@ namespace ARRG_Game
         private void UpdateDamage()
         {
             //End attack animations here
-
+            foreach(Die die in p.Die)
+            {
+              die.CurrentMonster.endAttackAnimation();
+            }
             p.updateDamage();
             p2.updateDamage();
             gameState = bigRed.getInGameState();

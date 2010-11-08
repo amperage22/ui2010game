@@ -173,7 +173,7 @@ namespace ARRG_Game
 
         public void applyLine(Vector3 source, Vector3 target)
         {
-            line.update(source, target);
+            //line.update(source, target);
         }
 
         public void defend(int dmg, Monster attacker)
@@ -265,6 +265,11 @@ namespace ARRG_Game
                 nearestEnemy = null;
         }
         //*****End Monster-Monster Interactions********************
+        public int getAttackTimer()
+        {
+
+          return attackTimer;
+        }
 
     }
 
@@ -279,7 +284,8 @@ namespace ARRG_Game
         int power;
         int goldCost, manaCost;
         bool useInternal;
-        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int power, int health, bool useInternal, int goldCost, int manaCost)
+        Scene scene;
+        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int power, int health, bool useInternal, int goldCost, int manaCost, Scene scene)
         {
             this.id = id;
             this.name = name;
@@ -291,6 +297,7 @@ namespace ARRG_Game
             this.inv_texture = inv_texture;
             this.goldCost = goldCost;
             this.manaCost = manaCost;
+            this.scene = scene;
         }
         public Monster createMonster()
         {
@@ -298,7 +305,7 @@ namespace ARRG_Game
             {
                 case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal);
                 case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);
-                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal);
+                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal,scene);
             }
             return new Monster(name, model, health, power, useInternal);
         }
@@ -326,6 +333,8 @@ namespace ARRG_Game
         {
             return type;
         }
+
+
     }
 
 }
