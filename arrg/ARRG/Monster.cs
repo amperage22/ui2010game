@@ -45,6 +45,8 @@ namespace ARRG_Game
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
         protected CreatureType type;
+        protected Vector3 origin;
+        protected Boolean animating;
 
         public Monster NearestEnemy
         {
@@ -215,13 +217,35 @@ namespace ARRG_Game
 
         public virtual void startAttackAnimation()
         {
+
+          float modifier;
             //Should create simple "animation" of Monsters atack
+          origin = transNode.Translation;
+          //Console.Write(DateTime.Now.Second);
+          modifier = 0.01f;
+          Console.WriteLine("inloop");
+
+
+            transNode.Translation += new Vector3(modifier, 0, 0);
+          /*
+          while (DateTime.Now.Millisecond < endMilli)
+          {
+
+            transNode.Translation += new Vector3(modifier, 0, 0);
+            startMilli += 1;
+            
+          }
+          Console.WriteLine(DateTime.Now.Second);
+
+          *///transNode.Translation = origin;
+          transNode.Translation += new Vector3(modifier, 0, 0);
           
         }
 
         public virtual void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
+          transNode.Translation = origin;
         }
         //********End Dice-Monster Interactions********************
 

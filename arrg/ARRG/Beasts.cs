@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace ARRG_Game
 {
@@ -17,8 +18,18 @@ namespace ARRG_Game
             type = CreatureType.BEASTS;
         }
 
-        new public void startAttackAnimation(Monster enemyMonster)
+        new public void startAttackAnimation()
         {
+
+          float modifier;
+          //Should create simple "animation" of Monsters atack
+          origin = transNode.Translation;
+          //Console.Write(DateTime.Now.Second);
+          modifier = 0.01f;
+          Console.WriteLine("inloop");
+
+
+          transNode.Translation += new Vector3(modifier, 0, 0);
           
         }
     }
