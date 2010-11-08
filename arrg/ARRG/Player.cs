@@ -176,11 +176,6 @@ namespace ARRG_Game
                 if (die != null)
                     d.resloveDamage();
             }
-            if (healthBar != null)
-            {
-                healthBar.adjustHealth(health);
-                healthBar.adjustMana(mana);
-            }
         }
         public void applyPlayerDamage(Player other)
         {
@@ -197,7 +192,10 @@ namespace ARRG_Game
                 if (d.CurrentMonster != null && !d.CurrentMonster.IsDead)
                     theirCount++;
             if (myCount < theirCount)
+            {
+                healthBar.adjustHealth(-1);
                 health--;
+            }
         }
 
         public void showHealth()
