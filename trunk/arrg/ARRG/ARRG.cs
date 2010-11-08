@@ -255,8 +255,8 @@ namespace ARRG_Game
 
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0));
             monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "UNKNOWN1", "escaflowne", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "UNKNOWN2", "dragon3", Content.Load<Texture2D>("Textures/inventory/unknown"), 0, 0, false, 50, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "Escaflowne", "escaflowne", Content.Load<Texture2D>("Textures/inventory/escaflowne"), 0, 0, false, 50, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "Dragon", "dragon3", Content.Load<Texture2D>("Textures/inventory/dragon3"), 0, 0, false, 50, 0));
 
             //Set up the initial monsters for use after the talent screen has been submitted
             initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, false, 50, 0));
