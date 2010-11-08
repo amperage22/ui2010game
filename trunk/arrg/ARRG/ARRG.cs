@@ -524,6 +524,9 @@ namespace ARRG_Game
 
                 p.damageResolution();
                 p2.damageResolution();
+
+                p.applyPlayerDamage(p2);
+                p2.applyPlayerDamage(p);
             }
 
         }

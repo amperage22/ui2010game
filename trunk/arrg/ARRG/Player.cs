@@ -153,7 +153,8 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (d != null) {
+                if (d != null)
+                {
                     d.addBuffs(buffs);
                     d.applyHealthMod();
                 }
@@ -181,10 +182,27 @@ namespace ARRG_Game
                 healthBar.adjustMana(mana);
             }
         }
+        public void applyPlayerDamage(Player other)
+        {
+            if (other == null)
+                return;
+
+            int myCount = 0, theirCount = 0;
+
+            foreach (Die d in die)
+                if (d.CurrentMonster != null && !d.CurrentMonster.IsDead)
+                    myCount++;
+
+            foreach (Die d in other.Die)
+                if (d.CurrentMonster != null && !d.CurrentMonster.IsDead)
+                    theirCount++;
+            if (myCount < theirCount)
+                health--;
+        }
 
         public void showHealth()
         {
-          healthBar = new healthBar(scene, playerNum, health, mana);
+            healthBar = new healthBar(scene, playerNum, health, mana);
         }
     }
 }
