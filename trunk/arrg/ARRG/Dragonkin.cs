@@ -27,8 +27,10 @@ namespace ARRG_Game
 {
     class Dragonkin : Monster
     {
+     
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
+
         {
             hit = 80;
             dodge = 20;
@@ -37,11 +39,14 @@ namespace ARRG_Game
         }
         public override void startAttackAnimation()
         {
-            transNode.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(10));
+          Console.WriteLine("inside attackanimation");
+          
+            transNode.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(-1));
         }
         public override void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
+          transNode.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(1));
         }
         //********End Dice-Monster Interactions********************
     }
