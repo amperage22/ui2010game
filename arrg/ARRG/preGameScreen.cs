@@ -33,6 +33,7 @@ namespace ARRG_Game
     private bool showButtonHelp;
     private G2DButton arrg, inventory, game, market;
     private bool optionsOnScreen = false;
+    static int timesPressed = 0; // ;) easter egg
     //private string preGameDecision;
 
     public preGameScreen(Scene scene, ContentManager content)
@@ -141,12 +142,18 @@ namespace ARRG_Game
 
     public void togglePathsVisible()
     {
+        timesPressed++;
         if (optionsOnScreen)
         {
             scene.UIRenderer.Remove2DComponent(inventory);
             scene.UIRenderer.Remove2DComponent(market);
             scene.UIRenderer.Remove2DComponent(game);
             scene.UIRenderer.Remove2DComponent(menuHelpFrame);
+
+            if (timesPressed >= 305 && timesPressed <= 306)
+            {
+                (new Dialog(scene, content)).Display("Wow, you're really\ninto this game ;)\n\nWant some waffles?");
+            }
         }
         else
         {

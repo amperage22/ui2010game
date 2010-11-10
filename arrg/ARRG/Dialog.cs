@@ -76,6 +76,8 @@ namespace ARRG_Game
             button.TextColor = Color.Black;
             button.DrawBorder = true;
             button.HighlightColor = Color.Black;
+            button.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
+            button.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
             button.ActionPerformedEvent += new ActionPerformed(HandleButton);
             frame.AddChild(button);
 
