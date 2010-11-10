@@ -30,7 +30,7 @@ namespace ARRG_Game
     private ContentManager content;
     private preGameState state;
     private G2DPanel buttonHelpFrame, menuHelpFrame;
-    private bool showButtonHelp, showMenuHelp;
+    private bool showButtonHelp;
     private G2DButton arrg, inventory, game, market;
     private bool optionsOnScreen = false;
     //private string preGameDecision;
@@ -40,7 +40,6 @@ namespace ARRG_Game
       this.scene = scene;
       this.content = content;
       showButtonHelp = true;
-      showMenuHelp = true;
 
       createFrame();
 
@@ -54,6 +53,8 @@ namespace ARRG_Game
         scene.UIRenderer.Add2DComponent(arrg);
         if (showButtonHelp)
             scene.UIRenderer.Add2DComponent(buttonHelpFrame);
+        else
+            togglePathsVisible();
         state = preGameState.DISPLAYING;
       }
     }
@@ -135,12 +136,6 @@ namespace ARRG_Game
       {
           scene.UIRenderer.Remove2DComponent(buttonHelpFrame);
           showButtonHelp = false;
-          scene.UIRenderer.Add2DComponent(menuHelpFrame);
-      }
-      else if (showMenuHelp)
-      {
-          scene.UIRenderer.Remove2DComponent(menuHelpFrame);
-          showMenuHelp = false;
       }
     }
 
@@ -151,12 +146,14 @@ namespace ARRG_Game
             scene.UIRenderer.Remove2DComponent(inventory);
             scene.UIRenderer.Remove2DComponent(market);
             scene.UIRenderer.Remove2DComponent(game);
+            scene.UIRenderer.Remove2DComponent(menuHelpFrame);
         }
         else
         {
             scene.UIRenderer.Add2DComponent(inventory);
             scene.UIRenderer.Add2DComponent(market);
             scene.UIRenderer.Add2DComponent(game);
+            scene.UIRenderer.Add2DComponent(menuHelpFrame);
         }
         optionsOnScreen = !optionsOnScreen;
     }
