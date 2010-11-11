@@ -281,9 +281,6 @@ namespace ARRG_Game
             cards.Add(new Card(scene, 172, 3, 6, ModifierType.POWER, CreatureType.ALL));
             cards.Add(new Card(scene, 173, 3, 6, ModifierType.HP, CreatureType.ALL));
 
-            //TODO: REMOVE THE LINE BELOW NOW!! DON'T COMMENT, DELETE!  Oh, and this one too.
-            cards.Add(new Card(scene, 163, 2, 4, ModifierType.HP, CreatureType.ALL));
-
             //dmg dealing spells
             cards.Add(new Card(scene, CardType.DMG_DONE, 174, 1, 2));
             cards.Add(new Card(scene, CardType.DMG_DONE, 175, 1, 2));
@@ -325,7 +322,7 @@ namespace ARRG_Game
             scene.RootNode.AddChild(groundMarkerNode);
 
             p = new Player(scene, 1, groundMarkerNode);
-            p2 = new Player(scene, 7, groundMarkerNode);
+            p2 = new Player(scene, 2, groundMarkerNode);
             dialog = new Dialog(scene, Content);
         }
 
