@@ -23,6 +23,7 @@ using GoblinXNA.Device.Vision.Marker;
 using GoblinXNA.Device.Util;
 using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
+using GoblinXNA.UI.UI2D;
 
 namespace ARRG_Game
 {
@@ -38,6 +39,8 @@ namespace ARRG_Game
     TransformNode healthTransNode = new TransformNode();
     GeometryNode manaNode = new GeometryNode("Box");
     TransformNode manaTransNode = new TransformNode();
+    G2DLabel playerName;
+    ContentManager content;
    
 
     public healthBar(Scene scene, Player player, Boolean player1)
@@ -61,13 +64,12 @@ namespace ARRG_Game
       this.playerNum = playerNum;
       this.health = health;
       this.mana = mana;
+      this.content = State.Content;
       healthBarLength = 1.2f;
       manaBarLength = healthBarLength / 2;
       healthRatio = healthBarLength / ((float)health);
       manaRatio = manaBarLength / ((float)mana);
       createObjects();
-      
-
     }
 
     private void createObjects()
@@ -98,6 +100,12 @@ namespace ARRG_Game
         healthTransNode.Scale = new Vector3(healthBarLength, 0.14f, 0.1f);
         manaTransNode.Translation = new Vector3(-0.9f, 2.0f, -6);
         manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
+        playerName = new G2DLabel();
+        playerName.Bounds = new Rectangle(240, -5, 136, 44);
+        playerName.Transparency = 1.0f;
+        playerName.BackgroundColor = Color.Black;
+        playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1");
+        playerName.TextFont = content.Load<SpriteFont>("UIFont");
       }
       else
       {
@@ -105,6 +113,12 @@ namespace ARRG_Game
         healthTransNode.Scale = new Vector3(healthBarLength, 0.14f, 0.1f);
         manaTransNode.Translation = new Vector3(0.9f, 2.0f, -6);
         manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
+        playerName = new G2DLabel();
+        playerName.Bounds = new Rectangle(440, -5, 136, 44);
+        playerName.Transparency = 1.0f;
+        playerName.BackgroundColor = Color.Black;
+        playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player2");
+        playerName.TextFont = content.Load<SpriteFont>("UIFont");
       }
 
       scene.RootNode.AddChild(manaTransNode);
@@ -112,6 +126,8 @@ namespace ARRG_Game
 
       scene.RootNode.AddChild(healthTransNode);
       healthTransNode.AddChild(healthNode);
+
+      scene.UIRenderer.Add2DComponent(playerName);
     }
 
     public void adjustHealth(int modifier)
