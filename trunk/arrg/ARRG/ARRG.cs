@@ -428,9 +428,9 @@ namespace ARRG_Game
                         inventoryScreen.Display(p);
                         break;
                     case MenuStates.INGAME:
-                        bigRed = new Brb(scene, menuState, gameState);
                         p.showHealth();
                         p2.showHealth();
+                        bigRed = new Brb(scene, menuState, gameState);
                         break;
                 }
             }

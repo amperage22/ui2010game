@@ -39,7 +39,7 @@ namespace ARRG_Game
     TransformNode healthTransNode = new TransformNode();
     GeometryNode manaNode = new GeometryNode("Box");
     TransformNode manaTransNode = new TransformNode();
-    G2DLabel playerName;
+    G2DLabel playerName, barHealth;
     ContentManager content;
    
 
@@ -75,12 +75,6 @@ namespace ARRG_Game
     private void createObjects()
     {
 
-      healthNode.Model = new Box(Vector3.One * 3);
-      Material healthMat = new Material();
-      healthMat.Diffuse = Color.Red.ToVector4();
-      healthMat.Specular = Color.White.ToVector4();
-      healthMat.SpecularPower = 5;
-      healthNode.Material = healthMat;
       
       //For player: To change health +/- from the X value of the Translation and Scale Vectors
  
@@ -91,58 +85,60 @@ namespace ARRG_Game
       manaMat.Specular = Color.White.ToVector4();
       manaMat.SpecularPower = 5;
       manaNode.Material = manaMat;
+      manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
+
+      barHealth = new G2DLabel();
+      barHealth.Transparency = 1.0f;
+      barHealth.BackgroundColor = Color.Red;
+
+      playerName = new G2DLabel();
+      playerName.Transparency = 1.0f;
+      playerName.BackgroundColor = Color.Black;
+      playerName.TextFont = content.Load<SpriteFont>("UIFont");
 
       //For player: To change health +/- from the X value of the Translation and Scale Vectors
 
       if (playerNum ==1)
       {
-        healthTransNode.Translation = new Vector3(-1.5f, 2.1f, -6);
-        healthTransNode.Scale = new Vector3(healthBarLength, 0.14f, 0.1f);
         manaTransNode.Translation = new Vector3(-0.9f, 2.0f, -6);
-        manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
-        playerName = new G2DLabel();
-        playerName.Bounds = new Rectangle(239, -5, 136, 44);
-        playerName.Transparency = 1.0f;
-        playerName.BackgroundColor = Color.Black;
-        playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1");
-        playerName.TextFont = content.Load<SpriteFont>("UIFont");
+        playerName.Bounds = new Rectangle(235, -5, 136, 44);
+        playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1"); 
+        barHealth.Bounds = new Rectangle(40, 10, 360, 60);
+        barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp1");
+
+        
       }
       else
       {
-        healthTransNode.Translation = new Vector3(1.5f, 2.1f, -6);
-        healthTransNode.Scale = new Vector3(healthBarLength, 0.14f, 0.1f);
         manaTransNode.Translation = new Vector3(0.9f, 2.0f, -6);
-        manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
-        playerName = new G2DLabel();
-        playerName.Bounds = new Rectangle(440, -5, 136, 44);
-        playerName.Transparency = 1.0f;
-        playerName.BackgroundColor = Color.Black;
+        playerName.Bounds = new Rectangle(430, -5, 136, 44);
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player2");
-        playerName.TextFont = content.Load<SpriteFont>("UIFont");
+        barHealth.Bounds = new Rectangle(400, 10, 360, 60);
+        barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp2");
       }
 
       scene.RootNode.AddChild(manaTransNode);
       manaTransNode.AddChild(manaNode);
 
-      scene.RootNode.AddChild(healthTransNode);
-      healthTransNode.AddChild(healthNode);
-
+      //scene.RootNode.AddChild(healthTransNode);
+      //healthTransNode.AddChild(healthNode);
+      scene.UIRenderer.Add2DComponent(barHealth);
       scene.UIRenderer.Add2DComponent(playerName);
+      
     }
 
     public void adjustHealth(int modifier)
     {
-      float amount = modifier * healthRatio;
-      healthBarLength = healthBarLength + amount;
-      healthTransNode.Scale += new Vector3(amount, 0, 0);
+      int newmod = modifier * 15;
       if(playerNum ==1)
       {
-        healthTransNode.Translation += new Vector3(-amount, 0, 0);
+        barHealth.Bounds = new Rectangle((barHealth.Bounds.X - newmod), 10, (barHealth.Bounds.Width + newmod), 60);
 
       }
       else
       {
-        healthTransNode.Translation += new Vector3(amount / 2, 0, 0);
+        barHealth.Bounds = new Rectangle(400, 10, (barHealth.Bounds.Width + newmod), 60);
+        //Console.WriteLine("X:" + healthTransNode.Translation.X + " Y:" + healthTransNode.Translation.Y + " Z:" + healthTransNode.Translation.Z);
       }
     }
 
