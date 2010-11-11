@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
@@ -39,6 +38,7 @@ namespace ARRG_Game
         private Buff buff;
         public static double BUFF_SCALE = .15;
         private TransformNode node = new TransformNode();
+        private TransformNode buffModel;
         protected ParticleLineGenerator line = new ParticleLineGenerator();
         //test
         //bool particleSet;
@@ -58,7 +58,7 @@ namespace ARRG_Game
             s.RootNode.AddChild(marker);
             marker.AddChild(node);
             marker.AddChild(line.addParticle());
-            
+            loadModel();
         }
         public Card(Scene s, CardType type, int markerNum, int manaCost, int mod)
         {
@@ -75,6 +75,60 @@ namespace ARRG_Game
             marker.AddChild(node);
             marker.AddChild(line.addParticle());
             
+        }
+        private void loadModel()
+        {
+            buffModel = new TransformNode();
+            buffModel.Translation += new Vector3(0, 0, 15);
+            marker.AddChild(buffModel);
+
+            String modelName = "";
+            switch (buff.Modifier)
+            {
+                case ModifierType.ADDITIONAL_ATTACK_CHANCE:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.FIREBREATH_ATTACK_CHANCE:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.LIGHTNING_ATTACK_CHANCE:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.DODGE:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.HIT:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.CRIT:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.PARRY:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.POWER:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+                case ModifierType.HP:
+                case ModifierType.HP_MOD:
+                    modelName = "cone";
+                    buffModel.Scale *= new Vector3(0.05f);
+                    break;
+            }
+
+            GeometryNode GeodudeNode = new GeometryNode(modelName);
+            GeodudeNode.Model = (Model)(new ModelLoader()).Load("Models/", modelName);
+            GeodudeNode.Model.UseInternalMaterials = true;
+            
+            buffModel.AddChild(GeodudeNode);
         }
         public void getNearestCreature(Die[] d1, Die[] d2)
         {
@@ -135,7 +189,11 @@ namespace ARRG_Game
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;
             }
         }
-
+        public void Update(GameTime gameTime)
+        {
+            if (buffModel == null) return;
+            buffModel.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, gameTime.ElapsedRealTime.Milliseconds * MathHelper.ToRadians(.125f));
+        }
         public void applyLine(Vector3 source, Vector3 target)
         {
             line.update(source, target);
