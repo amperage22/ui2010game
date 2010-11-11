@@ -49,7 +49,7 @@ namespace ARRG_Game
         private void createObject()
         {
             brbButton = new G2DLabel();
-            brbButton.Bounds = new Rectangle(350, 0, 115, 115);
+            brbButton.Bounds = new Rectangle(342, 0, 116, 116);
             brbButton.Transparency = 1.0f;
             brbButton.BackgroundColor = Color.Black;
             brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
