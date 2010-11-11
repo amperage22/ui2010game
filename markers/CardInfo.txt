@@ -1,0 +1,91 @@
+Cost:  2	
+Increase targets HEALTH by 4
+
+Cost:  1	
+Increase targets HEALTH by 2
+
+Cost:  2	
+Increase targets POWER by 4
+
+Cost:  1	
+Increase targets POWER by 2
+
+Cost:  2	
+Increase targets CRIT by 4
+
+Cost:  1	
+Increase targets CRIT by 2
+
+Cost:  2	
+Increases targets chance for ADDITIONAL ATTACK by 4%
+
+Cost:  1	
+Increases targets chance for ADDITIONAL ATTACK by 2%
+
+Cost:  3	
+Increase targets POWER by 6
+
+Cost:  3	
+Increase targets HEALTH by 6
+	
+
+Cost:  1	
+DEAL 2 DAMAGE to target creature
+
+Cost:  1	
+DEAL 2 DAMAGE to target creature
+
+Cost:  2	
+DEAL 4 DAMAGE to target creature
+
+Cost:  2	
+DEAL 4 DAMAGE to target creature
+
+Cost:  3	
+DEAL 6 DAMAGE to target creature
+
+
+Cost:  1	
+PREVENT 2 DAMAGE to target creature
+
+Cost:  1	
+PREVENT 2 DAMAGE to target creature
+
+Cost:  2	
+PREVENT 4 DAMAGE to target creature
+
+Cost:  2	
+PREVENT 4 DAMAGE to target creature
+
+Cost:  3	
+PREVENT 6 DAMAGE to target creature
+
+Cost:  2	
+Decrease targets HEALTH by 4
+
+Cost:  1	
+Decrease targets HEALTH by 2
+
+Cost:  2	
+Decrease targets POWER by 4
+
+Cost:  1	
+Decrease targets POWER by 2
+
+Cost:  2	
+Decrease targets CRIT by 4
+
+Cost:  1	
+Decrease targets CRIT by 2
+
+Cost:  2	
+Decreases targets chance for ADDITIONAL ATTACK by 4%
+
+Cost:  1	
+Decreases targets chance for ADDITIONAL ATTACK by 2%
+
+Cost:  3	
+Decrease targets POWER by 6
+
+Cost:  3	
+Decrease targets HEALTH by 6

@@ -286,7 +286,7 @@ namespace ARRG_Game
             cards.Add(new Card(scene, CardType.DMG_DONE, 175, 1, 2));
             cards.Add(new Card(scene, CardType.DMG_DONE, 176, 2, 4));
             cards.Add(new Card(scene, CardType.DMG_DONE, 177, 2, 4));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 178, 3, 5));
+            cards.Add(new Card(scene, CardType.DMG_DONE, 178, 3, 6));
 
             //dmg preventing spells
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 179, 1, 2));
@@ -294,6 +294,19 @@ namespace ARRG_Game
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 181, 2, 4));
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 182, 2, 4));
             cards.Add(new Card(scene, CardType.DMG_PREVENT, 183, 3, 6));
+
+            //Debuff Modifiers
+            //Modifier type spells
+            cards.Add(new Card(scene, 184, 2, -4, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(scene, 185, 1, -2, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(scene, 186, 2, -4, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 187, 1, -2, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 188, 2, -4, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(scene, 189, 1, -2, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(scene, 190, 2, -4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(scene, 191, 1, -2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(scene, 192, 3, -6, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(scene, 193, 3, -6, ModifierType.HP, CreatureType.ALL));
 
         }
 
