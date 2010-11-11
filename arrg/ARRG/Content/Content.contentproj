@@ -808,15 +808,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\health\white2x.jpg">
-      <Link>Textures\healthbar\white2x.jpg</Link>
-      <Name>white2x</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\health\healthp1.png">
       <Link>Textures\healthbar\healthp1.png</Link>
       <Name>healthp1</Name>
@@ -830,6 +821,14 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\health\manaBar.png">
+      <Link>Textures\healthbar\manaBar.png</Link>
+      <Name>manaBar</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

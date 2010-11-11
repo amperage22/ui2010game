@@ -33,30 +33,9 @@ namespace ARRG_Game
     Player player;
     Scene scene;
     int health, mana, playerNum;
-    float healthBarLength,manaBarLength, healthRatio, manaRatio;
     Boolean player1;
-    GeometryNode healthNode = new GeometryNode("Box");
-    TransformNode healthTransNode = new TransformNode();
-    GeometryNode manaNode = new GeometryNode("Box");
-    TransformNode manaTransNode = new TransformNode();
-    G2DLabel playerName, barHealth;
+    G2DLabel playerName, barHealth, barMana;
     ContentManager content;
-   
-
-    public healthBar(Scene scene, Player player, Boolean player1)
-    {
-      this.scene = scene;
-      this.player = player;
-      this.player1 = player1;
-      health = player.Health;
-      healthBarLength = 1.2f;
-      manaBarLength = healthBarLength / 2;
-      healthRatio = healthBarLength/((float)health);
-      manaRatio = manaBarLength / ((float)mana);
-      mana = player.Mana;
-
-      createObjects();
-    }
 
     public healthBar(Scene scene, int playerNum, int health, int mana)
     {
@@ -65,27 +44,16 @@ namespace ARRG_Game
       this.health = health;
       this.mana = mana;
       this.content = State.Content;
-      healthBarLength = 1.2f;
-      manaBarLength = healthBarLength / 2;
-      healthRatio = healthBarLength / ((float)health);
-      manaRatio = manaBarLength / ((float)mana);
       createObjects();
     }
 
     private void createObjects()
     {
-
       
       //For player: To change health +/- from the X value of the Translation and Scale Vectors
- 
-      manaNode.Model = new Box(Vector3.One * 3);
-
-      Material manaMat = new Material();
-      manaMat.Diffuse = Color.Blue.ToVector4();
-      manaMat.Specular = Color.White.ToVector4();
-      manaMat.SpecularPower = 5;
-      manaNode.Material = manaMat;
-      manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
+      barMana = new G2DLabel();
+      barMana.Transparency = 0.7f;
+      barMana.BackgroundColor = Color.Blue;
 
       barHealth = new G2DLabel();
       barHealth.Transparency = 1.0f;
@@ -100,28 +68,26 @@ namespace ARRG_Game
 
       if (playerNum ==1)
       {
-        manaTransNode.Translation = new Vector3(-0.9f, 2.0f, -6);
         playerName.Bounds = new Rectangle(235, -5, 136, 44);
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1"); 
         barHealth.Bounds = new Rectangle(40, 10, 360, 60);
         barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp1");
+        barMana.Bounds = new Rectangle(180, 40, 220, 60);
+        barMana.Texture = content.Load<Texture2D>("Textures/healthbar/manaBar");
 
         
       }
       else
       {
-        manaTransNode.Translation = new Vector3(0.9f, 2.0f, -6);
         playerName.Bounds = new Rectangle(430, -5, 136, 44);
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player2");
         barHealth.Bounds = new Rectangle(400, 10, 360, 60);
         barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp2");
+        barMana.Bounds = new Rectangle(400, 40, 220, 60);
+        barMana.Texture = content.Load<Texture2D>("Textures/healthbar/manaBar");
       }
 
-      scene.RootNode.AddChild(manaTransNode);
-      manaTransNode.AddChild(manaNode);
-
-      //scene.RootNode.AddChild(healthTransNode);
-      //healthTransNode.AddChild(healthNode);
+      scene.UIRenderer.Add2DComponent(barMana);
       scene.UIRenderer.Add2DComponent(barHealth);
       scene.UIRenderer.Add2DComponent(playerName);
       
@@ -144,24 +110,23 @@ namespace ARRG_Game
 
     public void adjustMana(int modifier)
     {
-      float amount = modifier * manaRatio;
-      manaBarLength = manaBarLength + amount;
-      manaTransNode.Scale += new Vector3(amount, 0, 0);
+      int newmod = modifier * 12;
       if (playerNum == 1)
       {
-        manaTransNode.Translation += new Vector3(-amount, 0, 0);
+        barMana.Bounds = new Rectangle((barMana.Bounds.X - newmod), 40, (barMana.Bounds.Width + newmod), 60);
 
       }
       else
       {
-        manaTransNode.Translation += new Vector3(amount / 2, 0, 0);
+        barMana.Bounds = new Rectangle(400, 40, (barMana.Bounds.Width + newmod), 60);
       }
     }
 
     public void Kill()
     {
-        scene.RootNode.RemoveChild(healthTransNode);
-        scene.RootNode.RemoveChild(manaTransNode);
+        scene.UIRenderer.Remove2DComponent(playerName);
+        scene.UIRenderer.Remove2DComponent(barMana);
+        scene.UIRenderer.Remove2DComponent(barHealth);
     }
   }
 }
