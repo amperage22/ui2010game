@@ -101,7 +101,7 @@ namespace ARRG_Game
         manaTransNode.Translation = new Vector3(-0.9f, 2.0f, -6);
         manaTransNode.Scale = new Vector3(manaBarLength, 0.15f, 0.1f);
         playerName = new G2DLabel();
-        playerName.Bounds = new Rectangle(240, -5, 136, 44);
+        playerName.Bounds = new Rectangle(239, -5, 136, 44);
         playerName.Transparency = 1.0f;
         playerName.BackgroundColor = Color.Black;
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1");
