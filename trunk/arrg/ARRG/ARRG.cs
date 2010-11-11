@@ -261,7 +261,7 @@ namespace ARRG_Game
 
 
             //Set up the initial monsters for use after the talent screen has been submitted
-            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, false, 50, 0, scene));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, true, 50, 0, scene));
             initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 6, 3, false, 50, 0, scene));
             initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0, scene));
             monsters.AddRange(initial_monsters);
