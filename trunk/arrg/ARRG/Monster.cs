@@ -93,10 +93,10 @@ namespace ARRG_Game
 
             transNode = new TransformNode();
             transNode.AddChild(monsterNode);
-            transNode.Scale *= 0.15f;
+            transNode.Scale *= 0.2f;
             transNode.Translation += new Vector3(10, 0, 20);
             buffs = new List<Buff>();
-            transNode.AddChild(line.addParticle());
+            transNode.AddChild(line.addParticle("particleLine"));
         }
 
 
