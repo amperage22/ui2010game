@@ -48,16 +48,15 @@ namespace ARRG_Game
         //int frameCount;
         //Random random = new Random();
 
-        public Card(Scene s, int markerNum, int manaCost, int mod, ModifierType modType, CreatureType againstCreatureType)
+        public Card(Scene s, int markerNum, int manaCost, int mod, ModifierType modType, CreatureType creatureType)
         {
             this.manaCost = manaCost;
             type = CardType.STAT_MOD;
-            buff = new Buff(modType, againstCreatureType, mod);
+            buff = new Buff(modType, creatureType, mod);
             marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
-            //transNode.AddChild(line.addParticle());
             s.RootNode.AddChild(marker);
             marker.AddChild(node);
-            marker.AddChild(line.addParticle());
+            marker.AddChild(line.addParticle("particleLine2"));
             loadModel();
         }
         public Card(Scene s, CardType type, int markerNum, int manaCost, int mod)
@@ -70,11 +69,10 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: dmgDone = mod; dmgPrevent = 0; break;
                 case CardType.DMG_PREVENT: dmgDone = 0; dmgPrevent = mod; break;
             }
-            //transNode.AddChild(line.addParticle());
             s.RootNode.AddChild(marker);
             marker.AddChild(node);
-            marker.AddChild(line.addParticle());
-            
+            marker.AddChild(line.addParticle("particleLine2"));
+
         }
         private void loadModel()
         {
@@ -114,6 +112,7 @@ namespace ARRG_Game
                     buffModel.Scale *= new Vector3(0.05f);
                     break;
                 case ModifierType.POWER:
+                case ModifierType.DAMAGE_MOD:
                     modelName = "cone";
                     buffModel.Scale *= new Vector3(0.05f);
                     break;
@@ -127,7 +126,7 @@ namespace ARRG_Game
             GeometryNode GeodudeNode = new GeometryNode(modelName);
             GeodudeNode.Model = (Model)(new ModelLoader()).Load("Models/", modelName);
             GeodudeNode.Model.UseInternalMaterials = true;
-            
+
             buffModel.AddChild(GeodudeNode);
         }
         public void getNearestCreature(Die[] d1, Die[] d2)
@@ -183,7 +182,7 @@ namespace ARRG_Game
                 case CardType.STAT_MOD: nearestMonster.addBuff(buff);
                     if (buff.Amount > 0)
                         nearestMonster.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
-                    else if (buff.Amount < 0) nearestMonster.TransNode.Scale *= (float)(buff.Amount * BUFF_SCALE);
+                    else if (buff.Amount < 0) nearestMonster.TransNode.Scale /= (float)(-buff.Amount * BUFF_SCALE);
                     break;
                 case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;

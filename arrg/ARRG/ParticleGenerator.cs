@@ -29,49 +29,57 @@ namespace ARRG_Game
 {
     class ParticleLineGenerator
     {
-        Vector3 source
-            , target;
-        ParticleNode fireRingEffectNode;
+        Vector3 source, target;
+        ParticleNode lineEffectNode;
 
-        public ParticleNode addParticle()
+        public ParticleNode addParticle(String name)
         {
-            ParticleEffect fireParticles = new FireParticleEffect();
-            fireParticles.TextureName = "particleLine";
-            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
-            fireParticles.MinEndSize = fireParticles.MinStartSize;
-            fireParticles.EndVelocity = 0;
-            fireRingEffectNode = new ParticleNode();
-            fireRingEffectNode.ParticleEffects.Add(fireParticles);
+            ParticleEffect lineParticles = new FireParticleEffect();
+            lineParticles.TextureName = name;
+            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
+            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
+            lineParticles.MinStartSize = 2f;
+            lineParticles.MaxStartSize = 2f;
+            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
+            lineParticles.MinEndSize = lineParticles.MinStartSize;
+            lineParticles.EndVelocity = 0;
+            lineEffectNode = new ParticleNode();
+            lineEffectNode.ParticleEffects.Add(lineParticles);
 
-            fireParticles = new FireParticleEffect();
-            fireParticles.TextureName = "particleLine";
-            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
-            fireParticles.MinEndSize = fireParticles.MinStartSize;
-            fireParticles.EndVelocity = 0;
-            fireRingEffectNode = new ParticleNode();
-            fireRingEffectNode.ParticleEffects.Add(fireParticles);
+            lineParticles = new FireParticleEffect();
+            lineParticles.TextureName = name;
+            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
+            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
+            lineParticles.MinStartSize = 2f;
+            lineParticles.MaxStartSize = 2f;
+            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
+            lineParticles.MinEndSize = lineParticles.MinStartSize;
+            lineParticles.EndVelocity = 0;
+            lineEffectNode.ParticleEffects.Add(lineParticles);
 
-            fireParticles = new FireParticleEffect();
-            fireParticles.TextureName = "particleLine";
-            fireParticles.MaxEndSize = fireParticles.MaxStartSize;
-            fireParticles.MinEndSize = fireParticles.MinStartSize;
-            fireParticles.EndVelocity = 0;
-            fireRingEffectNode = new ParticleNode();
-            fireRingEffectNode.ParticleEffects.Add(fireParticles);
+            lineParticles = new FireParticleEffect();
+            lineParticles.TextureName = name;
+            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
+            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
+            lineParticles.MinStartSize = 2f;
+            lineParticles.MaxStartSize = 2f;
+            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
+            lineParticles.MinEndSize = lineParticles.MinStartSize;
+            lineParticles.EndVelocity = 0;
+            lineEffectNode.ParticleEffects.Add(lineParticles);
 
-            //fireRingEffectNode.ParticleEffects.Add(new FireParticleEffect());
-            fireRingEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
-            fireRingEffectNode.Enabled = false;
+            lineEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
+            lineEffectNode.Enabled = false;
 
-            return fireRingEffectNode;
+            return lineEffectNode;
 
         }
         public void update(Vector3 source, Vector3 target)
         {
             this.source = source;
             this.target = target;
-            if (!fireRingEffectNode.Enabled)
-                fireRingEffectNode.Enabled = true;
+            if (!lineEffectNode.Enabled)
+                lineEffectNode.Enabled = true;
         }
         private void UpdateLine(Matrix worldTransform, List<ParticleEffect> particleEffects)
         {
