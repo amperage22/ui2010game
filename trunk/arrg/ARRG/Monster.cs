@@ -285,7 +285,7 @@ namespace ARRG_Game
         int goldCost, manaCost;
         bool useInternal;
         Scene scene;
-        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int power, int health, bool useInternal, int goldCost, int manaCost, Scene scene)
+        public MonsterBuilder(CreatureID id, CreatureType type, String name, String model, Texture2D inv_texture, int power, int health, bool useInternal, int goldCost, int manaCost)
         {
             this.id = id;
             this.name = name;
@@ -297,7 +297,7 @@ namespace ARRG_Game
             this.inv_texture = inv_texture;
             this.goldCost = goldCost;
             this.manaCost = manaCost;
-            this.scene = scene;
+            this.scene = GlobalScene.scene;
         }
         public Monster createMonster()
         {

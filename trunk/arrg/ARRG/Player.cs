@@ -75,7 +75,7 @@ namespace ARRG_Game
          * firstDieNum Which die is being created?  Die1, 2, 3?
          * numDice The amount of dice this player will get
          */
-        public Player(Scene s, int playerNum, MarkerNode ground)
+        public Player(int playerNum, MarkerNode ground)
         {
             health = INITIAL_HEALTH;
             buffs = new List<Buff>();
@@ -85,12 +85,12 @@ namespace ARRG_Game
             this.ground = ground;
             selectedMonsters = new List<MonsterBuilder>();
             //healthBar = new healthBar(s, playerNum, health, mana);
-            this.scene = s;
+            this.scene = GlobalScene.scene;
             this.playerNum = playerNum;
 
             /* Create the player's dice */
             for (int i = 0; i < MAX_NUM_DIE; i++)
-                die[i] = new Die(s, i + (playerNum - 1) * MAX_NUM_DIE, ground);
+                die[i] = new Die(GlobalScene.scene, i + (playerNum - 1) * MAX_NUM_DIE, ground);
 
         }
 

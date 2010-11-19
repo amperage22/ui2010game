@@ -49,14 +49,14 @@ namespace ARRG_Game
         private MonsterBuilder[] monsters = new MonsterBuilder[15];
         private int amountSpent;
 
-        public MarketScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
+        public MarketScreen(List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
                 throw new Exception("I can't handle this case");
             foreach (MonsterBuilder m in monsters)
                 this.monsters[m.getID()] = m;
-            this.scene = scene;
-            this.content = content;
+            scene = GlobalScene.scene;
+            content = State.Content;
             showHelpFrame = true;
             amountSpent = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");
