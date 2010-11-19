@@ -60,6 +60,11 @@ using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
+    class GlobalScene
+    {
+        public static Scene scene;
+    }
+
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
@@ -82,7 +87,6 @@ namespace ARRG_Game
         Player p, p2;
         List<MonsterBuilder> monsters, initial_monsters;
         List<Card> cards;
-        Scene scene;
         MarkerNode groundMarkerNode;
         private const int dice_count = 6;
         healthBar hb, hb2;
@@ -120,10 +124,10 @@ namespace ARRG_Game
             State.InitGoblin(graphics, Content, "");
 
             // Initialize the scene graph
-            scene = new Scene(this);
+            GlobalScene.scene = new Scene(this);
 
             // Use the newton physics engine to perform collision detection
-            scene.PhysicsEngine = new NewtonPhysics();
+            GlobalScene.scene.PhysicsEngine = new NewtonPhysics();
 
             this.IsMouseVisible = true;
 
@@ -150,13 +154,13 @@ namespace ARRG_Game
 
             // Use per pixel lighting for better quality (If you using non NVidia graphics card,
             // setting this to true may reduce the performance significantly)
-            scene.PreferPerPixelLighting = true;
+            GlobalScene.scene.PreferPerPixelLighting = true;
 
             // Enable shadow mapping
             // NOTE: In order to use shadow mapping, you will need to add 'PostScreenShadowBlur.fx'
             // and 'ShadowMap.fx' shader files as well as 'ShadowDistanceFadeoutMap.dds' texture file
             // to your 'Content' directory
-            scene.EnableShadowMapping = false;
+            GlobalScene.scene.EnableShadowMapping = false;
 
             // Show Frames-Per-Second on the screen for debugging
             State.ShowFPS = false;
@@ -169,7 +173,7 @@ namespace ARRG_Game
             //hb2.adjustHealth(-10);
 
             //Set up the stuff needed for the first (title) state
-            titleScreen = new TitleScreen(Content, scene);
+            titleScreen = new TitleScreen();
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             base.Initialize();
@@ -187,7 +191,7 @@ namespace ARRG_Game
             LightNode lightNode = new LightNode();
             lightNode.LightSources.Add(lightSource);
 
-            scene.RootNode.AddChild(lightNode);
+            GlobalScene.scene.RootNode.AddChild(lightNode);
         }
 
         private void SetupMarkerTracking()
@@ -213,7 +217,7 @@ namespace ARRG_Game
 
             // Add this video capture device to the scene so that it can be used for
             // the marker tracker
-            scene.AddVideoCaptureDevice(captureDevice);
+            GlobalScene.scene.AddVideoCaptureDevice(captureDevice);
 
             IMarkerTracker tracker = null;
 
@@ -231,11 +235,11 @@ namespace ARRG_Game
 #endif
 
             // Set the marker tracker to use for our scene
-            scene.MarkerTracker = tracker;
+            GlobalScene.scene.MarkerTracker = tracker;
 
             // Display the camera image in the background. Note that this parameter should
             // be set after adding at least one video capture device to the Scene class.
-            scene.ShowCameraImage = true;
+            GlobalScene.scene.ShowCameraImage = true;
         }
 
         private void CreateMonsterList()
@@ -244,69 +248,69 @@ namespace ARRG_Game
             initial_monsters = new List<MonsterBuilder>();
             cards = new List<Card>();
 
-            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 2, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.BEAR, CreatureType.BEASTS, "Bearrorist", "bear", Content.Load<Texture2D>("Textures/inventory/bear"), 3, 4, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.PENGUIN, CreatureType.BEASTS, "Penguinist", "penguin", Content.Load<Texture2D>("Textures/inventory/penguin"), 1, 2, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.RHINO, CreatureType.BEASTS, "Rhymenoceros", "rhino", Content.Load<Texture2D>("Textures/inventory/rhino"), 3, 5, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.TIGER, CreatureType.BEASTS, "Tigeriffic", "tiger", Content.Load<Texture2D>("Textures/inventory/tiger"), 5, 3, true, 1, 0));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 5, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 8, 8, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 4, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/centurion"), 4, 2, false, 1, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.DALEK, CreatureType.ROBOTS, "Dalek", "dalek", Content.Load<Texture2D>("Textures/inventory/dalek"), 4, 5, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.GUNDAM, CreatureType.ROBOTS, "Gundam", "gundam", Content.Load<Texture2D>("Textures/inventory/gundam"), 8, 8, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.SAMUS, CreatureType.ROBOTS, "Samus", "samus", Content.Load<Texture2D>("Textures/inventory/samus"), 3, 4, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.CENTURION, CreatureType.ROBOTS, "Centurion", "centurion", Content.Load<Texture2D>("Textures/inventory/centurion"), 4, 2, false, 1, 0));
 
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "Escaflowne", "escaflowne", Content.Load<Texture2D>("Textures/inventory/escaflowne"), 4,5, false, 50, 0, scene));
-            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "Dragon", "dragon3", Content.Load<Texture2D>("Textures/inventory/dragon3"), 3, 3, false, 50, 0, scene));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON1, CreatureType.DRAGONKIN, "Whelp", "dragon1", Content.Load<Texture2D>("Textures/inventory/dragon1"), 1, 3, true, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON2, CreatureType.DRAGONKIN, "Drake", "dragon2", Content.Load<Texture2D>("Textures/inventory/dragon2"), 3, 5, false, 1, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.ESCAFLOWNE, CreatureType.DRAGONKIN, "Escaflowne", "escaflowne", Content.Load<Texture2D>("Textures/inventory/escaflowne"), 4,5, false, 50, 0));
+            monsters.Add(new MonsterBuilder(CreatureID.DRAGON3, CreatureType.DRAGONKIN, "Dragon", "dragon3", Content.Load<Texture2D>("Textures/inventory/dragon3"), 3, 3, false, 50, 0));
 
 
             //Set up the initial monsters for use after the talent screen has been submitted
-            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, true, 50, 0, scene));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 6, 3, false, 50, 0, scene));
-            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0, scene));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.JONATHAN, CreatureType.DRAGONKIN, "ConeOfFire", "cone", Content.Load<Texture2D>("Textures/inventory/d_jonathan"), 3, 1, true, 50, 0));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.MEYNARD, CreatureType.ROBOTS, "Tank", "tank", Content.Load<Texture2D>("Textures/inventory/tank"), 6, 3, false, 50, 0));
+            initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0));
             monsters.AddRange(initial_monsters);
 
             p2.PurchasedMonsters = monsters; //For testing purposes
 
 
             //Modifier type spells
-            cards.Add(new Card(scene, 164, 2, 4, ModifierType.HP, CreatureType.ALL));
-            cards.Add(new Card(scene, 165, 1, 2, ModifierType.HP, CreatureType.ALL));
-            cards.Add(new Card(scene, 166, 2, 4, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 167, 1, 2, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 168, 2, 4, ModifierType.CRIT, CreatureType.ALL));
-            cards.Add(new Card(scene, 169, 1, 2, ModifierType.CRIT, CreatureType.ALL));
-            cards.Add(new Card(scene, 170, 2, 4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
-            cards.Add(new Card(scene, 171, 1, 2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
-            cards.Add(new Card(scene, 172, 3, 6, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 173, 3, 6, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(164, 2, 4, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(165, 1, 2, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(166, 2, 4, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(167, 1, 2, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(168, 2, 4, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(169, 1, 2, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(170, 2, 4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(171, 1, 2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(172, 3, 6, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(173, 3, 6, ModifierType.HP, CreatureType.ALL));
 
             //dmg dealing spells
-            cards.Add(new Card(scene, CardType.DMG_DONE, 174, 1, 2));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 175, 1, 2));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 176, 2, 4));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 177, 2, 4));
-            cards.Add(new Card(scene, CardType.DMG_DONE, 178, 3, 6));
+            cards.Add(new Card(CardType.DMG_DONE, 174, 1, 2));
+            cards.Add(new Card(CardType.DMG_DONE, 175, 1, 2));
+            cards.Add(new Card(CardType.DMG_DONE, 176, 2, 4));
+            cards.Add(new Card(CardType.DMG_DONE, 177, 2, 4));
+            cards.Add(new Card(CardType.DMG_DONE, 178, 3, 6));
 
             //dmg preventing spells
-            cards.Add(new Card(scene, CardType.DMG_PREVENT, 179, 1, 2));
-            cards.Add(new Card(scene, CardType.DMG_PREVENT, 180, 1, 2));
-            cards.Add(new Card(scene, CardType.DMG_PREVENT, 181, 2, 4));
-            cards.Add(new Card(scene, CardType.DMG_PREVENT, 182, 2, 4));
-            cards.Add(new Card(scene, CardType.DMG_PREVENT, 183, 3, 6));
+            cards.Add(new Card(CardType.DMG_PREVENT, 179, 1, 2));
+            cards.Add(new Card(CardType.DMG_PREVENT, 180, 1, 2));
+            cards.Add(new Card(CardType.DMG_PREVENT, 181, 2, 4));
+            cards.Add(new Card(CardType.DMG_PREVENT, 182, 2, 4));
+            cards.Add(new Card(CardType.DMG_PREVENT, 183, 3, 6));
 
             //Debuff Modifiers
             //Modifier type spells
-            cards.Add(new Card(scene, 184, 2, -4, ModifierType.HP, CreatureType.ALL));
-            cards.Add(new Card(scene, 185, 1, -2, ModifierType.HP, CreatureType.ALL));
-            cards.Add(new Card(scene, 186, 2, -4, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 187, 1, -2, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 188, 2, -4, ModifierType.CRIT, CreatureType.ALL));
-            cards.Add(new Card(scene, 189, 1, -2, ModifierType.CRIT, CreatureType.ALL));
-            cards.Add(new Card(scene, 190, 2, -4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
-            cards.Add(new Card(scene, 191, 1, -2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
-            cards.Add(new Card(scene, 192, 3, -6, ModifierType.POWER, CreatureType.ALL));
-            cards.Add(new Card(scene, 193, 3, -6, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(184, 2, -4, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(185, 1, -2, ModifierType.HP, CreatureType.ALL));
+            cards.Add(new Card(186, 2, -4, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(187, 1, -2, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(188, 2, -4, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(189, 1, -2, ModifierType.CRIT, CreatureType.ALL));
+            cards.Add(new Card(190, 2, -4, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(191, 1, -2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ALL));
+            cards.Add(new Card(192, 3, -6, ModifierType.POWER, CreatureType.ALL));
+            cards.Add(new Card(193, 3, -6, ModifierType.HP, CreatureType.ALL));
 
         }
 
@@ -316,14 +320,14 @@ namespace ARRG_Game
             int[] ground_markers = new int[54];
             for (int i = 0; i < ground_markers.Length; i++)
                 ground_markers[i] = i;
-            groundMarkerNode = new MarkerNode(scene.MarkerTracker, "ground_markers.txt", ground_markers);
+            groundMarkerNode = new MarkerNode(GlobalScene.scene.MarkerTracker, "ground_markers.txt", ground_markers);
 
 
-            scene.RootNode.AddChild(groundMarkerNode);
+            GlobalScene.scene.RootNode.AddChild(groundMarkerNode);
 
-            p = new Player(scene, 1, groundMarkerNode);
-            p2 = new Player(scene, 2, groundMarkerNode);
-            dialog = new Dialog(scene, Content);
+            p = new Player(1, groundMarkerNode);
+            p2 = new Player(2, groundMarkerNode);
+            dialog = new Dialog();
         }
 
         /// <summary>
@@ -385,11 +389,11 @@ namespace ARRG_Game
             {
                 switch (titleScreen.playerChoice())
                 {
-                    case CreatureType.BEASTS: talentScreen = new TalentScreen(scene, Content, 0); break;
-                    case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(scene, Content, 1); break;
-                    case CreatureType.ROBOTS: talentScreen = new TalentScreen(scene, Content, 2); break;
+                    case CreatureType.BEASTS: talentScreen = new TalentScreen(0); break;
+                    case CreatureType.DRAGONKIN: talentScreen = new TalentScreen(1); break;
+                    case CreatureType.ROBOTS: talentScreen = new TalentScreen(2); break;
                 }
-                titleScreen.Kill(scene);
+                titleScreen.Kill();
                 //Should we somehow free up the memory of the title screen?
                 menuState = MenuStates.TALENT;
                 //bigRed.updateMenuBrb(menuState,gameState);
@@ -410,7 +414,7 @@ namespace ARRG_Game
                 p.PurchasedMonsters = new List<MonsterBuilder>(initial_monsters);
                 p.SelectedMonsters = new List<MonsterBuilder>(initial_monsters);
 
-                preGame = new preGameScreen(scene, Content);
+                preGame = new preGameScreen();
                 menuState = MenuStates.PRE_GAME;
                 preGame.display();
             }
@@ -432,18 +436,18 @@ namespace ARRG_Game
                 {
                     case MenuStates.MARKET:
                         if (marketScreen == null)
-                            marketScreen = new MarketScreen(scene, Content, monsters);
+                            marketScreen = new MarketScreen(monsters);
                         marketScreen.Display(p);
                         break;
                     case MenuStates.INVENTORY:
                         if (inventoryScreen == null)
-                            inventoryScreen = new InventoryScreen(scene, Content, monsters);
+                            inventoryScreen = new InventoryScreen(monsters);
                         inventoryScreen.Display(p);
                         break;
                     case MenuStates.INGAME:
                         p.showHealth();
                         p2.showHealth();
-                        bigRed = new Brb(scene, menuState, gameState);
+                        bigRed = new Brb(menuState, gameState);
                         break;
                 }
             }
@@ -614,7 +618,7 @@ namespace ARRG_Game
              * from the scene and so it would either draw the camera image over
              * the title screen texture OR would draw the buttons behind the title
              * screen texture.  This should fix that. */
-            scene.UIRenderer.Draw(0.0f, false);
+            GlobalScene.scene.UIRenderer.Draw(0.0f, false);
         }
         /// <summary>
         /// Draw method for Talent state

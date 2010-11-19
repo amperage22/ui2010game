@@ -48,28 +48,28 @@ namespace ARRG_Game
         //int frameCount;
         //Random random = new Random();
 
-        public Card(Scene s, int markerNum, int manaCost, int mod, ModifierType modType, CreatureType creatureType)
+        public Card(int markerNum, int manaCost, int mod, ModifierType modType, CreatureType creatureType)
         {
             this.manaCost = manaCost;
             type = CardType.STAT_MOD;
             buff = new Buff(modType, creatureType, mod);
-            marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
-            s.RootNode.AddChild(marker);
+            marker = new MarkerNode(GlobalScene.scene.MarkerTracker, markerNum, 30d);
+            GlobalScene.scene.RootNode.AddChild(marker);
             marker.AddChild(node);
             marker.AddChild(line.addParticle("particleLine2"));
             loadModel();
         }
-        public Card(Scene s, CardType type, int markerNum, int manaCost, int mod)
+        public Card(CardType type, int markerNum, int manaCost, int mod)
         {
             this.manaCost = manaCost;
             this.type = type;
-            marker = new MarkerNode(s.MarkerTracker, markerNum, 30d);
+            marker = new MarkerNode(GlobalScene.scene.MarkerTracker, markerNum, 30d);
             switch (type)
             {
                 case CardType.DMG_DONE: dmgDone = mod; dmgPrevent = 0; break;
                 case CardType.DMG_PREVENT: dmgDone = 0; dmgPrevent = mod; break;
             }
-            s.RootNode.AddChild(marker);
+            GlobalScene.scene.RootNode.AddChild(marker);
             marker.AddChild(node);
             marker.AddChild(line.addParticle("particleLine2"));
 

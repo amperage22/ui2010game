@@ -35,10 +35,10 @@ namespace ARRG_Game
         private SpriteFont font;
         private DialogState state;
 
-        public Dialog(Scene scene, ContentManager content)
+        public Dialog()
         {
-            this.scene = scene;
-            this.content = content;
+            this.scene = GlobalScene.scene;
+            this.content = State.Content;
             font = content.Load<SpriteFont>("UIFont_Bold");
 
             CreateFrame();

@@ -61,10 +61,10 @@ namespace ARRG_Game
          * f The font to be used with within the talent screen being created
          * specialization The initial tree to display and tab to select
          */
-        public TalentScreen(Scene scene, ContentManager content, int specialization)
+        public TalentScreen(int specialization)
         {
-            this.scene = scene;
-            this.content = content;
+            this.scene = GlobalScene.scene;
+            this.content = State.Content;
             activeTab = (this.specialization = specialization);
             pointsRemaining = INITIAL_TALENT_POINTS;
             font = content.Load<SpriteFont>("UIFont");

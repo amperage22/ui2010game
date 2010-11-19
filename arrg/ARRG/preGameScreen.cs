@@ -36,10 +36,10 @@ namespace ARRG_Game
     static int timesPressed = 0; // ;) easter egg
     //private string preGameDecision;
 
-    public preGameScreen(Scene scene, ContentManager content)
+    public preGameScreen()
     {
-      this.scene = scene;
-      this.content = content;
+      this.scene = GlobalScene.scene;
+      this.content = State.Content;
       showButtonHelp = true;
 
       createFrame();
@@ -152,7 +152,7 @@ namespace ARRG_Game
 
             if (timesPressed >= 305 && timesPressed <= 306)
             {
-                (new Dialog(scene, content)).Display("Wow, you're really\ninto this game ;)\n\nWant some waffles?");
+                (new Dialog()).Display("Wow, you're really\ninto this game ;)\n\nWant some waffles?");
             }
         }
         else

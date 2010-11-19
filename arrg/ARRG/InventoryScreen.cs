@@ -48,14 +48,14 @@ namespace ARRG_Game
         private Player player;
         private MonsterBuilder[] monsters = new MonsterBuilder[15];
 
-        public InventoryScreen(Scene scene, ContentManager content, List<MonsterBuilder> monsters)
+        public InventoryScreen(List<MonsterBuilder> monsters)
         {
             if (monsters.Count != 15)
                 throw new Exception("I can't handle this case");
             foreach (MonsterBuilder m in monsters)
                 this.monsters[m.getID()] = m;
-            this.scene = scene;
-            this.content = content;
+            this.scene = GlobalScene.scene;
+            this.content = State.Content;
             showHelpFrame = true;
             numSelectedMonsters = 0;
             font = content.Load<SpriteFont>("UIFont_Bold");

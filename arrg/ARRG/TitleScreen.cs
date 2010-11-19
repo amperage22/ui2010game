@@ -30,16 +30,16 @@ namespace ARRG_Game
         private G2DPanel frame;
         private G2DButton[] creature = new G2DButton[3];
 
-        public TitleScreen(ContentManager c, Scene s)
+        public TitleScreen()
         {
-            titleScreen = c.Load<Texture2D>("Textures/title/title_screen");
+            titleScreen = State.Content.Load<Texture2D>("Textures/title/title_screen");
             point = new Vector2(0, 0);
             specialization = CreatureType.NONE;
-            createButtons(c, s);
+            createButtons();
             
         }
 
-        private void createButtons(ContentManager c, Scene s)
+        private void createButtons()
         {
             frame = new G2DPanel();
             frame.DrawBackground = false;
@@ -57,15 +57,15 @@ namespace ARRG_Game
                 creature[i].ActionPerformedEvent += new ActionPerformed(HandleSpecialization);
                 switch (i)
                 {
-                    case 0: creature[i].Texture = c.Load<Texture2D>("Textures/title/beasts"); break;
-                    case 1: creature[i].Texture = c.Load<Texture2D>("Textures/title/dragonkin"); break;
-                    case 2: creature[i].Texture = c.Load<Texture2D>("Textures/title/robots"); break;
+                    case 0: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/beasts"); break;
+                    case 1: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/dragonkin"); break;
+                    case 2: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/robots"); break;
                 }
                 creature[i].TextureColor = Color.White;
                 frame.AddChild(creature[i]);
             }
 
-            s.UIRenderer.Add2DComponent(frame);
+            GlobalScene.scene.UIRenderer.Add2DComponent(frame);
         }
 
         public void Draw(SpriteBatch sb)
@@ -90,9 +90,9 @@ namespace ARRG_Game
             return specialization;
         }
 
-        public void Kill(Scene s)
+        public void Kill()
         {
-            s.UIRenderer.Remove2DComponent(frame);
+            GlobalScene.scene.UIRenderer.Remove2DComponent(frame);
         }
     }
 }
