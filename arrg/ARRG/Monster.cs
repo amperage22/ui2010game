@@ -271,6 +271,20 @@ namespace ARRG_Game
           return attackTimer;
         }
 
+        //*****Implemented for ReadoutScreen**************************
+        public String Name
+        {
+            get { return name; }
+        }
+        public override String ToString()
+        {
+            String toReturn = name + "\nHealth: " + health + "\nPower: " + power + "\nTarget: ";
+            if (nearestEnemy != null)
+                toReturn += nearestEnemy.Name;
+            else
+                toReturn += "(none)";
+            return toReturn;
+        }
     }
 
     class MonsterBuilder
