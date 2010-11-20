@@ -55,6 +55,11 @@ namespace ARRG_Game
             set { die = value; }
         }
 
+        public int PlayerNum
+        {
+            get { return playerNum; }
+        }
+
         private List<MonsterBuilder> selectedMonsters;
         public List<MonsterBuilder> SelectedMonsters
         {

@@ -114,6 +114,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ARRG.cs" />
+    <Compile Include="ReadoutScreen.cs" />
     <Compile Include="Robots.cs" />
     <Compile Include="Talent.cs" />
     <Compile Include="TalentScreen.cs" />

@@ -94,6 +94,7 @@ namespace ARRG_Game
         TalentScreen talentScreen;
         MarketScreen marketScreen;
         InventoryScreen inventoryScreen;
+        ReadoutScreen p1Readout, p2Readout;
         Dialog dialog;
         SpriteBatch spriteBatch;
         preGameScreen preGame;
@@ -448,6 +449,14 @@ namespace ARRG_Game
                         p.showHealth();
                         p2.showHealth();
                         bigRed = new Brb(menuState, gameState);
+                        
+                        if (p1Readout == null)
+                        {
+                            p1Readout = new ReadoutScreen(p);
+                            p2Readout = new ReadoutScreen(p2);
+                        }
+                        p1Readout.toggleDisplay();
+                        p2Readout.toggleDisplay();
                         break;
                 }
             }
@@ -497,6 +506,8 @@ namespace ARRG_Game
             }
             foreach (Card c in cards)
                 c.Update(gameTime);
+            p1Readout.update();
+            p2Readout.update();
         }
         private void UpdateDraw()
         {
@@ -580,26 +591,31 @@ namespace ARRG_Game
             //When the player clicks the BRB while in this state...
             if (gameState != bigRed.getInGameState())
             {
+                bool gameOver = false;
                 if (p2.Health <= 0)
                 {
                     //Player 1 wins!
                     p.Gold += 10;
                     dialog.Display("Congratualations, you won 10 gold!");
-                    p.resetForNextRound();
-                    menuState = MenuStates.PRE_GAME;
-                    bigRed.Kill();
-                    p.hideHealth();
-                    p2.hideHealth();
+                    gameOver = true;
                 }
                 else if (p.Health <= 0)
                 {
                     //And player 1 loses...
                     dialog.Display("You lost this time around.\nTry again!");
+                    gameOver = true;
+                }
+
+                if (gameOver)
+                {
                     p.resetForNextRound();
-                    menuState = MenuStates.PRE_GAME;
-                    bigRed.Kill();
+                    p2.resetForNextRound();
                     p.hideHealth();
                     p2.hideHealth();
+                    p1Readout.toggleDisplay();
+                    p2Readout.toggleDisplay();
+                    bigRed.Kill();
+                    menuState = MenuStates.PRE_GAME;
                 }
             }
             gameState = bigRed.getInGameState();
