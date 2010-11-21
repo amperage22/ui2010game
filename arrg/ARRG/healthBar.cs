@@ -37,9 +37,9 @@ namespace ARRG_Game
     G2DLabel playerName, barHealth, barMana;
     ContentManager content;
 
-    public healthBar(Scene scene, int playerNum, int health, int mana)
+    public healthBar(int playerNum, int health, int mana)
     {
-      this.scene = scene;
+      this.scene = GlobalScene.scene;
       this.playerNum = playerNum;
       this.health = health;
       this.mana = mana;
