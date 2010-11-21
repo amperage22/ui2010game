@@ -218,7 +218,7 @@ namespace ARRG_Game
 
         public void showHealth()
         {
-            healthBar = new healthBar(scene, playerNum, health, mana);
+            healthBar = new healthBar(playerNum, health, mana);
         }
         public void hideHealth()
         {
