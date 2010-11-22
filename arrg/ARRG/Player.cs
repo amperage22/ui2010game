@@ -134,11 +134,11 @@ namespace ARRG_Game
 
         public void updateSummon()
         {
-            if (purchasedMonsters.Count == 0) return;
+            if (selectedMonsters.Count == 0) return;
             foreach (Die d in die)
             {
                 Random r = new Random();
-                d.setTopMarker(purchasedMonsters[r.Next(purchasedMonsters.Count)]);  //Randomly attach monster to die
+                d.setTopMarker(selectedMonsters[r.Next(selectedMonsters.Count)]);  //Randomly attach monster to die
             }
         }
         public void updateAttack(Die[] die2)

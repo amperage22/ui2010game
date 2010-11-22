@@ -271,7 +271,7 @@ namespace ARRG_Game
             initial_monsters.Add(new MonsterBuilder(CreatureID.ALEX, CreatureType.BEASTS, "WTF", "alexmodel", Content.Load<Texture2D>("Textures/inventory/d_alex"), 2, 2, false, 1, 0));
             monsters.AddRange(initial_monsters);
 
-            p2.PurchasedMonsters = monsters; //For testing purposes
+            p2.SelectedMonsters = monsters; //For testing purposes
 
 
             //Modifier type spells

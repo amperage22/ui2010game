@@ -48,7 +48,7 @@ namespace ARRG_Game
         private SpriteFont font;
         private TalentState state;
 
-#if debug
+#if DEBUG
         private const int INITIAL_TALENT_POINTS = 0;
 #else
         private const int INITIAL_TALENT_POINTS = 10;
