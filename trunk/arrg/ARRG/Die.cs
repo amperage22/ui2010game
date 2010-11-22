@@ -146,16 +146,16 @@ namespace ARRG_Game
                     {
                         prev = curr;
                         closest = d;
+                        if (d != null && d.CurrentMonster != null && currentMonster != null)
+                        {
+                            nearestEnemy = d;
+                            currentMonster.NearestEnemy = d.currentMonster;
+                            currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
+                        }
                     }
-                }
-
-                if (d != null && d.CurrentMonster != null && currentMonster != null)
-                {
-                    nearestEnemy = d;
-                    currentMonster.NearestEnemy = d.currentMonster;
-                    currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
-                }
+                }                
             }
+            
         }
         public void addBuffs(List<Buff> buffs)
         {

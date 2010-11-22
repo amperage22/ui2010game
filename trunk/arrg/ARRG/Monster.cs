@@ -93,7 +93,7 @@ namespace ARRG_Game
 
             transNode = new TransformNode();
             transNode.AddChild(monsterNode);
-            transNode.Scale *= 0.2f;
+            transNode.Scale *= 0.1f;
             transNode.Translation += new Vector3(10, 0, 20);
             buffs = new List<Buff>();
             transNode.AddChild(line.addParticle("particleLine"));
@@ -262,7 +262,10 @@ namespace ARRG_Game
         private void resetNearest()
         {
             if (nearestEnemy.IsDead)
+            {
                 nearestEnemy = null;
+                line.reset();
+            }
         }
         //*****End Monster-Monster Interactions********************
         public int getAttackTimer()

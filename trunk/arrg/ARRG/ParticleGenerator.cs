@@ -43,6 +43,8 @@ namespace ARRG_Game
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;
+            lineParticles.MinColor = new Color(0, 0, 0, 255);
+            lineParticles.MaxColor = new Color(255, 255, 255, 255);
             lineEffectNode = new ParticleNode();
             lineEffectNode.ParticleEffects.Add(lineParticles);
 
@@ -55,6 +57,8 @@ namespace ARRG_Game
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;
+            lineParticles.MinColor = new Color(0, 0, 0, 255);
+            lineParticles.MaxColor = new Color(255, 255, 255, 255);
             lineEffectNode.ParticleEffects.Add(lineParticles);
 
             lineParticles = new FireParticleEffect();
@@ -66,6 +70,8 @@ namespace ARRG_Game
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;
+            lineParticles.MinColor = new Color(0, 0, 0, 255);
+            lineParticles.MaxColor = new Color(255, 255, 255, 255);
             lineEffectNode.ParticleEffects.Add(lineParticles);
 
             lineEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
@@ -80,6 +86,10 @@ namespace ARRG_Game
             this.target = target;
             if (!lineEffectNode.Enabled)
                 lineEffectNode.Enabled = true;
+        }
+        public void reset()
+        {
+            lineEffectNode.ParticleEffects.Clear();
         }
         private void UpdateLine(Matrix worldTransform, List<ParticleEffect> particleEffects)
         {

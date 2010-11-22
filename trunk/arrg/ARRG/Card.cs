@@ -72,6 +72,7 @@ namespace ARRG_Game
             GlobalScene.scene.RootNode.AddChild(marker);
             marker.AddChild(node);
             marker.AddChild(line.addParticle("particleLine2"));
+            loadModel();
 
         }
         private void loadModel()
@@ -81,47 +82,48 @@ namespace ARRG_Game
             marker.AddChild(buffModel);
 
             String modelName = "";
-            switch (buff.Modifier)
+            if (type == CardType.STAT_MOD)
             {
-                case ModifierType.ADDITIONAL_ATTACK_CHANCE:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.FIREBREATH_ATTACK_CHANCE:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.LIGHTNING_ATTACK_CHANCE:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.DODGE:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.HIT:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.CRIT:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.PARRY:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.POWER:
-                case ModifierType.DAMAGE_MOD:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
-                case ModifierType.HP:
-                case ModifierType.HP_MOD:
-                    modelName = "cone";
-                    buffModel.Scale *= new Vector3(0.05f);
-                    break;
+                switch (buff.Modifier)
+                {
+                    case ModifierType.ADDITIONAL_ATTACK_CHANCE:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.FIREBREATH_ATTACK_CHANCE:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.LIGHTNING_ATTACK_CHANCE:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.DODGE:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.HIT:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.CRIT:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.PARRY:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.POWER:
+                    case ModifierType.DAMAGE_MOD:
+                        modelName = "cone";
+                        break;
+                    case ModifierType.HP:
+                    case ModifierType.HP_MOD:
+                        modelName = "cone";
+                        break;
+                }
             }
+            else if (type == CardType.DMG_PREVENT)
+                modelName = "shield";
+            else
+                modelName = "fireflower";
+
+
+            buffModel.Scale *= new Vector3(0.05f);
 
             GeometryNode GeodudeNode = new GeometryNode(modelName);
             GeodudeNode.Model = (Model)(new ModelLoader()).Load("Models/", modelName);
@@ -187,6 +189,7 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;
             }
+            line.reset();
         }
         public void Update(GameTime gameTime)
         {
