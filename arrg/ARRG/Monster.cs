@@ -281,12 +281,7 @@ namespace ARRG_Game
         }
         public override String ToString()
         {
-            String toReturn = name + "\nHealth: " + health + "\nPower: " + power + "\nTarget: ";
-            if (nearestEnemy != null)
-                toReturn += nearestEnemy.Name;
-            else
-                toReturn += "(none)";
-            return toReturn;
+            return name + "\nHealth: " + health + "\nPower: " + power;
         }
     }
 

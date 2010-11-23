@@ -871,17 +871,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\fireflower.fbx">
-      <Name>fireflower</Name>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\shield.fbx">
+      <Link>Models\shield.fbx</Link>
+      <Name>shield</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\shield.fbx">
-      <Link>Models\shield.fbx</Link>
-      <Name>shield</Name>
+    <Compile Include="..\..\..\GoblinXNAv3.4\data\Models\fireflower.fbx">
+      <Link>Models\fireflower.fbx</Link>
+      <Name>fireflower</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
