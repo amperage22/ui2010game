@@ -168,75 +168,66 @@ namespace ARRG_Game
     class LaserLineGenerator
     {
         Vector3 source, target;
-        ParticleNode lineEffectNode;
+        ParticleNode laserNode;
 
-        public ParticleNode addParticle(String name)
+        public ParticleNode addParticle()
         {
-            ParticleEffect lineParticles = new FireParticleEffect();
-            lineParticles.TextureName = name;
-            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
-            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
-            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
-            lineParticles.MinEndSize = lineParticles.MinStartSize;
-            lineParticles.EndVelocity = 0;
-            lineParticles.MinColor = new Color(0, 0, 0, 255);
-            lineParticles.MaxColor = new Color(255, 255, 255, 255);
-            lineEffectNode = new ParticleNode();
-            lineEffectNode.ParticleEffects.Add(lineParticles);
+            ParticleEffect laserParticle = new FireParticleEffect();
+            laserParticle.TextureName = "particleLine2";
+            laserParticle.MaxHorizontalVelocity = laserParticle.MinHorizontalVelocity;
+            laserParticle.MaxVerticalVelocity = laserParticle.MinVerticalVelocity;
+            laserParticle.MinStartSize = 8f;
+            laserParticle.MaxStartSize = 8f;
+            laserParticle.MaxEndSize = laserParticle.MaxStartSize;
+            laserParticle.MinEndSize = laserParticle.MinStartSize;
+            laserParticle.EndVelocity = 0;
+            laserParticle.MinColor = new Color(0, 0, 0, 127);
+            laserParticle.MaxColor = new Color(255, 255, 255, 255);
+            laserNode = new ParticleNode();
+            laserNode.ParticleEffects.Add(laserParticle);
 
-            lineParticles = new FireParticleEffect();
-            lineParticles.TextureName = name;
-            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
-            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
-            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
-            lineParticles.MinEndSize = lineParticles.MinStartSize;
-            lineParticles.EndVelocity = 0;
-            lineParticles.MinColor = new Color(0, 0, 0, 255);
-            lineParticles.MaxColor = new Color(255, 255, 255, 255);
-            lineEffectNode.ParticleEffects.Add(lineParticles);
+            laserParticle = new FireParticleEffect();
+            laserParticle.TextureName = "particleLine2";
+            laserParticle.MaxHorizontalVelocity = laserParticle.MinHorizontalVelocity;
+            laserParticle.MaxVerticalVelocity = laserParticle.MinVerticalVelocity;
+            laserParticle.MinStartSize = 8f;
+            laserParticle.MaxStartSize = 8f;
+            laserParticle.MaxEndSize = laserParticle.MaxStartSize;
+            laserParticle.MinEndSize = laserParticle.MinStartSize;
+            laserParticle.EndVelocity = 0;
+            laserParticle.MinColor = new Color(0, 0, 0, 127);
+            laserParticle.MaxColor = new Color(255, 255, 255, 255);
+            laserNode.ParticleEffects.Add(laserParticle);
 
-            lineParticles = new FireParticleEffect();
-            lineParticles.TextureName = name;
-            lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
-            lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
-            lineParticles.MaxEndSize = lineParticles.MaxStartSize;
-            lineParticles.MinEndSize = lineParticles.MinStartSize;
-            lineParticles.EndVelocity = 0;
-            lineParticles.MinColor = new Color(0, 0, 0, 255);
-            lineParticles.MaxColor = new Color(255, 255, 255, 255);
-            lineEffectNode.ParticleEffects.Add(lineParticles);
+            
 
-            lineEffectNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
-            lineEffectNode.Enabled = false;
+            laserNode.UpdateHandler += new ParticleUpdateHandler(UpdateLine);
+            laserNode.Enabled = false;
 
-            return lineEffectNode;
+            return laserNode;
 
         }
         public void update(Vector3 source, Vector3 target)
         {
             this.source = source;
             this.target = target;
-            if (!lineEffectNode.Enabled)
-                lineEffectNode.Enabled = true;
         }
         public void disable()
         {
-            lineEffectNode.Enabled = false;
+            laserNode.Enabled = false;
         }
         public void enable()
         {
-            lineEffectNode.Enabled = true;
+            laserNode.Enabled = true;
+        }
+        public void setSource(Vector3 source)
+        {
+            this.source = source;
         }
         private void UpdateLine(Matrix worldTransform, List<ParticleEffect> particleEffects)
         {
-            if (!lineEffectNode.Enabled)
-                lineEffectNode.Enabled = true;
+            if (!laserNode.Enabled)
+                laserNode.Enabled = true;
             if (Vector3.Zero.Equals(target))
                 return;
             Vector3 vel = target - source;

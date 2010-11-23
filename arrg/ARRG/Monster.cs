@@ -29,7 +29,7 @@ namespace ARRG_Game
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
         protected CreatureType type;
-        protected bool isSpecialAttack;
+        protected bool isSpecialAttack, isNormalAttack;
         protected GeometryNode monsterNode;
 
         public CreatureType Type
@@ -187,8 +187,7 @@ namespace ARRG_Game
                     nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
                 else nearestEnemy.defend(power, this);
             }
-            if (RandomHelper.GetRandomInt(100)+1 <= extraAttack ||
-                RandomHelper.GetRandomInt(100)+1 <= fireBreath || RandomHelper.GetRandomInt(100)+1 <= lightningAttack || isSpecialAttack)
+            if (RandomHelper.GetRandomInt(100)+1 <= extraAttack || isSpecialAttack)
             {
                 if (RandomHelper.GetRandomInt(100)+1 <= crit)
                     nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
