@@ -395,9 +395,8 @@ namespace ARRG_Game
                     case CreatureType.ROBOTS: talentScreen = new TalentScreen(2); break;
                 }
                 titleScreen.Kill();
-                //Should we somehow free up the memory of the title screen?
+                titleScreen = null;
                 menuState = MenuStates.TALENT;
-                //bigRed.updateMenuBrb(menuState,gameState);
                 talentScreen.Display();
             }
         }
@@ -418,6 +417,11 @@ namespace ARRG_Game
                 preGame = new preGameScreen();
                 menuState = MenuStates.PRE_GAME;
                 preGame.display();
+            }
+            else if (talentScreen.goBack())
+            {
+                menuState = MenuStates.TITLE;
+                titleScreen = new TitleScreen();
             }
         }
         /// <summary>

@@ -24,11 +24,11 @@ namespace ARRG_Game
 {
     class TalentScreen
     {
-        enum TalentState { READY, DISPLAYING, FINISHED };
+        enum TalentState { READY, DISPLAYING, GOBACK, FINISHED };
         private enum Creature { BEASTS = 0, DRAGONKIN = 1, ROBOTS = 2 };
         private const int TAB_ENABLED = 1, TAB_DISABLED = 0; //Used explicitly with tabTextures[,]
 
-        private bool showingHelp;
+        private bool showingHelp, displayUnlock;
         private G2DPanel backgroundFrame, mainFrame, talentFrame, helpFrame;
         private G2DButton[] tab = new G2DButton[3];
         private G2DButton[,] talentButton = new G2DButton[3, 3];
@@ -37,11 +37,11 @@ namespace ARRG_Game
         private TalentTree[] talents = new TalentTree[3];
         private int specialization, activeTab, pointsRemaining;
         private G2DLabel pointCount, tooltip;
-        private G2DButton submit, clear;
+        private G2DButton submit, clear, back;
         private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
         private Texture2D[,] tabTextures = new Texture2D[3,2];
         
-        private Color disabledColor = new Color(80, 80, 80);
+        private Color disabledColor = new Color(100, 100, 100);
 
         private Scene scene;
         private ContentManager content;
@@ -93,6 +93,7 @@ namespace ARRG_Game
                 scene.UIRenderer.Add2DComponent(backgroundFrame);
                 scene.UIRenderer.Add2DComponent(helpFrame);
                 showingHelp = true;
+                displayUnlock = true;
                 state = TalentState.DISPLAYING;
             }
         }
@@ -129,9 +130,10 @@ namespace ARRG_Game
                 mainFrame.AddChild(tab[i]);
             }
 
-            pointCount = new G2DLabel(String.Format("Points Remaining: {0}", pointsRemaining));
-            pointCount.Bounds = new Rectangle(0, 373, 110, 25);
+            pointCount = new G2DLabel(String.Format("Points: {0}", pointsRemaining));
             pointCount.TextFont = font;
+            Vector2 v = pointCount.TextFont.MeasureString(pointCount.Text);
+            pointCount.Bounds = new Rectangle(0, 373, (int)v.X + 8, 25);
             pointCount.TextColor = specialization == 0 ? Color.LightBlue : specialization == 1 ? Color.Pink : Color.LightGreen;
             pointCount.DrawBorder = true;
             pointCount.BorderColor = Color.White;
@@ -142,7 +144,7 @@ namespace ARRG_Game
             Texture2D stone_button = content.Load<Texture2D>("Textures/stone_button");
             submit = new G2DButton("Save");
             submit.TextFont = font;
-            submit.Bounds = new Rectangle(150, 373, 70, 25);
+            submit.Bounds = new Rectangle(70, 373, 70, 25);
             submit.Texture = stone_button;
             submit.TextureColor = disabledColor;
             submit.TextColor = Color.White;
@@ -152,13 +154,23 @@ namespace ARRG_Game
 
             clear = new G2DButton("Clear");
             clear.TextFont = font;
-            clear.Bounds = new Rectangle(230, 373, 70, 25);
+            clear.Bounds = new Rectangle(150, 373, 70, 25);
             clear.Texture = stone_button;
             clear.TextureColor = Color.White;
             clear.TextColor = Color.Black;
             clear.BorderColor = Color.White;
             clear.ActionPerformedEvent += new ActionPerformed(HandleClear);
             mainFrame.AddChild(clear);
+
+            back = new G2DButton("Back");
+            back.TextFont = font;
+            back.Bounds = new Rectangle(230, 373, 70, 25);
+            back.Texture = stone_button;
+            back.TextureColor = Color.White;
+            back.TextColor = Color.Black;
+            back.BorderColor = Color.White;
+            back.ActionPerformedEvent += new ActionPerformed(HandleBack);
+            mainFrame.AddChild(back);
 
             ChangeToTree(activeTab);
 
@@ -212,14 +224,26 @@ namespace ARRG_Game
                 }
             }
             pointsRemaining = INITIAL_TALENT_POINTS;
-            pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+            pointCount.Text = String.Format("Points: {0}", pointsRemaining);
             submit.TextureColor = disabledColor;
             submit.TextColor = Color.White;
+        }
+
+        private void HandleBack(object source)
+        {
+            scene.UIRenderer.Remove2DComponent(backgroundFrame);
+            if (showingHelp) removeHelp();
+            state = TalentState.GOBACK;
         }
 
         public bool wasSubmitted()
         {
             return state == TalentState.FINISHED;
+        }
+
+        public bool goBack()
+        {
+            return state == TalentState.GOBACK;
         }
 
         public List<Buff> getBuffs()
@@ -343,7 +367,7 @@ namespace ARRG_Game
                                     submit.TextureColor = Color.White;
                                     submit.TextColor = Color.Black;
                                 }
-                                pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+                                pointCount.Text = String.Format("Points: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                                 if (talents[activeTab].isMaxed(i, j))
                                 {
@@ -391,7 +415,7 @@ namespace ARRG_Game
 
                                 submit.TextureColor = disabledColor;
                                 submit.TextColor = Color.White;
-                                pointCount.Text = String.Format("Points Remaining: {0}", pointsRemaining);
+                                pointCount.Text = String.Format("Points: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                                 talentButton[i, j].TextureColor = Color.White;
                                 pointsAlloc[i, j].TextColor = Color.White;
@@ -425,28 +449,38 @@ namespace ARRG_Game
         {
             //Find the button that got hovered over, if found...
             bool tipFound = false;
-            if (submit.PaintBounds.Contains(mouse) && pointsRemaining != 0)
+            //Check for the backgroundFrame to remove the tip if the unlocking dialog is up
+            if (backgroundFrame.Enabled)
             {
-                tooltip.Text = "You must spend ALL your talent points first!";
-                tipFound = true;
-            }
-            for (int i = 0; i < 3 && !tipFound; i++)
-            {
-                if (tab[i].PaintBounds.Contains(mouse))
+                if (submit.PaintBounds.Contains(mouse) && pointsRemaining != 0)
                 {
-                    if (i == activeTab || talents[specialization].getPointsAllocd() >= MULTIPLE_TREE_THRESHOLD) break;
-                    tooltip.Text = getTabHelpString();
+                    tooltip.Text = "You must spend ALL your talent points first!";
                     tipFound = true;
-                    break;
                 }
-                for (int j = 0; j < 3 && !tipFound; j++)
+                else if (back.PaintBounds.Contains(mouse))
                 {
-                    if (i == 2 && j != 1) continue;
-                    if (talentButton[i, j].PaintBounds.Contains(mouse))
+                    tooltip.Text = "Click to go back and re-specialize.\nQuiter...";
+                    tipFound = true;
+                }
+
+                for (int i = 0; i < 3 && !tipFound; i++)
+                {
+                    if (tab[i].PaintBounds.Contains(mouse))
                     {
-                        tooltip.Text = talents[activeTab].getDescription(i, j);
+                        if (i == activeTab || talents[specialization].getPointsAllocd() >= MULTIPLE_TREE_THRESHOLD) break;
+                        tooltip.Text = getTabHelpString();
                         tipFound = true;
                         break;
+                    }
+                    for (int j = 0; j < 3 && !tipFound; j++)
+                    {
+                        if (i == 2 && j != 1) continue;
+                        if (talentButton[i, j].PaintBounds.Contains(mouse))
+                        {
+                            tooltip.Text = talents[activeTab].getDescription(i, j);
+                            tipFound = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -530,6 +564,15 @@ namespace ARRG_Game
             //Make sure to close all tiers above it too!
             closeTier(t + 1);
         }
+        private void dialogAcknowledged(object o)
+        {
+            //Dialog d = (Dialog)o;
+            displayUnlock = false;
+            backgroundFrame.Enabled = true;
+            for (int k = 0; k < 3; k++)
+                if (k != specialization)
+                    tab[k].TextureColor = disabledColor;
+        }
         private void openSecondaryTabs()
         {
             for (int k = 0; k < 3; k++)
@@ -539,6 +582,13 @@ namespace ARRG_Game
                     tab[k].TextureColor = disabledColor;
                     tab[k].DrawBorder = false;
                 }
+            if (displayUnlock)
+            {
+                for (int k = 0; k < 3; k++)
+                    tab[k].TextureColor = Color.White;
+                backgroundFrame.Enabled = false;
+                new Dialog().Display("You have unlocked 2 more tabs above!\n\nYou can now choose them and place\npoints into them if you want to :)", new ActionPerformed(dialogAcknowledged));
+            }
         }
         private void closeSecondaryTabs()
         {
