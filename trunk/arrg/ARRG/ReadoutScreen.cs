@@ -24,8 +24,11 @@ namespace ARRG_Game
 {
     class ReadoutScreen
     {
+        private const int SIZEOFTARGETLABEL = 15; //pixels tall
+
         private G2DPanel mainPanel;
         private G2DLabel[] output = new G2DLabel[Player.MAX_NUM_DIE];
+        private G2DLabel[] target = new G2DLabel[Player.MAX_NUM_DIE];
         private Player player;
 
         public ReadoutScreen(Player player)
@@ -57,15 +60,34 @@ namespace ARRG_Game
                 output[i].VerticalAlignment = GoblinEnums.VerticalAlignment.Bottom;
                 output[i].TextFont = font;
                 output[i].TextColor = Color.White;
+                target[i] = new G2DLabel();
+                target[i].TextFont = font;
+                output[i].VerticalAlignment = GoblinEnums.VerticalAlignment.Top;
                 if (player.PlayerNum == 1)
                 {
-                    output[i].Bounds = new Rectangle(5 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - 5);
+                    Rectangle r = new Rectangle(5 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
+                    output[i].Bounds = r;
+                    
+                    r.Y = r.Height;
+                    r.Height = SIZEOFTARGETLABEL;
+                    target[i].Bounds = r;
+
+                    target[i].TextColor = new Color(0, 100, 255);
                 }
                 else
                 {
-                    output[i].Bounds = new Rectangle(10 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - 5);
+                    Rectangle r = new Rectangle(10 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
+                    output[i].Bounds = r;
+
+                    r.Y = r.Height;
+                    r.Height = SIZEOFTARGETLABEL;
+                    target[i].Bounds = r;
+
+                    target[i].TextColor = new Color(247, 0, 0);
                 }
+
                 mainPanel.AddChild(output[i]);
+                mainPanel.AddChild(target[i]);
             }
 
             GlobalScene.scene.UIRenderer.Add2DComponent(mainPanel);
@@ -77,10 +99,17 @@ namespace ARRG_Game
         {
             Die[] dice = player.Die;
             for (int d = 0; d < dice.Length; d++)
-                if (dice[d].CurrentMonster != null)
+                if (dice[d].CurrentMonster != null) {
                     output[d].Text = dice[d].CurrentMonster.ToString();
-                else
+                    Monster nearestEnemy = dice[d].CurrentMonster.NearestEnemy;
+                    if (nearestEnemy != null)
+                        target[d].Text = nearestEnemy.Name;
+                    else
+                        target[d].Text = "";
+                } else {
                     output[d].Text = "No Monster";
+                    target[d].Text = "";
+                }
         }
 
         public bool isDisplaying()
