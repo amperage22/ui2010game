@@ -1,29 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 
-using GoblinXNA;
-using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
-using GoblinXNA.Graphics.Geometry;
-using GoblinXNA.Graphics.ParticleEffects;
-using GoblinXNA.Device.Generic;
-using GoblinXNA.Device.Capture;
-using GoblinXNA.Device.Vision;
-using GoblinXNA.Device.Vision.Marker;
-using GoblinXNA.Device.Util;
-using GoblinXNA.Physics;
-using GoblinXNA.Helpers;
 
 
 namespace ARRG_Game
@@ -139,23 +119,20 @@ namespace ARRG_Game
             Die closest;
             foreach (Die d in die)
             {
-                if (d != null && d.CurrentMonster != null)
+                if (d != null && d.CurrentMonster != null && currentMonster != null)
                 {
                     curr = Vector3.Distance(UpMarker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
                     if (curr < prev)
                     {
                         prev = curr;
                         closest = d;
-                        if (d != null && d.CurrentMonster != null && currentMonster != null)
-                        {
-                            nearestEnemy = d;
-                            currentMonster.NearestEnemy = d.currentMonster;
-                            currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
-                        }
+                        nearestEnemy = d;
+                        currentMonster.NearestEnemy = d.currentMonster;
+                        currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
                     }
-                }                
+                }
             }
-            
+
         }
         public void addBuffs(List<Buff> buffs)
         {

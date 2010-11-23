@@ -1,30 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 
 using Model = GoblinXNA.Graphics.Model;
-using GoblinXNA;
 using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
-using GoblinXNA.Graphics.Geometry;
-using GoblinXNA.Graphics.ParticleEffects;
-using GoblinXNA.Device.Generic;
-using GoblinXNA.Device.Capture;
-using GoblinXNA.Device.Vision;
-using GoblinXNA.Device.Vision.Marker;
-using GoblinXNA.Device.Util;
-using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
 
 namespace ARRG_Game
@@ -46,6 +29,14 @@ namespace ARRG_Game
         protected string name;              //Instantiated through Monster
         protected Monster nearestEnemy;
         protected CreatureType type;
+        protected bool isSpecialAttack;
+        protected GeometryNode monsterNode;
+
+        public CreatureType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
         protected ParticleLineGenerator line = new ParticleLineGenerator();
         protected int attackTimer = ATTACK_LENGTH;
         protected Vector3 origin;
@@ -76,7 +67,7 @@ namespace ARRG_Game
             dmgPrevented = new List<int>();
             ModelLoader loader = new ModelLoader();
             Model monsterModel = (Model)loader.Load("Models/", model);
-            GeometryNode monsterNode = new GeometryNode("Robot");
+            monsterNode = new GeometryNode("Robot");
             monsterNode.Model = monsterModel;
             if (!useInternal)
             {
@@ -135,7 +126,7 @@ namespace ARRG_Game
         {
             foreach (Buff b in buffs)
             {
-                if (b.AffectedCreature == CreatureType.ALL || b.AffectedCreature == type)
+                if (b.AffectedCreature == CreatureType.ALL || b.AffectedCreature == Type)
                     switch (b.Modifier)
                     {
                         case ModifierType.POWER: power += b.Amount;
@@ -171,7 +162,7 @@ namespace ARRG_Game
                 isDead = true;
         }
 
-        public void applyLine(Vector3 source, Vector3 target)
+        public virtual void applyLine(Vector3 source, Vector3 target)
         {
             line.update(source, target);
         }
@@ -179,10 +170,10 @@ namespace ARRG_Game
         public void defend(int dmg, Monster attacker)
         {
             dealDirectDmg(dmg);
-            if (RandomHelper.GetRandomInt(100) <= parry)
+            if (RandomHelper.GetRandomInt(100)+1 <= parry)
                 attacker.dealDirectDmg(power);
         }
-        public void dealAttackDmg()
+        public virtual void dealAttackDmg()
         {
             if (isDead || nearestEnemy == null)
                 return;
@@ -190,16 +181,16 @@ namespace ARRG_Game
             //Needs to be finished
             double chanceToHit = hit - nearestEnemy.dodge;
 
-            if (RandomHelper.GetRandomInt(100) <= chanceToHit)
+            if (RandomHelper.GetRandomInt(100)+1 <= chanceToHit)
             {
-                if (RandomHelper.GetRandomInt(100) <= crit)
-                    nearestEnemy.defend((int)Math.Floor(1.5 * power),this);
-                else nearestEnemy.defend(power,this);
+                if (RandomHelper.GetRandomInt(100)+1 <= crit)
+                    nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
+                else nearestEnemy.defend(power, this);
             }
-            if (RandomHelper.GetRandomInt(100) <= extraAttack || 
-                RandomHelper.GetRandomInt(100) <= fireBreath || RandomHelper.GetRandomInt(100) <= lightningAttack)
+            if (RandomHelper.GetRandomInt(100)+1 <= extraAttack ||
+                RandomHelper.GetRandomInt(100)+1 <= fireBreath || RandomHelper.GetRandomInt(100)+1 <= lightningAttack || isSpecialAttack)
             {
-                if (RandomHelper.GetRandomInt(100) <= crit)
+                if (RandomHelper.GetRandomInt(100)+1 <= crit)
                     nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
                 else nearestEnemy.defend(power, this);
             }
@@ -228,33 +219,34 @@ namespace ARRG_Game
         {
             float modifier;
             //Should create simple "animation" of Monsters atack
-          origin = transNode.Translation;
-          //Console.Write(DateTime.Now.Second);
-          modifier = 0.01f;
-          Console.WriteLine("inloop");
+            origin = transNode.Translation;
+            //Console.Write(DateTime.Now.Second);
+            modifier = 0.01f;
+            Console.WriteLine("inloop");
 
 
             transNode.Translation += new Vector3(modifier, 0, 0);
-          /*
-          while (DateTime.Now.Millisecond < endMilli)
-          {
+            /*
+            while (DateTime.Now.Millisecond < endMilli)
+            {
 
-            transNode.Translation += new Vector3(modifier, 0, 0);
-            startMilli += 1;
+              transNode.Translation += new Vector3(modifier, 0, 0);
+              startMilli += 1;
             
-          }
-          Console.WriteLine(DateTime.Now.Second);
+            }
+            Console.WriteLine(DateTime.Now.Second);
 
-          *///transNode.Translation = origin;
-          transNode.Translation += new Vector3(modifier, 0, 0);
-          
+            */
+            //transNode.Translation = origin;
+            transNode.Translation += new Vector3(modifier, 0, 0);
+
         }
-          
+
 
         public virtual void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
-          transNode.Translation = origin;
+            transNode.Translation = origin;
         }
         //********End Dice-Monster Interactions********************
 
@@ -264,14 +256,14 @@ namespace ARRG_Game
             if (nearestEnemy.IsDead)
             {
                 nearestEnemy = null;
-                line.reset();
+                line.disable();
             }
         }
         //*****End Monster-Monster Interactions********************
         public int getAttackTimer()
         {
 
-          return attackTimer;
+            return attackTimer;
         }
 
         //*****Implemented for ReadoutScreen**************************
@@ -317,7 +309,7 @@ namespace ARRG_Game
             {
                 case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal);
                 case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);
-                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal,scene);
+                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal, scene);
             }
             return new Monster(name, model, health, power, useInternal);
         }
