@@ -21,7 +21,7 @@ namespace ARRG_Game
             hit = 85;
             dodge = 25;
             crit = 30;
-            type = CreatureType.ROBOTS;
+            Type = CreatureType.ROBOTS;
             showAttack = false;
             this.scene = scene;
             origin = transNode;

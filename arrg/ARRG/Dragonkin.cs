@@ -1,34 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 
-using GoblinXNA;
-using GoblinXNA.Graphics;
 using GoblinXNA.SceneGraph;
-using Model = GoblinXNA.Graphics.Model;
-using GoblinXNA.Graphics.Geometry;
-using GoblinXNA.Graphics.ParticleEffects;
-using GoblinXNA.Device.Generic;
-using GoblinXNA.Device.Capture;
-using GoblinXNA.Device.Vision;
-using GoblinXNA.Device.Vision.Marker;
-using GoblinXNA.Device.Util;
-using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
 
 namespace ARRG_Game
 {
     class Dragonkin : Monster
     {
-
-      private TransformNode origin;
+        private FireGenerator fire = new FireGenerator();
+        private TransformNode origin;
+        protected bool isNormalAttack;
 
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
@@ -36,22 +18,43 @@ namespace ARRG_Game
             hit = 80;
             dodge = 20;
             crit = 40;
-            type = CreatureType.DRAGONKIN;
+            Type = CreatureType.DRAGONKIN;
             origin = transNode;
+            transNode.AddChild(fire.addParticle());
+            fire.setSource(monsterNode.BoundingVolume.Center);
+            
+        }
+
+        public override void applyLine(Vector3 source, Vector3 target)
+        {
+            base.applyLine(source, target);
+            fire.update(source, target);
+            fire.disable();
         }
 
 
         public override void startAttackAnimation()
         {
-            if (attackTimer-- > 0)
+
+            if (!isSpecialAttack && !isNormalAttack && RandomHelper.GetRandomInt(100) + 1 <= fireBreath )
+            {
+                fire.setSource(monsterNode.BoundingVolume.Center);
+                isSpecialAttack = true;
+                fire.enable();
+            }
+            else if (attackTimer-- > 0 && !isSpecialAttack)
+            {
+                isNormalAttack = true;
                 transNode.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(10));
+            }
+
             //else transNode.Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathHelper.ToRadians(0));
         }
-       
+
         public override void endAttackAnimation()
         {
             //Should end simple "animation" of Monsters atack
-          //transNode = origin;
+            //transNode = origin;
         }
         //********End Dice-Monster Interactions********************
     }

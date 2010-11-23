@@ -16,7 +16,7 @@ namespace ARRG_Game
             hit = 70;
             dodge = 40;
             crit = 30;
-            type = CreatureType.BEASTS;
+            Type = CreatureType.BEASTS;
         }
 
         public override void startAttackAnimation()
