@@ -10,7 +10,7 @@ namespace ARRG_Game
     {
         private FireGenerator fire = new FireGenerator();
         private TransformNode origin;
-        protected bool isNormalAttack;
+        
 
         public Dragonkin(string name, String model, int health, int power, bool useInternal)
             : base(name, model, health, power, useInternal)
@@ -21,7 +21,6 @@ namespace ARRG_Game
             Type = CreatureType.DRAGONKIN;
             origin = transNode;
             transNode.AddChild(fire.addParticle());
-            fire.setSource(monsterNode.BoundingVolume.Center);
             
         }
 
