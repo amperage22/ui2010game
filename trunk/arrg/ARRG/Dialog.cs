@@ -29,6 +29,7 @@ namespace ARRG_Game
         private G2DPanel frame;
         private G2DButton button;
         private G2DLabel message;
+        private ActionPerformed callback;
 
         private Scene scene;
         private ContentManager content;
@@ -56,6 +57,12 @@ namespace ARRG_Game
                 state = DialogState.DISPLAYING;
             }
         }
+        public void Display(String message, ActionPerformed callback)
+        {
+            Display(message);
+            this.callback = callback;
+        }
+        
 
         private void CreateFrame()
         {
@@ -68,6 +75,7 @@ namespace ARRG_Game
             message = new G2DLabel();
             message.TextFont = font;
             message.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
+            message.VerticalAlignment = GoblinEnums.VerticalAlignment.Center;
             frame.AddChild(message);
 
             button = new G2DButton("Okay!");
@@ -87,6 +95,8 @@ namespace ARRG_Game
         private void HandleButton(object source)
         {
             scene.UIRenderer.Remove2DComponent(frame);
+            if (callback != null)
+                callback(this);
             frame.Enabled = false;
             state = DialogState.FINISHED;
         }
