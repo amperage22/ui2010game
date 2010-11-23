@@ -44,22 +44,30 @@ namespace ARRG_Game
             frame = new G2DPanel();
             frame.DrawBackground = false;
             frame.DrawBorder = false;
-            frame.Bounds = new Rectangle(8, 300, 784, 256);
+            frame.Bounds = new Rectangle(8, 325, 784, 256);
 
             for (int i = 0; i < 3; i++)
             {
                 creature[i] = new G2DButton();
                 creature[i].Bounds = new Rectangle(i * 264, 0, 256, 256);
-                creature[i].BorderColor = Color.Black;
-                creature[i].HighlightColor = Color.White;
+                creature[i].BorderColor = Color.White;
                 creature[i].DrawBorder = true;
                 creature[i].DrawBackground = false;
                 creature[i].ActionPerformedEvent += new ActionPerformed(HandleSpecialization);
                 switch (i)
                 {
-                    case 0: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/beasts"); break;
-                    case 1: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/dragonkin"); break;
-                    case 2: creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/robots"); break;
+                    case 0:
+                        creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/beasts");
+                        creature[i].HighlightColor = Color.Blue;
+                        break;
+                    case 1:
+                        creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/dragonkin");
+                        creature[i].HighlightColor = Color.Red;
+                        break;
+                    case 2:
+                        creature[i].Texture = State.Content.Load<Texture2D>("Textures/title/robots");
+                        creature[i].HighlightColor = Color.Green;
+                        break;
                 }
                 creature[i].TextureColor = Color.White;
                 frame.AddChild(creature[i]);
