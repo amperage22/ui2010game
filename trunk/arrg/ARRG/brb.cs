@@ -25,6 +25,7 @@ using GoblinXNA.Physics;
 using GoblinXNA.Helpers;
 using GoblinXNA.UI;
 using GoblinXNA.UI.UI2D;
+using GoblinXNA.Device.Generic;
 
 namespace ARRG_Game
 {
@@ -55,6 +56,7 @@ namespace ARRG_Game
             brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
             brbButton.MouseReleasedEvent += new MouseReleased(updateMenuBrb);
             brbButton.TextFont = content.Load<SpriteFont>("UIFont");
+            KeyboardInput.Instance.KeyPressEvent += new HandleKeyPress(KeyPressHandler);
 
             scene.UIRenderer.Add2DComponent(brbButton);
         }
@@ -122,6 +124,56 @@ namespace ARRG_Game
                     brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
                     break;
             }
+        }
+
+
+        private void KeyPressHandler(Keys keys, KeyModifier modifier)
+        {
+         
+          if (keys == Keys.Space)
+          {
+            switch (curState)
+            {
+              case MenuStates.INGAME: gameState = (gameState == InGameStates.DISCARD ? InGameStates.DRAW : ++gameState); brbButton.Text = "";
+                switch (gameState)
+                {
+                  case InGameStates.ATTACK:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
+                    break;
+                  case InGameStates.DAMAGE:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
+                    break;
+                  case InGameStates.DISCARD:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
+                    break;
+                  case InGameStates.DRAW:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
+                    break;
+                  case InGameStates.SUMMON:
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbSummon");
+                    break;
+                  case default(InGameStates):
+                    break;
+                }
+                break;
+              case MenuStates.INVENTORY:
+                brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbInventory");
+                break;
+              case MenuStates.MARKET:
+                brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbMarket");
+                break;
+              case MenuStates.TITLE:
+                brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+                break;
+              case MenuStates.TALENT:
+                brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbTalent");
+                break;
+              case default(MenuStates):
+                brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+                break;
+            }
+
+          }
         }
 
     }
