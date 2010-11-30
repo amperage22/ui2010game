@@ -6,6 +6,12 @@ using Microsoft.Xna.Framework;
 using GoblinXNA.SceneGraph;
 
 
+using Microsoft.Xna.Framework.Graphics;
+
+using Model = GoblinXNA.Graphics.Model;
+using GoblinXNA.Graphics;
+
+
 namespace ARRG_Game
 {
     class Die
@@ -18,8 +24,10 @@ namespace ARRG_Game
         private Monster currentMonster;
         private MarkerNode ground;
         private MarkerNode upMarker;
-
+        private int dieNum;
         private Die nearestEnemy;
+        protected GeometryNode discNode;
+        protected TransformNode transNode;
 
 
 
@@ -41,6 +49,7 @@ namespace ARRG_Game
             }
             this.ground = ground;
             scene = s;
+            this.dieNum = dieNum;
         }
 
         private bool markerSwitch(MarkerNode side)
@@ -70,7 +79,10 @@ namespace ARRG_Game
                         if (!markerSwitch(side))
                         {
                             if (currentMonster != null)
+                            {
                                 upMarker.RemoveChild(currentMonster.TransNode);
+                                removeDisc();
+                            }
 
                             upMarker = side;
                             addMonster(m.createMonster());
@@ -82,6 +94,7 @@ namespace ARRG_Game
                         if (side.Equals(upMarker))
                         {
                             upMarker.RemoveChild(currentMonster.TransNode);
+                            removeDisc();
                             currentMonster = null;
                             upMarker = null;
                         }
@@ -96,7 +109,50 @@ namespace ARRG_Game
             {
                 upMarker.AddChild(m.TransNode);
                 currentMonster = m;
+                addDisc();
             }
+        }
+        private void addDisc()
+        {
+            ModelLoader loader = new ModelLoader();
+            Model discModel = (Model)loader.Load("Models/", "disc");
+            discNode = new GeometryNode("Disc");
+            discNode.Model = discModel;
+
+            Material discMaterial = new Material();
+            discMaterial.Diffuse = getDiscColor();
+            discMaterial.Specular = Color.White.ToVector4();
+            discMaterial.SpecularPower = 2;
+            discMaterial.Emissive = Color.Black.ToVector4();
+            discNode.Material = discMaterial;
+
+
+            transNode = new TransformNode();
+            transNode.AddChild(discNode);
+            transNode.Scale *= 0.07f;
+            transNode.Translation += new Vector3(-15, 0, 5);
+            upMarker.AddChild(transNode);
+        }
+        private void removeDisc()
+        {
+            if (upMarker != null)
+                upMarker.RemoveChild(transNode);
+        }
+        private Vector4 getDiscColor()
+        {
+            Vector4 color;
+            switch (dieNum)
+            {
+                case 0: color = Color.Red.ToVector4(); break;
+                case 1: color = Color.Green.ToVector4(); break;
+                case 2: color = Color.Blue.ToVector4(); break;
+                case 3: color = Color.White.ToVector4(); break;
+                case 4: color = Color.Black.ToVector4(); break;
+                case 5: color = Color.Cyan.ToVector4(); break;
+                default: color = Color.Cyan.ToVector4(); break;
+            }
+            return color;
+            
         }
 
         public Monster CurrentMonster
@@ -108,6 +164,7 @@ namespace ARRG_Game
         {
             if (currentMonster != null)
                 upMarker.RemoveChild(currentMonster.TransNode);
+            removeDisc();
             currentMonster = null;
             upMarker = null;
             nearestEnemy = null;
