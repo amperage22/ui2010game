@@ -32,7 +32,7 @@ namespace ARRG_Game
 
     Player player;
     Scene scene;
-    int health, mana, playerNum;
+    int health, mana, playerNum, healthRatio, manaRatio;
     Boolean player1;
     G2DLabel playerName, barHealth, barMana;
     ContentManager content;
@@ -44,6 +44,8 @@ namespace ARRG_Game
       this.health = health;
       this.mana = mana;
       this.content = State.Content;
+      healthRatio = (360 - 57) / health; // (barlength-(brblength/2)) / health
+      manaRatio = (220 - 57) / mana;
       createObjects();
     }
 
@@ -95,7 +97,7 @@ namespace ARRG_Game
 
     public void adjustHealth(int modifier)
     {
-      int newmod = modifier * 15;
+        int newmod = modifier * healthRatio;
       if(playerNum ==1)
       {
         barHealth.Bounds = new Rectangle((barHealth.Bounds.X - newmod), 10, (barHealth.Bounds.Width + newmod), 60);
@@ -110,7 +112,7 @@ namespace ARRG_Game
 
     public void adjustMana(int modifier)
     {
-      int newmod = modifier * 12;
+      int newmod = modifier * manaRatio;
       if (playerNum == 1)
       {
         barMana.Bounds = new Rectangle((barMana.Bounds.X - newmod), 40, (barMana.Bounds.Width + newmod), 60);
