@@ -85,12 +85,12 @@ namespace ARRG_Game
             if (type == CardType.STAT_MOD)
             {
                 if (buff.mod < 0)
-                    modelName = "pumpkin";
-                else modelName = "sword";
+                    modelName = "battleAxe";
+                else modelName = "swordCustom";
 
             }
             else if (type == CardType.DMG_PREVENT)
-                modelName = "shield";
+                modelName = "shieldCustom";
             else
                 modelName = "fireflower";
 
