@@ -20,8 +20,8 @@ namespace ARRG_Game
             lineParticles.TextureName = name;
             lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
             lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
+            lineParticles.MinStartSize = 6f;
+            lineParticles.MaxStartSize = 6f;
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;
@@ -34,8 +34,8 @@ namespace ARRG_Game
             lineParticles.TextureName = name;
             lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
             lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
+            lineParticles.MinStartSize = 6f;
+            lineParticles.MaxStartSize = 6f;
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;
@@ -47,8 +47,8 @@ namespace ARRG_Game
             lineParticles.TextureName = name;
             lineParticles.MaxHorizontalVelocity = lineParticles.MinHorizontalVelocity;
             lineParticles.MaxVerticalVelocity = lineParticles.MinVerticalVelocity;
-            lineParticles.MinStartSize = 2f;
-            lineParticles.MaxStartSize = 2f;
+            lineParticles.MinStartSize = 6f;
+            lineParticles.MaxStartSize = 6f;
             lineParticles.MaxEndSize = lineParticles.MaxStartSize;
             lineParticles.MinEndSize = lineParticles.MinStartSize;
             lineParticles.EndVelocity = 0;

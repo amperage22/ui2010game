@@ -84,38 +84,10 @@ namespace ARRG_Game
             String modelName = "";
             if (type == CardType.STAT_MOD)
             {
-                switch (buff.Modifier)
-                {
-                    case ModifierType.ADDITIONAL_ATTACK_CHANCE:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.FIREBREATH_ATTACK_CHANCE:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.LIGHTNING_ATTACK_CHANCE:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.DODGE:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.HIT:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.CRIT:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.PARRY:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.POWER:
-                    case ModifierType.DAMAGE_MOD:
-                        modelName = "cone";
-                        break;
-                    case ModifierType.HP:
-                    case ModifierType.HP_MOD:
-                        modelName = "cone";
-                        break;
-                }
+                if (buff.mod < 0)
+                    modelName = "pumpkin";
+                else modelName = "sword";
+
             }
             else if (type == CardType.DMG_PREVENT)
                 modelName = "shield";
@@ -184,7 +156,7 @@ namespace ARRG_Game
                 case CardType.STAT_MOD: nearestMonster.addBuff(buff);
                     if (buff.Amount > 0)
                         nearestMonster.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
-                    else if (buff.Amount < 0) nearestMonster.TransNode.Scale /= (float)(-buff.Amount * BUFF_SCALE);
+                    else if (buff.Amount < 0) nearestMonster.TransNode.Scale *= (float)(-buff.Amount * BUFF_SCALE);
                     break;
                 case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;

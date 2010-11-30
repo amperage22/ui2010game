@@ -42,7 +42,7 @@ namespace ARRG_Game
                     tier2[0] = new Talent(2, ModifierType.HIT, CreatureType.ROBOTS, 2, "chance for ROBOTS to\nHIT the enemy.");
                     tier2[1] = new Talent(2, ModifierType.ADDITIONAL_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to attack\nTWICE in one turn.");
                     tier2[2] = new Talent(5, ModifierType.PARRY, CreatureType.ROBOTS, 2, "chance for your ROBOTS to\nPARRY an attack.");
-                    tier3 = new Talent(30, ModifierType.LIGHTNING_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to cast a\nLIGHTNING BOLT attack.");
+                    tier3 = new Talent(30, ModifierType.LASER_ATTACK_CHANCE, CreatureType.ROBOTS, 1, "chance for your ROBOTS to shoot a\nLASER beam pew pew.");
                     break;
                 default:
                     throw new Exception(String.Format("Bad CreatureType passed to TalentTree constructor {0}", c));

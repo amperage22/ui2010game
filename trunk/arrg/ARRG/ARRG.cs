@@ -79,10 +79,12 @@ namespace ARRG_Game
     enum ModifierType
     {
         NONE, POWER, DAMAGE_MOD, CRIT, HIT, DODGE, HP, HP_MOD, PARRY,
-        ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LIGHTNING_ATTACK_CHANCE
+        ADDITIONAL_ATTACK_CHANCE, FIREBREATH_ATTACK_CHANCE, LASER_ATTACK_CHANCE
     };
     public class ARRG : Microsoft.Xna.Framework.Game
     {
+        private const int ATTACK_LENGTH = 75;
+        private int attackTimer;
         GraphicsDeviceManager graphics;
         Player p, p2;
         List<MonsterBuilder> monsters, initial_monsters;
@@ -539,6 +541,7 @@ namespace ARRG_Game
 
             if (gameState == InGameStates.DAMAGE)
             {
+                attackTimer = ATTACK_LENGTH;
                 p.applyHealthMods();
                 p2.applyHealthMods();
                 foreach (Card c in cards)
@@ -567,7 +570,6 @@ namespace ARRG_Game
         }
         private void UpdateDamage()
         {
-
             p.updateDamage();
             p2.updateDamage();
             gameState = bigRed.getInGameState();
@@ -575,6 +577,11 @@ namespace ARRG_Game
             {
                 if (die.CurrentMonster != null)
                     die.CurrentMonster.endAttackAnimation();
+            }
+            if (attackTimer-- <= 0 && gameState == InGameStates.DAMAGE)
+            {
+                bigRed.setNextInGame();
+                gameState = bigRed.getInGameState();
             }
 
             if (gameState == InGameStates.DISCARD)
