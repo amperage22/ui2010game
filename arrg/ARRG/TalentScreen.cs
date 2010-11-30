@@ -41,7 +41,8 @@ namespace ARRG_Game
         private Texture2D[, ,] buttonTextures = new Texture2D[3, 3, 3];
         private Texture2D[,] tabTextures = new Texture2D[3,2];
         
-        private Color disabledColor = new Color(100, 100, 100);
+        private Color disabledColor_talent = new Color(80, 80, 80);
+        private Color disabledColor_tree = new Color(150, 150, 150);
 
         private Scene scene;
         private ContentManager content;
@@ -124,7 +125,7 @@ namespace ARRG_Game
                 tab[i].TextFont = font;
                 tab[i].Bounds = new Rectangle(100 * i, 0, 100, 48);
                 tab[i].Texture = specialization == i ? tabTextures[i, TAB_ENABLED] : tabTextures[i, TAB_DISABLED];
-                tab[i].TextureColor = specialization == i ? Color.White : disabledColor;
+                tab[i].TextureColor = specialization == i ? Color.White : disabledColor_tree;
                 tab[i].ActionPerformedEvent += new ActionPerformed(HandleTabButtonPress);
                 tab[i].DrawBorder = false;
                 mainFrame.AddChild(tab[i]);
@@ -144,9 +145,9 @@ namespace ARRG_Game
             Texture2D stone_button = content.Load<Texture2D>("Textures/stone_button");
             submit = new G2DButton("Save");
             submit.TextFont = font;
-            submit.Bounds = new Rectangle(70, 373, 70, 25);
+            submit.Bounds = new Rectangle(230, 373, 70, 25);
             submit.Texture = stone_button;
-            submit.TextureColor = disabledColor;
+            submit.TextureColor = disabledColor_talent;
             submit.TextColor = Color.White;
             submit.BorderColor = Color.White;
             submit.ActionPerformedEvent += new ActionPerformed(HandleSubmit);
@@ -164,7 +165,7 @@ namespace ARRG_Game
 
             back = new G2DButton("Back");
             back.TextFont = font;
-            back.Bounds = new Rectangle(230, 373, 70, 25);
+            back.Bounds = new Rectangle(70, 373, 70, 25);
             back.Texture = stone_button;
             back.TextureColor = Color.White;
             back.TextColor = Color.Black;
@@ -190,7 +191,7 @@ namespace ARRG_Game
                 if (i == activeTab) return;
 
                 //Keep the tab/screen states consistent for the user
-                tab[activeTab].TextureColor = disabledColor;
+                tab[activeTab].TextureColor = disabledColor_tree;
                 tab[i].TextureColor = Color.White;
                 ChangeToTree(i);
 
@@ -220,12 +221,12 @@ namespace ARRG_Game
                     if (i == 2 && j != 1) continue;
                     pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                     pointsAlloc[i, j].TextColor = Color.White;
-                    talentButton[i, j].TextureColor = isDisabled ? disabledColor : Color.White;
+                    talentButton[i, j].TextureColor = isDisabled ? disabledColor_talent : Color.White;
                 }
             }
             pointsRemaining = INITIAL_TALENT_POINTS;
             pointCount.Text = String.Format("Points: {0}", pointsRemaining);
-            submit.TextureColor = disabledColor;
+            submit.TextureColor = disabledColor_talent;
             submit.TextColor = Color.White;
         }
 
@@ -278,7 +279,7 @@ namespace ARRG_Game
                 for (int i = 0; i < 3; i++) //rows of tree
                     for (int j = 0; j < 3; j++) //cols of tree
                     {
-                        //We are going to have a 3, 2, 1 tree, so only certain things
+                        //We are going to have a 3, 3, 1 tree, so only certain things
                         //should be created.
                         if (i == 2 && j != 1) continue;
 
@@ -287,10 +288,9 @@ namespace ARRG_Game
                         talentButton[i, j].TextFont = font;
                         talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
                         talentButton[i, j].MouseReleasedEvent += new MouseReleased(HandleAlloc);
-                        talentButton[i, j].BorderColor = Color.Black;
                         talentButton[i, j].DrawBorder = false;
                         if (i > 0)
-                            talentButton[i, j].TextureColor = disabledColor;
+                            talentButton[i, j].TextureColor = disabledColor_talent;
                         talentFrame.AddChild(talentButton[i, j]);
 
                         //Put a small black rectangle in the upper left of the button for the points label
@@ -325,7 +325,8 @@ namespace ARRG_Game
                         if (i == 2 && j != 1) continue;
                         talentButton[i, j].Texture = buttonTextures[activeTab, i, j];
                         bool isMaxed = talents[activeTab].isMaxed(i, j);
-                        talentButton[i, j].TextureColor = isDisabled || isMaxed ? disabledColor : Color.White;
+                        talentButton[i, j].TextureColor = isDisabled || isMaxed ? disabledColor_talent : Color.White;
+                        talentButton[i, j].DrawBorder = false;
                         pointsAlloc[i, j].TextColor = isMaxed ? Color.Red : Color.White;
                         pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                         Vector2 new_dimensions = pointsAlloc[i, j].TextFont.MeasureString(pointsAlloc[i, j].Text);
@@ -371,7 +372,7 @@ namespace ARRG_Game
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
                                 if (talents[activeTab].isMaxed(i, j))
                                 {
-                                    talentButton[i, j].TextureColor = disabledColor;
+                                    talentButton[i, j].TextureColor = disabledColor_talent;
                                     pointsAlloc[i, j].TextColor = Color.Red;
                                 }
                                 int num = INITIAL_TALENT_POINTS - pointsRemaining;
@@ -413,7 +414,7 @@ namespace ARRG_Game
                                         closeSecondaryTabs();
                                 }
 
-                                submit.TextureColor = disabledColor;
+                                submit.TextureColor = disabledColor_talent;
                                 submit.TextColor = Color.White;
                                 pointCount.Text = String.Format("Points: {0}", pointsRemaining);
                                 pointsAlloc[i, j].Text = talents[activeTab].getPointStr(i, j);
@@ -551,14 +552,14 @@ namespace ARRG_Game
             //that could have been in the last tier
             pointsRemaining += talents[activeTab].getPointsInTier(t);
             talents[activeTab].resetTier(t);
-            talentButton[t, 1].TextureColor = disabledColor;
+            talentButton[t, 1].TextureColor = disabledColor_talent;
             pointsAlloc[t, 1].Text = talents[activeTab].getPointStr(t, 1);
             pointsAlloc[t, 1].TextColor = Color.White;
             if (t == 2) return;
-            talentButton[t, 0].TextureColor = disabledColor;
+            talentButton[t, 0].TextureColor = disabledColor_talent;
             pointsAlloc[t, 0].Text = talents[activeTab].getPointStr(t, 0);
             pointsAlloc[t, 0].TextColor = Color.White;
-            talentButton[t, 2].TextureColor = disabledColor;
+            talentButton[t, 2].TextureColor = disabledColor_talent;
             pointsAlloc[t, 2].Text = talents[activeTab].getPointStr(t, 2);
             pointsAlloc[t, 2].TextColor = Color.White;
             //Make sure to close all tiers above it too!
@@ -571,7 +572,7 @@ namespace ARRG_Game
             backgroundFrame.Enabled = true;
             for (int k = 0; k < 3; k++)
                 if (k != specialization)
-                    tab[k].TextureColor = disabledColor;
+                    tab[k].TextureColor = disabledColor_tree;
         }
         private void openSecondaryTabs()
         {
@@ -579,7 +580,7 @@ namespace ARRG_Game
                 if (k != specialization)
                 {
                     tab[k].Texture = tabTextures[k, TAB_ENABLED];
-                    tab[k].TextureColor = disabledColor;
+                    tab[k].TextureColor = disabledColor_tree;
                     tab[k].DrawBorder = false;
                 }
             if (displayUnlock)
@@ -597,7 +598,7 @@ namespace ARRG_Game
                 {
                     pointsRemaining += talents[i].getPointsAllocd();
                     talents[i].reset();
-                    tab[i].TextureColor = disabledColor;
+                    tab[i].TextureColor = disabledColor_tree;
                     tab[i].Texture = tabTextures[i, TAB_DISABLED];
                     tab[i].DrawBorder = false;
                 }

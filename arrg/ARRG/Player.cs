@@ -18,7 +18,7 @@ namespace ARRG_Game
         private int gold;
         private Scene scene;
         private int playerNum;
-        private const int INITIAL_HEALTH = 20;
+        private const int INITIAL_HEALTH = 5;
         private const int INITIAL_MANA = 10;
         private const int INITIAL_GOLD = 100;
         //***End player stats***

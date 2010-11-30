@@ -53,9 +53,8 @@ namespace ARRG_Game
             brbButton.Bounds = new Rectangle(342, 0, 116, 116);
             brbButton.Transparency = 1.0f;
             brbButton.BackgroundColor = Color.Black;
-            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbArrg");
+            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDraw");
             brbButton.MouseReleasedEvent += new MouseReleased(updateMenuBrb);
-            brbButton.TextFont = content.Load<SpriteFont>("UIFont");
             KeyboardInput.Instance.KeyPressEvent += new HandleKeyPress(KeyPressHandler);
 
             scene.UIRenderer.Add2DComponent(brbButton);
@@ -81,19 +80,24 @@ namespace ARRG_Game
         {
             return gameState;
         }
-
+        public void setNextInGame()
+        {
+            updateMenuBrb(1, new Point());
+        }
         private void updateMenuBrb(int mouseButton, Point mouse)
         {
+            if (mouseButton != 0)
+                return;
             switch (curState)
             {
                 case MenuStates.INGAME: gameState = (gameState == InGameStates.DISCARD ? InGameStates.DRAW : ++gameState); brbButton.Text = "";
                     switch (gameState)
                     {
                         case InGameStates.ATTACK:
-                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbTargeting");
                             break;
                         case InGameStates.DAMAGE:
-                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
+                            brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
                             break;
                         case InGameStates.DISCARD:
                             brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
@@ -138,10 +142,10 @@ namespace ARRG_Game
                 switch (gameState)
                 {
                   case InGameStates.ATTACK:
-                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
+                        brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbTargeting");
                     break;
                   case InGameStates.DAMAGE:
-                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDamage");
+                    brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbAttack");
                     break;
                   case InGameStates.DISCARD:
                     brbButton.Texture = content.Load<Texture2D>("Textures/brb/brbDiscard");
