@@ -61,7 +61,7 @@ namespace ARRG_Game
             for (int i = 0; i < Player.MAX_NUM_DIE; i++)
             {
                 identity[i] = new G2DLabel();
-                identity[i].BackgroundColor = new Color(player.Die[i].getDiscColor());
+                identity[i].BackgroundColor = new Color(Die.getDiscColor(player.Die[i].DieNum));
                 identity[i].DrawBackground = true;
                 identity[i].BorderColor = Color.Black;
                 identity[i].DrawBorder = true;
@@ -125,7 +125,10 @@ namespace ARRG_Game
                     output[d].Text = dice[d].CurrentMonster.ToString();
                     Monster nearestEnemy = dice[d].CurrentMonster.NearestEnemy;
                     if (nearestEnemy != null)
+                    {
                         target[d].Text = nearestEnemy.Name;
+                        target[d].TextColor = new Color(Die.getDiscColor(nearestEnemy.DieNum));
+                    } 
                     else
                         target[d].Text = "";
                 } else {

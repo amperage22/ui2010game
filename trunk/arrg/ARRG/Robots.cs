@@ -17,15 +17,15 @@ namespace ARRG_Game
         private LaserLineGenerator laser = new LaserLineGenerator();
         Scene scene;
         private Boolean showAttack;
-        public Robots(string name, String model, int health, int power, bool useInternal, Scene scene)
-            : base(name, model, health, power, useInternal)
+        public Robots(string name, String model, int health, int power, bool useInternal, int dieNum)
+            : base(name, model, health, power, useInternal, dieNum)
         {
             hit = 85;
             dodge = 25;
             crit = 30;
             Type = CreatureType.ROBOTS;
             showAttack = false;
-            this.scene = scene;
+            this.scene = GlobalScene.scene;
             origin = transNode;
             transNode.AddChild(laser.addParticle());
         }

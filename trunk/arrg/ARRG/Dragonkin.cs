@@ -12,8 +12,8 @@ namespace ARRG_Game
         private TransformNode origin;
         
 
-        public Dragonkin(string name, String model, int health, int power, bool useInternal)
-            : base(name, model, health, power, useInternal)
+        public Dragonkin(string name, String model, int health, int power, bool useInternal, int dieNum)
+            : base(name, model, health, power, useInternal, dieNum)
         {
             hit = 80;
             dodge = 20;

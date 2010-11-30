@@ -29,7 +29,22 @@ namespace ARRG_Game
         protected GeometryNode discNode;
         protected TransformNode transNode;
 
+        public static Vector4 getDiscColor(int die)
+        {
+            Vector4 color;
+            switch (die)
+            {
+                case 0: color = Color.Red.ToVector4(); break;
+                case 1: color = Color.Green.ToVector4(); break;
+                case 2: color = Color.Blue.ToVector4(); break;
+                case 3: color = Color.White.ToVector4(); break;
+                case 4: color = Color.Black.ToVector4(); break;
+                case 5: color = Color.Cyan.ToVector4(); break;
+                default: color = Color.Cyan.ToVector4(); break;
+            }
+            return color;
 
+        }
 
         public MarkerNode UpMarker
         {
@@ -85,7 +100,7 @@ namespace ARRG_Game
                             }
 
                             upMarker = side;
-                            addMonster(m.createMonster());
+                            addMonster(m.createMonster(dieNum));
                             return true;
                         }
                     }
@@ -138,21 +153,9 @@ namespace ARRG_Game
             if (upMarker != null)
                 upMarker.RemoveChild(transNode);
         }
-        public Vector4 getDiscColor()
+        private Vector4 getDiscColor()
         {
-            Vector4 color;
-            switch (dieNum)
-            {
-                case 0: color = Color.Red.ToVector4(); break;
-                case 1: color = Color.Green.ToVector4(); break;
-                case 2: color = Color.Blue.ToVector4(); break;
-                case 3: color = Color.White.ToVector4(); break;
-                case 4: color = Color.Black.ToVector4(); break;
-                case 5: color = Color.Cyan.ToVector4(); break;
-                default: color = Color.Cyan.ToVector4(); break;
-            }
-            return color;
-            
+            return getDiscColor(dieNum);
         }
 
         public Monster CurrentMonster
@@ -229,7 +232,10 @@ namespace ARRG_Game
         //*****Monster-Dice interactions*******
 
 
-
+        public int DieNum
+        {
+            get { return dieNum; }
+        }
 
     }
 

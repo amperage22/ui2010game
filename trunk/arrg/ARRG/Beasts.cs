@@ -10,8 +10,8 @@ namespace ARRG_Game
     class Beasts : Monster
     {
       
-        public Beasts(string name, String model, int health, int power, bool useInternal)
-            : base(name, model, health, power, useInternal)
+        public Beasts(string name, String model, int health, int power, bool useInternal, int dieNum)
+            : base(name, model, health, power, useInternal, dieNum)
         {
             hit = 70;
             dodge = 40;
