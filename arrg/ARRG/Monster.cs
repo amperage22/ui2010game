@@ -31,11 +31,16 @@ namespace ARRG_Game
         protected CreatureType type;
         protected bool isSpecialAttack, isNormalAttack;
         protected GeometryNode monsterNode;
+        private int dieNum;
 
         public CreatureType Type
         {
             get { return type; }
             set { type = value; }
+        }
+        public int DieNum
+        {
+            get { return dieNum; }
         }
         protected ParticleLineGenerator line = new ParticleLineGenerator();
         protected int attackTimer = ATTACK_LENGTH;
@@ -56,7 +61,7 @@ namespace ARRG_Game
             set { isDead = value; }
         }
 
-        public Monster(string name, String model, int health, int power, bool useInternal)
+        public Monster(string name, String model, int health, int power, bool useInternal, int dieNum)
         {
             this.name = name;
             this.health = health;
@@ -88,6 +93,7 @@ namespace ARRG_Game
             transNode.Translation += new Vector3(0, 0, 20);
             buffs = new List<Buff>();
             transNode.AddChild(line.addParticle("particleLine"));
+            this.dieNum = dieNum;
         }
 
 
@@ -302,15 +308,15 @@ namespace ARRG_Game
             this.manaCost = manaCost;
             this.scene = GlobalScene.scene;
         }
-        public Monster createMonster()
+        public Monster createMonster(int dieNum)
         {
             switch (type)
             {
-                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal);
-                case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal);
-                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal, scene);
+                case CreatureType.BEASTS: return new Beasts(name, model, health, power, useInternal, dieNum);
+                case CreatureType.DRAGONKIN: return new Dragonkin(name, model, health, power, useInternal, dieNum);
+                case CreatureType.ROBOTS: return new Robots(name, model, health, power, useInternal, dieNum);
             }
-            return new Monster(name, model, health, power, useInternal);
+            return new Monster(name, model, health, power, useInternal, dieNum);
         }
         public int getID()
         {
