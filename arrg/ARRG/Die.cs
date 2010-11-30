@@ -36,11 +36,11 @@ namespace ARRG_Game
             {
                 case 0: color = Color.Red.ToVector4(); break;
                 case 1: color = Color.Green.ToVector4(); break;
-                case 2: color = Color.Blue.ToVector4(); break;
+                case 2: color = Color.Cyan.ToVector4(); break;
                 case 3: color = Color.White.ToVector4(); break;
                 case 4: color = Color.Black.ToVector4(); break;
                 case 5: color = Color.Cyan.ToVector4(); break;
-                default: color = Color.Cyan.ToVector4(); break;
+                default: color = Color.Blue.ToVector4(); break;
             }
             return color;
 
