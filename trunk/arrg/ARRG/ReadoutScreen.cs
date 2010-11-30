@@ -26,7 +26,8 @@ namespace ARRG_Game
     {
         private const int SIZEOFTARGETLABEL = 15; //pixels tall
 
-        private G2DPanel mainPanel;
+        private G2DPanel identityPanel, readoutPanel;
+        private G2DLabel[] identity = new G2DLabel[Player.MAX_NUM_DIE];
         private G2DLabel[] output = new G2DLabel[Player.MAX_NUM_DIE];
         private G2DLabel[] target = new G2DLabel[Player.MAX_NUM_DIE];
         private Player player;
@@ -39,33 +40,45 @@ namespace ARRG_Game
 
         private void initialize()
         {
-            mainPanel = new G2DPanel();
+            identityPanel = new G2DPanel();
+            readoutPanel = new G2DPanel();
             if (player.PlayerNum == 1)
             {
-                mainPanel.Bounds = new Rectangle(0, 525, 400, 75);
-                mainPanel.Texture = State.Content.Load<Texture2D>("Textures/readout/p1_bar");
+                identityPanel.Bounds = new Rectangle(0, 493, 400, 32);
+                readoutPanel.Bounds = new Rectangle(0, 525, 400, 75);
+                readoutPanel.Texture = State.Content.Load<Texture2D>("Textures/readout/p1_bar");
             }
             else
             {
-                mainPanel.Bounds = new Rectangle(400, 525, 400, 75);
-                mainPanel.Texture = State.Content.Load<Texture2D>("Textures/readout/p2_bar");
+                identityPanel.Bounds = new Rectangle(400, 493, 400, 32);
+                readoutPanel.Bounds = new Rectangle(400, 525, 400, 75);
+                readoutPanel.Texture = State.Content.Load<Texture2D>("Textures/readout/p2_bar");
             }
-            mainPanel.Enabled = false;
-            mainPanel.Visible = false;
 
-            SpriteFont font = State.Content.Load<SpriteFont>("UIFont_Bold_Small");
+            identityPanel.DrawBackground = false;
+
+            SpriteFont font = State.Content.Load<SpriteFont>("CooperBlack");
             for (int i = 0; i < Player.MAX_NUM_DIE; i++)
             {
+                identity[i] = new G2DLabel();
+                identity[i].BackgroundColor = new Color(player.Die[i].getDiscColor());
+                identity[i].DrawBackground = true;
+                identity[i].BorderColor = Color.Black;
+                identity[i].DrawBorder = true;
+
                 output[i] = new G2DLabel();
-                output[i].VerticalAlignment = GoblinEnums.VerticalAlignment.Bottom;
+                output[i].VerticalAlignment = GoblinEnums.VerticalAlignment.Top;
                 output[i].TextFont = font;
                 output[i].TextColor = Color.White;
+
                 target[i] = new G2DLabel();
                 target[i].TextFont = font;
-                output[i].VerticalAlignment = GoblinEnums.VerticalAlignment.Top;
+                
                 if (player.PlayerNum == 1)
                 {
-                    Rectangle r = new Rectangle(5 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
+                    identity[i].Bounds = new Rectangle(5 + (identityPanel.Bounds.Width / 3) * i, 0, identityPanel.Bounds.Height, identityPanel.Bounds.Height);
+
+                    Rectangle r = new Rectangle(5 + (readoutPanel.Bounds.Width / 3) * i, 0, readoutPanel.Bounds.Width / 3, readoutPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
                     output[i].Bounds = r;
                     
                     r.Y = r.Height;
@@ -76,7 +89,9 @@ namespace ARRG_Game
                 }
                 else
                 {
-                    Rectangle r = new Rectangle(10 + (mainPanel.Bounds.Width / 3) * i, 0, mainPanel.Bounds.Width / 3, mainPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
+                    identity[i].Bounds = new Rectangle(10 + (identityPanel.Bounds.Width / 3) * i, 0, identityPanel.Bounds.Height, identityPanel.Bounds.Height);
+
+                    Rectangle r = new Rectangle(10 + (readoutPanel.Bounds.Width / 3) * i, 0, readoutPanel.Bounds.Width / 3, readoutPanel.Bounds.Height - SIZEOFTARGETLABEL - 5);
                     output[i].Bounds = r;
 
                     r.Y = r.Height;
@@ -86,12 +101,19 @@ namespace ARRG_Game
                     target[i].TextColor = new Color(247, 0, 0);
                 }
 
-                mainPanel.AddChild(output[i]);
-                mainPanel.AddChild(target[i]);
+                identityPanel.AddChild(identity[i]);
+                readoutPanel.AddChild(output[i]);
+                readoutPanel.AddChild(target[i]);
             }
 
-            GlobalScene.scene.UIRenderer.Add2DComponent(mainPanel);
+            identityPanel.Enabled = false;
+            identityPanel.Visible = false;
+            readoutPanel.Enabled = false;
+            readoutPanel.Visible = false;
 
+            GlobalScene.scene.UIRenderer.Add2DComponent(identityPanel);
+            GlobalScene.scene.UIRenderer.Add2DComponent(readoutPanel);
+            
             update();
         }
 
@@ -114,13 +136,15 @@ namespace ARRG_Game
 
         public bool isDisplaying()
         {
-            return mainPanel.Visible;
+            return readoutPanel.Visible;
         }
 
         public void toggleDisplay()
         {
-            mainPanel.Visible = !mainPanel.Visible;
-            mainPanel.Enabled = !mainPanel.Enabled;
+            identityPanel.Visible = !identityPanel.Visible;
+            identityPanel.Enabled = !identityPanel.Enabled;
+            readoutPanel.Visible = !readoutPanel.Visible;
+            readoutPanel.Enabled = !readoutPanel.Enabled;
         }
     }
 }

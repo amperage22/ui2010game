@@ -138,7 +138,7 @@ namespace ARRG_Game
             if (upMarker != null)
                 upMarker.RemoveChild(transNode);
         }
-        private Vector4 getDiscColor()
+        public Vector4 getDiscColor()
         {
             Vector4 color;
             switch (dieNum)
