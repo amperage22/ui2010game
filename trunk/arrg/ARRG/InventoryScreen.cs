@@ -118,7 +118,7 @@ namespace ARRG_Game
 
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/inventory/inventory_button");
-            submit = new G2DButton("Win");
+            submit = new G2DButton("Done");
             submit.TextFont = uiFont;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
             //submit.Texture = market_button;
