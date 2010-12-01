@@ -42,7 +42,7 @@ namespace ARRG_Game
 
         private Scene scene;
         private ContentManager content;
-        private SpriteFont font;
+        private SpriteFont uiFont, tooltipFont;
         private MarketState state;
 
         private Player player;
@@ -59,7 +59,8 @@ namespace ARRG_Game
             content = State.Content;
             showHelpFrame = true;
             amountSpent = 0;
-            font = content.Load<SpriteFont>("UIFont_Bold");
+            uiFont = content.Load<SpriteFont>("UIFont_Bold");
+            tooltipFont = content.Load<SpriteFont>("UIFont_Bold_Small");
 
             allocateTextures();
 
@@ -116,7 +117,7 @@ namespace ARRG_Game
             goldLeft = new G2DLabel();
             goldLeft.BackgroundColor = new Color(50, 50, 50); ;
             goldLeft.DrawBackground = true;
-            goldLeft.TextFont = font;
+            goldLeft.TextFont = uiFont;
             goldLeft.TextColor = Color.Gold;
             goldLeft.DrawBorder = true;
             goldLeft.BorderColor = Color.White;
@@ -126,7 +127,7 @@ namespace ARRG_Game
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/market/market_button");
             submit = new G2DButton("Done");
-            submit.TextFont = font;
+            submit.TextFont = uiFont;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
             submit.Texture = market_button;
             submit.TextureColor = new Color(200, 200, 200);
@@ -138,7 +139,7 @@ namespace ARRG_Game
             mainFrame.AddChild(submit);
 
             clear = new G2DButton("Clear");
-            clear.TextFont = font;
+            clear.TextFont = uiFont;
             clear.Bounds = new Rectangle(360, 266, 70, 25);
             clear.Texture = market_button;
             clear.TextureColor = new Color(200, 200, 200);
@@ -178,7 +179,7 @@ namespace ARRG_Game
 
             //And the tooltip
             tooltip = new G2DLabel();
-            tooltip.TextFont = font;
+            tooltip.TextFont = tooltipFont;
             tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
             tooltip.TextColor = Color.White;
             tooltip.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
@@ -316,7 +317,15 @@ namespace ARRG_Game
                         }
                         else if (itemButtonFlag[i, j, SELECTED])
                         {
-                            tooltip.Text = String.Format("Click now to NOT buy {0}.", monsters[i * COLS + j].getName());
+                            int index = i * COLS + j;
+                            String typeStr = "Unknown";
+                            switch (monsters[index].getType())
+                            {
+                                case CreatureType.BEASTS: typeStr = "Beast"; break;
+                                case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
+                                case CreatureType.ROBOTS: typeStr = "Robot"; break;
+                            }
+                            tooltip.Text = String.Format("Click now to NOT buy {0}.\n\nType: {1}", monsters[index].getName(), typeStr);
                         }
                         else if (player.Gold - amountSpent < monsters[i * COLS + j].getGoldCost())
                         {
@@ -325,7 +334,15 @@ namespace ARRG_Game
                         }
                         else
                         {
-                            tooltip.Text = String.Format("Buy {0}!\nPrice: {1} Gold", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getGoldCost());
+                            int index = i * COLS + j;
+                            String typeStr = "Unknown";
+                            switch (monsters[index].getType())
+                            {
+                                case CreatureType.BEASTS: typeStr = "Beast"; break;
+                                case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
+                                case CreatureType.ROBOTS: typeStr = "Robot"; break;
+                            }
+                            tooltip.Text = String.Format("Buy {0}!\n\nType: {1}\nPrice: {2} Gold", monsters[index].getName(), typeStr, monsters[index].getGoldCost());
                         }
                         tipFound = true;
                     }
@@ -337,7 +354,7 @@ namespace ARRG_Game
                 int new_width = (int)(textSize.X + 0.5f) + 5;
                 int new_height = (int)(textSize.Y + 0.5f) + 5;
 
-                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - 80, new_width, new_height);
+                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - new_height - 25, new_width, new_height);
                 tooltip.DrawBackground = true;
                 tooltip.DrawBorder = true;
             }

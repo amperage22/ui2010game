@@ -68,12 +68,12 @@ namespace ARRG_Game
     enum MenuStates { NONE, TITLE, TALENT, PRE_GAME, MARKET, INVENTORY, INGAME };
     enum InGameStates { NONE, DRAW, SUMMON, ATTACK, DAMAGE, DISCARD };
     enum CreatureType { NONE, BEASTS, DRAGONKIN, ROBOTS, ALL };
+    /** This enum directly reflects the market layout **/
     enum CreatureID
     {
-        BEAR = 0, PENGUIN, RHINO, TIGER, //This enum directly affects the market layout
-        DALEK, GUNDAM, SAMUS, CENTURION,
-        DRAGON1, DRAGON2, ESCAFLOWNE, DRAGON3,
-        JONATHAN, MEYNARD, ALEX
+        ALEX = 0, BEAR, PENGUIN, RHINO, TIGER, 
+        JONATHAN, DRAGON1, DRAGON2, DRAGON3, ESCAFLOWNE,
+        MEYNARD, DALEK, SAMUS, CENTURION, GUNDAM
     };
     enum CardType { NONE, STAT_MOD, DMG_DONE, DMG_PREVENT };
     enum ModifierType

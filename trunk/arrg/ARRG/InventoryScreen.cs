@@ -42,7 +42,7 @@ namespace ARRG_Game
 
         private Scene scene;
         private ContentManager content;
-        private SpriteFont font;
+        private SpriteFont uiFont, tooltipFont;
         private InventoryState state;
 
         private Player player;
@@ -58,7 +58,8 @@ namespace ARRG_Game
             this.content = State.Content;
             showHelpFrame = true;
             numSelectedMonsters = 0;
-            font = content.Load<SpriteFont>("UIFont_Bold");
+            uiFont = content.Load<SpriteFont>("UIFont_Bold");
+            tooltipFont = content.Load<SpriteFont>("UIFont_Bold_Small");
 
             allocateTextures();
 
@@ -118,7 +119,7 @@ namespace ARRG_Game
             //Submit and clear buttons
             Texture2D market_button = content.Load<Texture2D>("Textures/inventory/inventory_button");
             submit = new G2DButton("Win");
-            submit.TextFont = font;
+            submit.TextFont = uiFont;
             submit.Bounds = new Rectangle(280, 266, 70, 25);
             //submit.Texture = market_button;
             //submit.TextureColor = new Color(200, 200, 200);
@@ -132,7 +133,7 @@ namespace ARRG_Game
             mainFrame.AddChild(submit);
 
             clear = new G2DButton("Reset");
-            clear.TextFont = font;
+            clear.TextFont = uiFont;
             clear.Bounds = new Rectangle(360, 266, 70, 25);
             //clear.Texture = market_button;
             //clear.TextureColor = new Color(200, 200, 200);
@@ -177,7 +178,7 @@ namespace ARRG_Game
             monstersSelectedText = new G2DLabel();
             monstersSelectedText.BackgroundColor = Color.Black;
             monstersSelectedText.DrawBackground = true;
-            monstersSelectedText.TextFont = font;
+            monstersSelectedText.TextFont = uiFont;
             monstersSelectedText.TextColor = Color.White;
             monstersSelectedText.DrawBorder = true;
             monstersSelectedText.BorderColor = Color.White;
@@ -186,7 +187,7 @@ namespace ARRG_Game
 
             //And the tooltip
             tooltip = new G2DLabel();
-            tooltip.TextFont = font;
+            tooltip.TextFont = tooltipFont;
             tooltip.BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
             tooltip.TextColor = Color.White;
             tooltip.HorizontalAlignment = GoblinEnums.HorizontalAlignment.Center;
@@ -332,13 +333,24 @@ namespace ARRG_Game
                         {
                             tooltip.Text = String.Format("You do not own this monster!", i, j);
                         }
-                        else if (itemButtonFlag[i, j, SELECTED])
+                        else 
                         {
-                            tooltip.Text = String.Format("Click to de-select {0}.", monsters[i * COLS + j].getName());
-                        }
-                        else
-                        {
-                            tooltip.Text = String.Format("Take {0} to battle with you!\nSummon Cost: {1} Mana", monsters[i * COLS + j].getName(), monsters[i * COLS + j].getManaCost());
+                            int index = i * COLS + j;
+                            String typeStr = "Unknown";
+                            switch (monsters[index].getType())
+                            {
+                                case CreatureType.BEASTS: typeStr = "Beast"; break;
+                                case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
+                                case CreatureType.ROBOTS: typeStr = "Robot"; break;
+                            }
+                            if (itemButtonFlag[i, j, SELECTED])
+                            {
+                                tooltip.Text = String.Format("Click to de-select {0}.\n\nType: {1}\nSummon Cost: {2} Mana", monsters[index].getName(), typeStr, monsters[index].getManaCost());
+                            }
+                            else
+                            {
+                                tooltip.Text = String.Format("Take {0} to battle with you!\n\nType: {1}\nSummon Cost: {2} Mana", monsters[index].getName(), typeStr, monsters[index].getManaCost());
+                            }
                         }
                         tipFound = true;
                     }
@@ -350,7 +362,7 @@ namespace ARRG_Game
                 int new_width = (int)(textSize.X + 0.5f) + 5;
                 int new_height = (int)(textSize.Y + 0.5f) + 5;
 
-                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - 80, new_width, new_height);
+                tooltip.Bounds = new Rectangle(mouse.X - mainFrame.Bounds.X - (new_width / 2) - 10, mouse.Y - mainFrame.Bounds.Y - new_height - 25, new_width, new_height);
                 tooltip.DrawBackground = true;
                 tooltip.DrawBorder = true;
             }
