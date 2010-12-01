@@ -479,13 +479,6 @@
       <Processor>TextureProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\inventory\d_meynard.png">
-      <Link>Textures\inventory\d_meynard.png</Link>
-      <Name>d_meynard</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
     <Compile Include="..\..\..\GoblinXNAv3.4\data\Textures\inventory\gundam.png">
       <Link>Textures\inventory\gundam.png</Link>
       <Name>gundam</Name>
