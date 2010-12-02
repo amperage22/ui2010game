@@ -44,7 +44,7 @@ namespace ARRG_Game
       this.health = health;
       this.mana = mana;
       this.content = State.Content;
-      healthRatio = (360 - 57) / health; // (barlength-(brblength/2)) / health
+      healthRatio = (360 - 57) / health; // (barlength-(brblength/2)) / Health
       manaRatio = (220 - 57) / mana;
       createObjects();
     }
@@ -52,7 +52,7 @@ namespace ARRG_Game
     private void createObjects()
     {
       
-      //For player: To change health +/- from the X value of the Translation and Scale Vectors
+      //For player: To change Health +/- from the X value of the Translation and Scale Vectors
       barMana = new G2DLabel();
       barMana.Transparency = 0.7f;
       barMana.BackgroundColor = Color.Blue;
@@ -66,7 +66,7 @@ namespace ARRG_Game
       playerName.BackgroundColor = Color.Black;
       playerName.TextFont = content.Load<SpriteFont>("UIFont");
 
-      //For player: To change health +/- from the X value of the Translation and Scale Vectors
+      //For player: To change Health +/- from the X value of the Translation and Scale Vectors
 
       if (playerNum ==1)
       {

@@ -21,6 +21,18 @@ namespace ARRG_Game
         public const int ATTACK_LENGTH = 50;
         protected TransformNode transNode;  //Instantiated through Monster
         protected int health, power;        //Instantiated through Monster
+
+        public int Power
+        {
+            get { return power; }
+            set { power = value; }
+        }
+
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
         protected double hit, dodge, crit, extraAttack, fireBreath, lightningAttack;
         protected double parry;
         protected List<Buff> buffs;
@@ -135,7 +147,7 @@ namespace ARRG_Game
                 if (b.AffectedCreature == CreatureType.ALL || b.AffectedCreature == Type)
                     switch (b.Modifier)
                     {
-                        case ModifierType.POWER: power += b.Amount;
+                        case ModifierType.POWER: Power += b.Amount;
                             break;
                         case ModifierType.DAMAGE_MOD:
                             break;
@@ -145,7 +157,7 @@ namespace ARRG_Game
                             break;
                         case ModifierType.DODGE: dodge += b.Amount;
                             break;
-                        case ModifierType.HP: health += b.Amount;
+                        case ModifierType.HP: Health += b.Amount;
                             break;
                         case ModifierType.HP_MOD:
                             break;
@@ -164,7 +176,7 @@ namespace ARRG_Game
                     }
             }
 
-            if (health <= 0)
+            if (Health <= 0)
                 isDead = true;
         }
 
@@ -177,7 +189,7 @@ namespace ARRG_Game
         {
             dealDirectDmg(dmg);
             if (RandomHelper.GetRandomInt(100)+1 <= parry)
-                attacker.dealDirectDmg(power);
+                attacker.dealDirectDmg(Power);
         }
         public virtual void dealAttackDmg()
         {
@@ -190,14 +202,14 @@ namespace ARRG_Game
             if (RandomHelper.GetRandomInt(100)+1 <= chanceToHit)
             {
                 if (RandomHelper.GetRandomInt(100)+1 <= crit)
-                    nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
-                else nearestEnemy.defend(power, this);
+                    nearestEnemy.defend((int)Math.Floor(1.5 * Power), this);
+                else nearestEnemy.defend(Power, this);
             }
             if (RandomHelper.GetRandomInt(100)+1 <= extraAttack || isSpecialAttack)
             {
                 if (RandomHelper.GetRandomInt(100)+1 <= crit)
-                    nearestEnemy.defend((int)Math.Floor(1.5 * power), this);
-                else nearestEnemy.defend(power, this);
+                    nearestEnemy.defend((int)Math.Floor(1.5 * Power), this);
+                else nearestEnemy.defend(Power, this);
             }
 
         }
@@ -216,7 +228,7 @@ namespace ARRG_Game
 
             dmgRecieved = dmgRecieved - preventedDmg;
 
-            if (dmgRecieved >= health)
+            if (dmgRecieved >= Health)
                 isDead = true;
         }
 
@@ -278,7 +290,7 @@ namespace ARRG_Game
         }
         public override String ToString()
         {
-            return name + "\nHealth: " + health + "\nPower: " + power;
+            return name + "\nHealth: " + Health + "\nPower: " + Power;
         }
     }
 

@@ -101,6 +101,7 @@
     <Compile Include="Buffs.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="brb.cs" />
+    <Compile Include="Computer.cs" />
     <Compile Include="Dialog.cs" />
     <Compile Include="Die.cs" />
     <Compile Include="Dragonkin.cs" />
