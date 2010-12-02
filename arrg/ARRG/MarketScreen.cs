@@ -97,6 +97,7 @@ namespace ARRG_Game
                 itemButton[i, j].TextureColor = disabledColor;
                 itemButtonFlag[i, j, LOCKED] = true;
             }
+            updateUnbuyable();
         }
 
         private void CreateFrame()
@@ -212,6 +213,7 @@ namespace ARRG_Game
                 }
             amountSpent = 0;
             updateMoniesText();
+            updateUnbuyable();
         }
 
         public bool wasSubmitted()
@@ -277,6 +279,7 @@ namespace ARRG_Game
                             amountSpent += monsters[i * COLS + j].getGoldCost();
                         }
                         updateMoniesText();
+                        updateUnbuyable();
 
                         if (showHelpFrame)
                         {
@@ -311,37 +314,29 @@ namespace ARRG_Game
                 {
                     if (itemButton[i, j].PaintBounds.Contains(mouse))
                     {
+                        int index = i * COLS + j;
+                        String typeStr = "Unknown";
+                        switch (monsters[index].getType())
+                        {
+                            case CreatureType.BEASTS: typeStr = "Beast"; break;
+                            case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
+                            case CreatureType.ROBOTS: typeStr = "Robot"; break;
+                        }
                         if (itemButtonFlag[i, j, LOCKED])
                         {
                             tooltip.Text = String.Format("You already have this monster\nin your inventory.", i, j);
                         }
                         else if (itemButtonFlag[i, j, SELECTED])
                         {
-                            int index = i * COLS + j;
-                            String typeStr = "Unknown";
-                            switch (monsters[index].getType())
-                            {
-                                case CreatureType.BEASTS: typeStr = "Beast"; break;
-                                case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
-                                case CreatureType.ROBOTS: typeStr = "Robot"; break;
-                            }
                             tooltip.Text = String.Format("Click now to NOT buy {0}.\n\nType: {1}", monsters[index].getName(), typeStr);
                         }
                         else if (player.Gold - amountSpent < monsters[i * COLS + j].getGoldCost())
                         {
                             //Since the player has not enough monies, we need to tell em.
-                            tooltip.Text = String.Format("You need more money for that :(");
+                            tooltip.Text = String.Format("You need more money for that :(\n\nType: {0}\nPrice: {1}",typeStr, monsters[index].getGoldCost());
                         }
                         else
                         {
-                            int index = i * COLS + j;
-                            String typeStr = "Unknown";
-                            switch (monsters[index].getType())
-                            {
-                                case CreatureType.BEASTS: typeStr = "Beast"; break;
-                                case CreatureType.DRAGONKIN: typeStr = "Dragon"; break;
-                                case CreatureType.ROBOTS: typeStr = "Robot"; break;
-                            }
                             tooltip.Text = String.Format("Buy {0}!\n\nType: {1}\nPrice: {2} Gold", monsters[index].getName(), typeStr, monsters[index].getGoldCost());
                         }
                         tipFound = true;
@@ -379,6 +374,17 @@ namespace ARRG_Game
             lockedTexture = content.Load<Texture2D>("Textures/market/locked");
         }
 
-        
+        private void updateUnbuyable()
+        {
+            for (int i = 0; i < ROWS; i++)
+                for (int j = 0; j < COLS; j++)
+                {
+                    if (itemButtonFlag[i, j, SELECTED] || itemButtonFlag[i, j, LOCKED]) continue;
+                    if (monsters[i * COLS + j].getGoldCost() > player.Gold - amountSpent)
+                        itemButton[i, j].TextureColor = disabledColor;
+                    else
+                        itemButton[i, j].TextureColor = Color.White;
+                }
+        }
     }
 }
