@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-
+using GoblinXNA.Helpers;
 using GoblinXNA.SceneGraph;
 
 
@@ -197,15 +197,17 @@ namespace ARRG_Game
             foreach (Die d in die)
             {
                 if (d != null && d.CurrentMonster != null && currentMonster != null)
+                {
                     if (d.currentMonster.Health <= currentMonster.Power)
                     {
-                        if (nearestEnemy == null || d.currentMonster.Health < nearestEnemy.currentMonster.Health)
+                        if (nearestEnemy == null || d.currentMonster.Health > nearestEnemy.currentMonster.Health)
                         {
                             nearestEnemy = d;
                             currentMonster.NearestEnemy = d.currentMonster;
-                            currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
+                            //currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
                         }
                     }
+                }
             }
         }
         public void addBuffs(List<Buff> buffs)
