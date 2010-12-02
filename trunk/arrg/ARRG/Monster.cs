@@ -290,7 +290,7 @@ namespace ARRG_Game
         }
         public override String ToString()
         {
-            return name + "\nHealth: " + Health + "\nPower: " + Power;
+            return name + "\n" + power + " P / " + health + " L\n" + crit + " C / " + hit + " H";
         }
     }
 
