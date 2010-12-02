@@ -158,11 +158,11 @@ namespace ARRG_Game
                         nearestMonster.TransNode.Scale /= (float)(buff.Amount * BUFF_SCALE);
                     else if (buff.Amount < 0) nearestMonster.TransNode.Scale *= (float)(-buff.Amount * BUFF_SCALE);
                     break;
-                case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
+                case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;   
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;
             }
-            nearestMonster = null;
-            nearestDice = null;
+            //nearestMonster = null;
+            //nearestDice = null;
         }
         public void Update(GameTime gameTime)
         {

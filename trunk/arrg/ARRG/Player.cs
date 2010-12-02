@@ -21,7 +21,7 @@ namespace ARRG_Game
         private int playerNum;
         private const int INITIAL_HEALTH = 5;
         private const int INITIAL_MANA = 10;
-        private const int INITIAL_GOLD = 100;
+        private const int INITIAL_GOLD = 30;
         //***End player stats***
 
         private MarkerNode ground;

@@ -147,7 +147,7 @@ namespace ARRG_Game
                 if (b.AffectedCreature == CreatureType.ALL || b.AffectedCreature == Type)
                     switch (b.Modifier)
                     {
-                        case ModifierType.POWER: Power += b.Amount;
+                        case ModifierType.POWER: power += b.Amount;
                             break;
                         case ModifierType.DAMAGE_MOD:
                             break;
@@ -157,7 +157,7 @@ namespace ARRG_Game
                             break;
                         case ModifierType.DODGE: dodge += b.Amount;
                             break;
-                        case ModifierType.HP: Health += b.Amount;
+                        case ModifierType.HP: health += b.Amount;
                             break;
                         case ModifierType.HP_MOD:
                             break;
