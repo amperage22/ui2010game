@@ -86,7 +86,8 @@ namespace ARRG_Game
         private const int ATTACK_LENGTH = 75;
         private int attackTimer;
         GraphicsDeviceManager graphics;
-        Player p, p2;
+        Player p;
+        Computer p2;
         List<MonsterBuilder> monsters, initial_monsters;
         List<Card> cards;
         MarkerNode groundMarkerNode;
@@ -329,7 +330,7 @@ namespace ARRG_Game
             GlobalScene.scene.RootNode.AddChild(groundMarkerNode);
 
             p = new Player(1, groundMarkerNode);
-            p2 = new Player(2, groundMarkerNode);
+            p2 = new Computer(2, groundMarkerNode);
             dialog = new Dialog();
         }
 

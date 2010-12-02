@@ -25,7 +25,7 @@ namespace ARRG_Game
 
         private MarkerNode ground;
 
-        private Die[] die;
+        protected Die[] die;
 
 
         internal Die[] Die
@@ -68,7 +68,7 @@ namespace ARRG_Game
             die = new Die[MAX_NUM_DIE];
             this.ground = ground;
             selectedMonsters = new List<MonsterBuilder>();
-            //healthBar = new healthBar(s, playerNum, health, mana);
+            //healthBar = new healthBar(s, playerNum, Health, mana);
             this.scene = GlobalScene.scene;
             this.playerNum = playerNum;
 
@@ -120,7 +120,7 @@ namespace ARRG_Game
                 d.setTopMarker(selectedMonsters[r.Next(selectedMonsters.Count)]);  //Randomly attach monster to die
             }
         }
-        public void updateAttack(Die[] die2)
+        public virtual void updateAttack(Die[] die2)
         {
             foreach (Die d in die)
             {
@@ -170,7 +170,7 @@ namespace ARRG_Game
             }
             if (healthBar != null)
             {
-                //healthBar.adjustHealth(health);
+                //healthBar.adjustHealth(Health);
                 //healthBar.adjustMana(mana);
             }
         }

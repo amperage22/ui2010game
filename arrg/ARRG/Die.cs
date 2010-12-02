@@ -176,7 +176,6 @@ namespace ARRG_Game
         public void setNearestEnemy(Die[] die)
         {
             float prev = 1000, curr;
-            Die closest;
             foreach (Die d in die)
             {
                 if (d != null && d.CurrentMonster != null && currentMonster != null)
@@ -185,7 +184,6 @@ namespace ARRG_Game
                     if (curr < prev)
                     {
                         prev = curr;
-                        closest = d;
                         nearestEnemy = d;
                         currentMonster.NearestEnemy = d.currentMonster;
                         currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
@@ -193,6 +191,22 @@ namespace ARRG_Game
                 }
             }
 
+        }
+        public void setWeakestEnemy(Die[] die)
+        {
+            foreach (Die d in die)
+            {
+                if (d != null && d.CurrentMonster != null && currentMonster != null)
+                    if (d.currentMonster.Health <= currentMonster.Power)
+                    {
+                        if (nearestEnemy == null || d.currentMonster.Health < nearestEnemy.currentMonster.Health)
+                        {
+                            nearestEnemy = d;
+                            currentMonster.NearestEnemy = d.currentMonster;
+                            currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
+                        }
+                    }
+            }
         }
         public void addBuffs(List<Buff> buffs)
         {
