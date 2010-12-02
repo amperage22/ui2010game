@@ -16,6 +16,8 @@ namespace ARRG_Game
 {
     class Die
     {
+        //EWWWWWWW!!!!!  wtf is this shit?  Yeah, it's nasty, but I got no choice!
+        private static int DIE3_TARGET = -1, DIE4_TARGET = -1, DIE5_TARGET = -1;
         private const int firstDieID = 128;
         private const double PARALLEL_ANGLE = 0;
         private const double FLOOR_TOLERANCE = 20;
@@ -204,10 +206,22 @@ namespace ARRG_Game
                         {
                             nearestEnemy = d;
                             currentMonster.NearestEnemy = d.currentMonster;
+                            //EWWWWWWW!!!!!
+                            switch (dieNum)
+                            {
+                                case 3: DIE3_TARGET = d.dieNum; if (DIE3_TARGET == DIE4_TARGET || DIE3_TARGET == DIE5_TARGET) { nearestEnemy = die[RandomHelper.GetRandomInt(3)]; currentMonster.NearestEnemy = nearestEnemy.currentMonster; DIE3_TARGET = nearestEnemy.dieNum; } break;
+                                case 4: DIE4_TARGET = d.dieNum; if (DIE4_TARGET == DIE3_TARGET || DIE4_TARGET == DIE5_TARGET) { nearestEnemy = die[RandomHelper.GetRandomInt(3)]; currentMonster.NearestEnemy = nearestEnemy.currentMonster; DIE4_TARGET = nearestEnemy.dieNum; } break;
+                                case 5: DIE5_TARGET = d.dieNum; if (DIE5_TARGET == DIE4_TARGET || DIE5_TARGET == DIE3_TARGET) { nearestEnemy = die[RandomHelper.GetRandomInt(3)]; currentMonster.NearestEnemy = nearestEnemy.currentMonster; DIE5_TARGET = nearestEnemy.dieNum; } break;
+                            }
                             //currentMonster.applyLine(upMarker.WorldTransformation.Translation, nearestEnemy.UpMarker.WorldTransformation.Translation);
                         }
                     }
                 }
+            }
+            if (nearestEnemy == null)
+            {
+                nearestEnemy = die[RandomHelper.GetRandomInt(3)];
+                currentMonster.NearestEnemy = nearestEnemy.currentMonster;
             }
         }
         public void addBuffs(List<Buff> buffs)
