@@ -161,6 +161,8 @@ namespace ARRG_Game
                 case CardType.DMG_DONE: nearestMonster.dealDirectDmg(dmgDone); break;
                 case CardType.DMG_PREVENT: nearestMonster.preventDmg(dmgPrevent); break;
             }
+            nearestMonster = null;
+            nearestDice = null;
         }
         public void Update(GameTime gameTime)
         {
