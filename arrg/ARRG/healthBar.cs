@@ -72,7 +72,7 @@ namespace ARRG_Game
       {
         playerName.Bounds = new Rectangle(235, -5, 136, 44);
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player1"); 
-        barHealth.Bounds = new Rectangle(40, 10, 360, 60);
+        barHealth.Bounds = new Rectangle(40, 20, 360, 30);
         barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp1");
         barMana.Bounds = new Rectangle(180, 40, 220, 60);
         barMana.Texture = content.Load<Texture2D>("Textures/healthbar/manaBar");
@@ -83,13 +83,13 @@ namespace ARRG_Game
       {
         playerName.Bounds = new Rectangle(430, -5, 136, 44);
         playerName.Texture = content.Load<Texture2D>("Textures/healthbar/player2");
-        barHealth.Bounds = new Rectangle(400, 10, 360, 60);
+        barHealth.Bounds = new Rectangle(400, 20, 360, 30);
         barHealth.Texture = content.Load<Texture2D>("Textures/healthbar/healthp2");
         barMana.Bounds = new Rectangle(400, 40, 220, 60);
         barMana.Texture = content.Load<Texture2D>("Textures/healthbar/manaBar");
       }
 
-      scene.UIRenderer.Add2DComponent(barMana);
+      //scene.UIRenderer.Add2DComponent(barMana);
       scene.UIRenderer.Add2DComponent(barHealth);
       scene.UIRenderer.Add2DComponent(playerName);
       
@@ -100,12 +100,12 @@ namespace ARRG_Game
         int newmod = modifier * healthRatio;
       if(playerNum ==1)
       {
-        barHealth.Bounds = new Rectangle((barHealth.Bounds.X - newmod), 10, (barHealth.Bounds.Width + newmod), 60);
+        barHealth.Bounds = new Rectangle((barHealth.Bounds.X - newmod), 20, (barHealth.Bounds.Width + newmod), 30);
 
       }
       else
       {
-        barHealth.Bounds = new Rectangle(400, 10, (barHealth.Bounds.Width + newmod), 60);
+        barHealth.Bounds = new Rectangle(400, 20, (barHealth.Bounds.Width + newmod), 30);
         //Console.WriteLine("X:" + healthTransNode.Translation.X + " Y:" + healthTransNode.Translation.Y + " Z:" + healthTransNode.Translation.Z);
       }
     }
@@ -127,7 +127,7 @@ namespace ARRG_Game
     public void Kill()
     {
         scene.UIRenderer.Remove2DComponent(playerName);
-        scene.UIRenderer.Remove2DComponent(barMana);
+        //scene.UIRenderer.Remove2DComponent(barMana);
         scene.UIRenderer.Remove2DComponent(barHealth);
     }
   }

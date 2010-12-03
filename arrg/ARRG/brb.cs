@@ -82,7 +82,7 @@ namespace ARRG_Game
         }
         public void setNextInGame()
         {
-            updateMenuBrb(1, new Point());
+            updateMenuBrb(0, new Point());
         }
         private void updateMenuBrb(int mouseButton, Point mouse)
         {

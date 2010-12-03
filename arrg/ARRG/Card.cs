@@ -86,7 +86,7 @@ namespace ARRG_Game
             {
                 if (buff.mod < 0)
                     modelName = "battleAxe";
-                else modelName = "swordCustom";
+                else modelName = "sword";
 
             }
             else if (type == CardType.DMG_PREVENT)
