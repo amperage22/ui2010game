@@ -180,7 +180,7 @@ namespace ARRG_Game
             float prev = 1000, curr;
             foreach (Die d in die)
             {
-                if (d != null && d.CurrentMonster != null && currentMonster != null)
+                if (d != null && d.currentMonster != null && currentMonster != null)
                 {
                     curr = Vector3.Distance(UpMarker.WorldTransformation.Translation, d.UpMarker.WorldTransformation.Translation);
                     if (curr < prev)
@@ -198,11 +198,11 @@ namespace ARRG_Game
         {
             foreach (Die d in die)
             {
-                if (d != null && d.CurrentMonster != null && currentMonster != null)
+                if (d != null && d.currentMonster != null && currentMonster != null)
                 {
                     if (d.currentMonster.Health <= currentMonster.Power)
                     {
-                        if (nearestEnemy == null || d.currentMonster.Health > nearestEnemy.currentMonster.Health)
+                        if (nearestEnemy == null || (nearestEnemy.currentMonster != null && d.currentMonster.Health > nearestEnemy.currentMonster.Health))
                         {
                             nearestEnemy = d;
                             currentMonster.NearestEnemy = d.currentMonster;
@@ -218,7 +218,7 @@ namespace ARRG_Game
                     }
                 }
             }
-            if (nearestEnemy == null)
+            while (nearestEnemy == null || nearestEnemy.currentMonster == null)
             {
                 nearestEnemy = die[RandomHelper.GetRandomInt(3)];
                 currentMonster.NearestEnemy = nearestEnemy.currentMonster;
